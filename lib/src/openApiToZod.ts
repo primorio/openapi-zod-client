@@ -113,20 +113,31 @@ export function getZodSchema({ schema: $schema, ctx, meta: inheritedMeta, option
         }
 
         const types = schema.anyOf
-            .map((prop) => getZodSchema({ schema: prop, ctx, meta, options }))
-            .map((type) => {
-                let isObject = true;
+            .map((prop) => {
+                if ("type" in prop && isPrimitiveType(prop.type)) {
+                    const propMetadata = {
+                        ...meta,
+                        isRequired: true,
+                    } as CodeMetaData;
+                    return (
+                        getZodSchema({ schema: prop, ctx, meta: propMetadata, options }) +
+                        getZodChain({ schema: prop as SchemaObject, meta: propMetadata, options })
+                    ).toString();
+                } else {
+                    const type = getZodSchema({ schema: prop, ctx, meta, options });
+                    let isObject = true;
 
-                if ("type" in type.schema) {
-                    if (Array.isArray(type.schema.type)) {
-                        isObject = false;
-                    } else {
-                        const schemaType = type.schema.type.toLowerCase() as NonNullable<typeof schema.type>;
-                        isObject = !isPrimitiveType(schemaType);
+                    if ("type" in type.schema) {
+                        if (Array.isArray(type.schema.type)) {
+                            isObject = false;
+                        } else {
+                            const schemaType = type.schema.type.toLowerCase() as NonNullable<typeof schema.type>;
+                            isObject = !isPrimitiveType(schemaType);
+                        }
                     }
-                }
 
-                return type.toString();
+                    return type.toString();
+                }
             })
             .join(", ");
 
@@ -213,15 +224,11 @@ export function getZodSchema({ schema: $schema, ctx, meta: inheritedMeta, option
     if (schemaType === "array") {
         if (schema.items) {
             return code.assign(
-                `z.array(${
-                    getZodSchema({ schema: schema.items, ctx, meta, options }).toString()
-                }${
-                    getZodChain({
-                        schema: schema.items as SchemaObject,
-                        meta: { ...meta, isRequired: true },
-                        options,
-                    })
-                })${readonly}`
+                `z.array(${getZodSchema({ schema: schema.items, ctx, meta, options }).toString()}${getZodChain({
+                    schema: schema.items as SchemaObject,
+                    meta: { ...meta, isRequired: true },
+                    options,
+                })})${readonly}`
             );
         }
 
