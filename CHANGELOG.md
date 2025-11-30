@@ -1,312 +1,395 @@
-## [1.4.18](https://github.com/astahmer/openapi-zod-client/compare/v1.4.17...v1.4.18) (2023-01-16)
+# openapi-zod-client
 
+## 1.18.3
 
-### Bug Fixes
+### Patch Changes
 
-* **#67:** treat `null` with higher priority ([9f633cc](https://github.com/astahmer/openapi-zod-client/commit/9f633ccc7ae9da74970ec57f68df3e138eca6f39)), closes [#67](https://github.com/astahmer/openapi-zod-client/issues/67)
-* handle invalid number+enum case if schema.type is Array ([07e5133](https://github.com/astahmer/openapi-zod-client/commit/07e5133e76a286bfa418624dd93de6e7cd864583))
+-   [#322](https://github.com/astahmer/openapi-zod-client/pull/322) [`068531e`](https://github.com/astahmer/openapi-zod-client/commit/068531effec10e83356de4e65f58acd7f7357413) Thanks [@pauljamescleary](https://github.com/pauljamescleary)! - Append unicode flag for schema regular expression patterns when the pattern includes common unicode escape classes
 
+## 1.18.2
 
-### Features
+### Patch Changes
 
-* **#60:** support schema.type list from openapi 3.1 ([519de14](https://github.com/astahmer/openapi-zod-client/commit/519de1409be4dbe6efb2c25db58669b3c48f38b7)), closes [#60](https://github.com/astahmer/openapi-zod-client/issues/60)
-* **playground:** add api.doc.json default tab ([75edaf1](https://github.com/astahmer/openapi-zod-client/commit/75edaf1d81af0f7b1e4101c2864af44a31f157dd))
+-   [#294](https://github.com/astahmer/openapi-zod-client/pull/294) [`ca81272`](https://github.com/astahmer/openapi-zod-client/commit/ca812725e369d7e04405a8aa88004e39ccbd6b14) Thanks [@QuentinJanuel](https://github.com/QuentinJanuel)! - Fix format validation for string items in arrays. Previously, format specifications (such as `date-time`) were ignored for array items, resulting in loose validation. This change ensures that the specified formats are now correctly applied to all string items within arrays.
 
+## 1.18.1
 
+### Patch Changes
 
-## [1.4.17](https://github.com/astahmer/openapi-zod-client/compare/v1.4.16...v1.4.17) (2023-01-09)
+-   [#288](https://github.com/astahmer/openapi-zod-client/pull/288) [`3799ae3`](https://github.com/astahmer/openapi-zod-client/commit/3799ae33b9cbee028918e92d49e7d8bed68bfb5e) Thanks [@mjperrone](https://github.com/mjperrone)! - Fix escaping of forward slash `/` in pattern regex so the output code will be `/\//`. This change also breaks escaping of unnecessarily escaped forward slash `\/` in pattern regex, such that the output code will be `/\\//`.
 
+## 1.18.0
 
+### Minor Changes
 
-## [1.4.16](https://github.com/astahmer/openapi-zod-client/compare/v1.4.15...v1.4.16) (2023-01-05)
+-   [#275](https://github.com/astahmer/openapi-zod-client/pull/275) [`ed50076`](https://github.com/astahmer/openapi-zod-client/commit/ed500762c6998fb2976e8ad43a88a3a09d928f2c) Thanks [@senecolas](https://github.com/senecolas)! - Add `withDocs` option and `--with-docs` flag that adds JSDoc to generated code
 
+## 1.17.0
 
-### Bug Fixes
+### Minor Changes
 
-* **#61:** Combination of enum and minLength leads to invalid zod schmemas ([0c12414](https://github.com/astahmer/openapi-zod-client/commit/0c12414f22e0d7b254bd97f0157a30b5395c240a)), closes [#61](https://github.com/astahmer/openapi-zod-client/issues/61)
+-   [#283](https://github.com/astahmer/openapi-zod-client/pull/283) [`3ec4915`](https://github.com/astahmer/openapi-zod-client/commit/3ec491572e56fc40e3b49cefb58cb6f08600190f) Thanks [@dgadelha](https://github.com/dgadelha)! - Add `schemaRefiner` option to allow refining the OpenAPI schema before its converted to a Zod schema
 
+## 1.16.4
 
+### Patch Changes
 
-## [1.4.15](https://github.com/astahmer/openapi-zod-client/compare/v1.4.14...v1.4.15) (2022-12-13)
+-   [#279](https://github.com/astahmer/openapi-zod-client/pull/279) [`f3ee25e`](https://github.com/astahmer/openapi-zod-client/commit/f3ee25efc191d0be97231498924fe50fd977fb88) Thanks [@dgadelha](https://github.com/dgadelha)! - Fix multiline descriptions when `describe` is enabled
 
+## 1.16.3
 
-### Bug Fixes
+### Patch Changes
 
-* missing zod chains on z.object(..) refs props ([9b5c2cb](https://github.com/astahmer/openapi-zod-client/commit/9b5c2cb1a5ac276538c003a34174a0a5b3618c58))
+-   [#276](https://github.com/astahmer/openapi-zod-client/pull/276) [`aa4c7a3`](https://github.com/astahmer/openapi-zod-client/commit/aa4c7a3668c6d96492bcd319ccd940f0b735b029) Thanks [@tankers746](https://github.com/tankers746)! - Fixed bug which was excluding falsy default values
 
+## 1.16.2
 
+### Patch Changes
 
-## [1.4.14](https://github.com/astahmer/openapi-zod-client/compare/v1.4.13...v1.4.14) (2022-12-13)
+-   [#271](https://github.com/astahmer/openapi-zod-client/pull/271) [`197316b`](https://github.com/astahmer/openapi-zod-client/commit/197316b50b0b84cea977984ae82441f2ce108ea0) Thanks [@codingmatty](https://github.com/codingmatty)! - Fix invalid output when using array types as the endpoint body with minItems or maxItems and using the tag-file group-strategy.
 
+## 1.16.1
 
-### Bug Fixes
+### Patch Changes
 
-* schema.type = number with string default should be inlined as number ([b2786b9](https://github.com/astahmer/openapi-zod-client/commit/b2786b9a2a20137e7699822281fddffc01bb2772))
+-   [#270](https://github.com/astahmer/openapi-zod-client/pull/270) [`04dd1b5`](https://github.com/astahmer/openapi-zod-client/commit/04dd1b549118c8b8e5a3b86f6dbed741f44770c8) Thanks [@codingmatty](https://github.com/codingmatty)! - Fix bug with `exportAllNamedSchemas` option where schemas will reuse last schema name with matching schema rather than it's own name that has already been used before.
 
+## 1.16.0
 
+### Minor Changes
 
-## [1.4.13](https://github.com/astahmer/openapi-zod-client/compare/v1.4.12...v1.4.13) (2022-12-12)
+-   [#268](https://github.com/astahmer/openapi-zod-client/pull/268) [`f62be48`](https://github.com/astahmer/openapi-zod-client/commit/f62be48c9d66fb432b5b68570f8de4755644d1d5) Thanks [@codingmatty](https://github.com/codingmatty)! - Add `exportAllNamedSchemas` option to allow exporting duplicate schemas with different names.
 
+## 1.15.1
 
-### Bug Fixes
+### Patch Changes
 
-* autofix wrong schema.type case as QoL improvement ([e589663](https://github.com/astahmer/openapi-zod-client/commit/e5896630a9480ad5031d2bd2e451ad4850e9e682))
+-   [`73f6726`](https://github.com/astahmer/openapi-zod-client/commit/73f67268fb51a43b8c5ef92427ef9abeedccb086) Thanks [@astahmer](https://github.com/astahmer)! - Add a `--strict-objects` CLI flag: Use strict validation for objects so we don't allow unknown keys. Defaults to false. thanks @iceydee
 
+## 1.15.0
 
+### Minor Changes
 
-## [1.4.12](https://github.com/astahmer/openapi-zod-client/compare/v1.4.11...v1.4.12) (2022-12-12)
+-   [#261](https://github.com/astahmer/openapi-zod-client/pull/261) [`00ed1ee`](https://github.com/astahmer/openapi-zod-client/commit/00ed1ee84ddf88a68e05927395e56a9861394e60) Thanks [@C-ra-ZY](https://github.com/C-ra-ZY)! - Fix #260 by infer types of items in a required only allOf item.
 
+## 1.14.0
 
-### Bug Fixes
+### Minor Changes
 
-* **#49:** escape control characters ([5b061cf](https://github.com/astahmer/openapi-zod-client/commit/5b061cfe16c2446bd7bade5cf8356cf6acdd2985)), closes [#49](https://github.com/astahmer/openapi-zod-client/issues/49)
+-   [#258](https://github.com/astahmer/openapi-zod-client/pull/258) [`8c80b43`](https://github.com/astahmer/openapi-zod-client/commit/8c80b4325048ab9861269739f3011b2380a3b958) Thanks [@marrowleaves](https://github.com/marrowleaves)! - Fix #257 by inferring as object when only required array defined
 
+## 1.13.4
 
+### Patch Changes
 
-## [1.4.11](https://github.com/astahmer/openapi-zod-client/compare/v1.4.10...v1.4.11) (2022-12-12)
+-   [#254](https://github.com/astahmer/openapi-zod-client/pull/254) [`6e5a589`](https://github.com/astahmer/openapi-zod-client/commit/6e5a589025b070308dbc9dd4402d2fa1fac9d349) Thanks [@jayvdb](https://github.com/jayvdb)! - fix: Bump axios to avoid CVE-2023-45857
 
+## 1.13.3
 
-### Bug Fixes
+### Patch Changes
 
-* ParameterObject with missing schema AND content ([20e075c](https://github.com/astahmer/openapi-zod-client/commit/20e075cecf8b10fbab096165de177151b17364bd))
+-   [#251](https://github.com/astahmer/openapi-zod-client/pull/251) [`2859ede`](https://github.com/astahmer/openapi-zod-client/commit/2859edee065fa24fef69be6241ab9c773724fe7f) Thanks [@ezze](https://github.com/ezze)! - Fix "Cannot read properties of undefined (reading 'ref')" type error for file group strategies
 
+## 1.13.2
 
+### Patch Changes
 
-## [1.4.10](https://github.com/astahmer/openapi-zod-client/compare/v1.4.8...v1.4.10) (2022-12-12)
+-   [#248](https://github.com/astahmer/openapi-zod-client/pull/248) [`fd5f850`](https://github.com/astahmer/openapi-zod-client/commit/fd5f850492bf384586d079350f021475014e1767) Thanks [@nmcdaines](https://github.com/nmcdaines)! - Fixes an issue whereby you aren't able to set additionalPropsDefaultValue from command line as false because the package expects it to be a boolean, however recieves a string value
 
+-   [#249](https://github.com/astahmer/openapi-zod-client/pull/249) [`8dfb265`](https://github.com/astahmer/openapi-zod-client/commit/8dfb265ee23bb79b2c8fe0dd979103c89f0bcf4f) Thanks [@nmcdaines](https://github.com/nmcdaines)! - Fix issue using discriminated union when there are multiple items within an allOf block by reverting to a union type for this case
 
-### Bug Fixes
+-   [#247](https://github.com/astahmer/openapi-zod-client/pull/247) [`1e1dcd8`](https://github.com/astahmer/openapi-zod-client/commit/1e1dcd8c40aa9db6bacbe170410543387bbf3403) Thanks [@tillschweneker](https://github.com/tillschweneker)! - When a property from an external json or yaml file starts with a number, e.g. 1st, instead of first, the generated Zod-Schema is corrupt. The change in the wrapWithQuotesIfNeeded method makes sure, that any property starting with a number is wrapped in quotes.
 
-* ParameterObject with content (and no schema) ([a7533a5](https://github.com/astahmer/openapi-zod-client/commit/a7533a51949c4ddb20b7d297583801ade743b58a))
+## 1.13.1
 
+### Patch Changes
 
+-   [#242](https://github.com/astahmer/openapi-zod-client/pull/242) [`81efd49`](https://github.com/astahmer/openapi-zod-client/commit/81efd491ee6a884b252e8fbaaefdfd565220ef9d) Thanks [@imballinst](https://github.com/imballinst)! - chore: make endpointDefinitionRefiner to receive final fields that are going to be used in handlebars
 
-## [1.4.8](https://github.com/astahmer/openapi-zod-client/compare/v1.4.7...v1.4.8) (2022-12-11)
+## 1.13.0
 
+### Minor Changes
 
-### Bug Fixes
+-   [#234](https://github.com/astahmer/openapi-zod-client/pull/234) [`096d8b4`](https://github.com/astahmer/openapi-zod-client/commit/096d8b4f6bbf0c829ef5dd3c02a11468ba2654b4) Thanks [@ArthurGoupil](https://github.com/ArthurGoupil)! - Add option `withAllResponses` to be receive a `responses` array containing all responses (succes & error)
 
-* rm sheep & re-publish since it broke the package.. ([794721a](https://github.com/astahmer/openapi-zod-client/commit/794721aa3a92af695aea4964e5ecbb883ddb9140))
+## 1.12.1
 
+### Patch Changes
 
+-   [#232](https://github.com/astahmer/openapi-zod-client/pull/232) [`efebdf2`](https://github.com/astahmer/openapi-zod-client/commit/efebdf2627e79d2fb759096667d445cc137446fd) Thanks [@ArthurGoupil](https://github.com/ArthurGoupil)! - Pass options object to `getZodSchema` when `shouldExportAllSchemas` is true.
 
-## [1.4.7](https://github.com/astahmer/openapi-zod-client/compare/v1.4.6...v1.4.7) (2022-12-11)
+## 1.12.0
 
+### Minor Changes
 
-### Bug Fixes
+-   [`7396fe8`](https://github.com/astahmer/openapi-zod-client/commit/7396fe8a087b9a3e8f7bab52fd5b728a3519a7bd) Thanks [@astahmer](https://github.com/astahmer)! - Add additionalPropsDefaultValue flag in case additionalProperties is not provided
 
-* **#49:** min+max shouldnt mean EXACT but between ([d394d86](https://github.com/astahmer/openapi-zod-client/commit/d394d86059484b32c39bd91aa1897d2373c3d373)), closes [#49](https://github.com/astahmer/openapi-zod-client/issues/49)
-* **#49:** missing .and for allOf ([fb2fc0c](https://github.com/astahmer/openapi-zod-client/commit/fb2fc0ce838414d652db4c7fc3e812339dd3a685)), closes [#49](https://github.com/astahmer/openapi-zod-client/issues/49)
+## 1.11.1
 
+### Patch Changes
 
+-   [`536a541`](https://github.com/astahmer/openapi-zod-client/commit/536a541d2723ee16cc6d573aea47919591e9a650) Thanks [@astahmer](https://github.com/astahmer)! - Thanks @mayorandrew !
 
-## [1.4.6](https://github.com/astahmer/openapi-zod-client/compare/v1.4.5...v1.4.6) (2022-12-10)
+    ***
 
+    [OpenAPI 3.0.3 Data Types](https://spec.openapis.org/oas/v3.0.3#data-types) are defined by [JSON Schema Specification Wright Draft 00](https://datatracker.ietf.org/doc/html/draft-wright-json-schema-00#section-4.2).
 
-### Bug Fixes
+    However, the specification mentions that "null is not supported as a type" and the `nullable` keyword should be used instead. While it is a valid solution in most cases, it is not possible to use `nullable` together with `$ref`. One possible workaround is to define a Null schema and use it in combination with `oneOf`, like so:
 
-* **#49:** numerical enum shouldnt be wrapped in quotes + dont append .int() for them ([cc1ced0](https://github.com/astahmer/openapi-zod-client/commit/cc1ced0e587863d4adc742fcf74e59b6081d3673)), closes [#49](https://github.com/astahmer/openapi-zod-client/issues/49)
+    ```json
+    {
+        "oneOf": [
+            { "$ref": "#/components/schemas/MySchema" },
+            {
+                "type": "string",
+                "enum": [null],
+                "nullable": true
+            }
+        ]
+    }
+    ```
 
+    It may look contradictory, but according to the [enum section of JSON Schema Validation Wright Draft 00](https://datatracker.ietf.org/doc/html/draft-wright-json-schema-validation-00#section-5.20):
 
+    > The value of this keyword MUST be an array. This array SHOULD have
+    > at least one element. Elements in the array SHOULD be unique.
+    >
+    > Elements in the array MAY be of any type, including null.
+    >
+    > An instance validates successfully against this keyword if its value
+    > is equal to one of the elements in this keyword's array value.
 
-## [1.4.5](https://github.com/astahmer/openapi-zod-client/compare/v1.4.0...v1.4.5) (2022-12-07)
+    This means that `null` is a possible value for the "enum" validation of "type" "string".
 
+    This schema also passes the `swagger-cli validate` check.
 
-### Bug Fixes
+    The openapi-zod-client library currently crashes when generating a TypeScript type for this construct. Additionally, the generated zod schemas are not correct when using a `null` value in "enum" along with other values. This PR fixes that.
 
-* **#45:** add guard on possibly undefined value ([be431b6](https://github.com/astahmer/openapi-zod-client/commit/be431b6f45527a051a3cefaddb9be111fb762c7c)), closes [#45](https://github.com/astahmer/openapi-zod-client/issues/45)
-* getZodVarName when result is a ref with chains ([17a7091](https://github.com/astahmer/openapi-zod-client/commit/17a7091842220091a11d3586cec92299a5d5fbcd))
-* schema.pattern when not wrapped with /xxx/ ([bda6ecb](https://github.com/astahmer/openapi-zod-client/commit/bda6ecb0a03145d7641c0e41c8aee982461401bc))
+    https://github.com/astahmer/openapi-zod-client/pull/227
 
+## 1.11.0
 
-### Features
+### Minor Changes
 
-* allow passing own instance of handlebars to generateZodClientFromOpenAPI ([3675691](https://github.com/astahmer/openapi-zod-client/commit/3675691cc7f3f5ac70299f6be1b60c8b7ba88598))
+-   [#221](https://github.com/astahmer/openapi-zod-client/pull/221) [`5e55304`](https://github.com/astahmer/openapi-zod-client/commit/5e553044dc4dd216e4bebf11b88646a9b9d65f1a) Thanks [@craigmiller160](https://github.com/craigmiller160)! - Added the "all readonly" feature, which allows for generating schemas & types with all arrays and object properties set to readonly.
 
+## 1.10.8
 
+### Patch Changes
 
-# [1.4.0](https://github.com/astahmer/openapi-zod-client/compare/v1.0.0...v1.4.0) (2022-11-17)
+-   [#219](https://github.com/astahmer/openapi-zod-client/pull/219) [`114e809`](https://github.com/astahmer/openapi-zod-client/commit/114e809f4bb66e43fb6371942aad99f42c4bc86d) Thanks [@PeterMK85](https://github.com/PeterMK85)! - Handlebars helper `toCamelCase` should not touch the string if it's already in camel case.
 
+## 1.10.7
 
-### Bug Fixes
+### Patch Changes
 
-* add updateOutput action where needed ([e9b376f](https://github.com/astahmer/openapi-zod-client/commit/e9b376fd416c7918e8ebd6c1fbd82e66f9ecae1a))
-* build ([2d201bf](https://github.com/astahmer/openapi-zod-client/commit/2d201bf1d2e6f622b09282411cb9e3015e6ffd43))
-* build + preview + dev (still gets hydration mismatch) ([1659ecb](https://github.com/astahmer/openapi-zod-client/commit/1659ecbc6d407a99f7e3f3171329ae3352656124))
-* check for url length before history.replace/copy to clipboard ([dccff7b](https://github.com/astahmer/openapi-zod-client/commit/dccff7be18cce79d2dd7c5f5b15eebb07e41feb2))
-* ci ([c2b0ece](https://github.com/astahmer/openapi-zod-client/commit/c2b0ecec82ac1c5c30cc3af35b66504c9c524f54))
-* ci ? ([4d4e720](https://github.com/astahmer/openapi-zod-client/commit/4d4e72036ccdad97f9f7cec34193bef3abceb498))
-* ci ?? ([0fd0a03](https://github.com/astahmer/openapi-zod-client/commit/0fd0a03c9fea4b3ec616d09513b9db88f746ea8f))
-* circular refs detection ([d48fad2](https://github.com/astahmer/openapi-zod-client/commit/d48fad2cb80f0330f8f3d40cd6068498b6968bdb))
-* examples ([9501d4b](https://github.com/astahmer/openapi-zod-client/commit/9501d4b90d40667f5bea395d96743e71b9e323d0))
-* handle refs with dots in name ([7a1a69d](https://github.com/astahmer/openapi-zod-client/commit/7a1a69df8f077271537ad8c7e3b157b158e7907f))
-* is it fine now please ([b119d70](https://github.com/astahmer/openapi-zod-client/commit/b119d7051cd46f8ffaf3e36cb0d5e1cfa675bfc9))
-* lib deps ([fee2ce3](https://github.com/astahmer/openapi-zod-client/commit/fee2ce39e6b67c0b85a2a3e7118ce4b3535b0800))
-* **lib:** group xxx-file should ignore options.apiClientName ([65b4c43](https://github.com/astahmer/openapi-zod-client/commit/65b4c432b2e17ef0021104d0ab05e0a9e3ff3078))
-* **lib:** normalize schema names in template context ([d5705dd](https://github.com/astahmer/openapi-zod-client/commit/d5705ddf681c7a9e7962a73d323bcaa7361a59c8))
-* lock ([5fa9865](https://github.com/astahmer/openapi-zod-client/commit/5fa9865123b6ea044014b358519e6d675097f788))
-* missing graphs dependencies ([465e06f](https://github.com/astahmer/openapi-zod-client/commit/465e06f10c526cf6aadb8f2780adeac21a1329f1))
-* monorepo build ([68d7190](https://github.com/astahmer/openapi-zod-client/commit/68d7190d180606688d1f281f001227ff7326d692))
-* mv preconstruct scripts to root ([6f42e65](https://github.com/astahmer/openapi-zod-client/commit/6f42e6545021918f9bd2e418fb8d5880d806a979))
-* output TabsList x-axis overflow scroll ([987ff76](https://github.com/astahmer/openapi-zod-client/commit/987ff76412681a7edd63a19cdbcd12f01e515b30))
-* **playground:** catch & log errors & notify user ([3fd1186](https://github.com/astahmer/openapi-zod-client/commit/3fd1186815bfe3289b66ba8ff8aa9093638dfac4))
-* **playground:** display parsing error ([560d155](https://github.com/astahmer/openapi-zod-client/commit/560d15548abd540c7a151f0cea75c62bc9201b85))
-* **playground:** reset groupStrategy to none for schemas-only preset template ([4aca386](https://github.com/astahmer/openapi-zod-client/commit/4aca3867e524af20835f50408efd9251bae9120b))
-* pnpx add postinstall in root package ([a11a574](https://github.com/astahmer/openapi-zod-client/commit/a11a57432dc9dd8966b4624b9bcb0982a610dbac))
-* pnpx by removing src in files ? ([64c74a7](https://github.com/astahmer/openapi-zod-client/commit/64c74a7ab709e22963547f11970c4779e74c4fd0))
-* pnpx maybe ([2e3b004](https://github.com/astahmer/openapi-zod-client/commit/2e3b0044a5a211dee00a8015258efc270f217c27))
-* pnpx with postinstall ([2360ef9](https://github.com/astahmer/openapi-zod-client/commit/2360ef91020ef9ae53300402d489d566ac2acb12))
-* preconstruct / babel ? ([e0ccf2b](https://github.com/astahmer/openapi-zod-client/commit/e0ccf2bf0b6bb58fd5a39d56c2b3adb976d6056d))
-* presetTemplate checked ([8f622bd](https://github.com/astahmer/openapi-zod-client/commit/8f622bd64b98cd746a2923cdb7d80afe3a874f5c))
-* server-side package with ssr external + rakkas preview ([a48ea7e](https://github.com/astahmer/openapi-zod-client/commit/a48ea7e8578d09ed25e1421a9bf5140bad04fb5a))
-* simplify output templateString ([71a6810](https://github.com/astahmer/openapi-zod-client/commit/71a681082a8c10304695a2e5892fcd2db52953ff))
-* update selected template/doc on input when it was empty or when removing file tab ([c851903](https://github.com/astahmer/openapi-zod-client/commit/c851903cb0789af8a0966627556b266cacf10454))
-* use fs-extra version that support esm.. ([76a6025](https://github.com/astahmer/openapi-zod-client/commit/76a60253b471d8c7872c7927c3484920029facda))
-* using exports ? ([eddfcfe](https://github.com/astahmer/openapi-zod-client/commit/eddfcfe03f46b23b718f48733a6fffb0e4d49396))
+-   [#212](https://github.com/astahmer/openapi-zod-client/pull/212) [`63c32a0`](https://github.com/astahmer/openapi-zod-client/commit/63c32a01408bf90efeeb5d506d5c3994d297c39e) Thanks [@eli0shin](https://github.com/eli0shin)! - Limit --export-types to object types to prevent type errors from zod validation methods like `.min`
 
+## 1.10.6
 
-### Features
+### Patch Changes
 
-* Actions menu wip + initial template file tab ([270d7ab](https://github.com/astahmer/openapi-zod-client/commit/270d7ab5678a167dd01296009ef3d224772c325f))
-* **cli:** add --api-client-name option ([deca178](https://github.com/astahmer/openapi-zod-client/commit/deca1781e988be5e05af71fd8b21b7822efc96c0))
-* export getHandlesbars / maybePretty ([ca734db](https://github.com/astahmer/openapi-zod-client/commit/ca734db6e29b72886b98935cd39112969fae3c11))
-* FileForm.content as monaco editor ([bdeff23](https://github.com/astahmer/openapi-zod-client/commit/bdeff23f424d6c4df9605ceec6248fe3a005a0f2))
-* init docusaurus + vanilla-extract + monaco ([f7e09a5](https://github.com/astahmer/openapi-zod-client/commit/f7e09a5140f49650bce5e8032a54042d29763a2d))
-* input files list + editable + reset to petstore btn ([1549de4](https://github.com/astahmer/openapi-zod-client/commit/1549de4f4ffa84fa1b1bf3a16a286af79b3ddb9f))
-* **lib:** options.willSuppressWarnings ([5ae86e5](https://github.com/astahmer/openapi-zod-client/commit/5ae86e5fa80b62a755df64e5151af02303049f26))
-* **lib:** whence.functions = true ([ab1041f](https://github.com/astahmer/openapi-zod-client/commit/ab1041f044d78222ed89791bdb79e5358d8540bc))
-* options builder + preview cli options/ts usage with copy button ([78aed6a](https://github.com/astahmer/openapi-zod-client/commit/78aed6a7903d9b62aeead2112adf7d8cbeabf1f5))
-* **playground:** add zod + @zodios/core declarations to monaco ([5e53982](https://github.com/astahmer/openapi-zod-client/commit/5e53982272dbbb3fece0bd68f312917f262cf62c))
-* **playground:** customizable prettier config + multiple prettier tabs ([bf68177](https://github.com/astahmer/openapi-zod-client/commit/bf681773fd2c188564f0b3fb4911b6936684ebaa))
-* **playground:** go to file ([e28e409](https://github.com/astahmer/openapi-zod-client/commit/e28e40964b3efc504151a305f02754a22a6b2928))
-* **playground:** PoC for in-browser lib usage ([772e301](https://github.com/astahmer/openapi-zod-client/commit/772e3013e7d09dd86933cbe3723500f0fd6ce799))
-* **playground:** prettier schema in editor ([331e0a8](https://github.com/astahmer/openapi-zod-client/commit/331e0a801e8d296314dc426c0b49c6e89559eee7))
-* **playground:** support groupStrategy xxx-file ([26263f7](https://github.com/astahmer/openapi-zod-client/commit/26263f78cd3db62ba5923c67a588f80a28e99ddb))
-* save current state to URL & copy to clipboard ([b85b1a6](https://github.com/astahmer/openapi-zod-client/commit/b85b1a647bf1885df32dca516e31257749985380))
-* selectedOpenApiFileName/selectedTemplateName ([c44b400](https://github.com/astahmer/openapi-zod-client/commit/c44b4008445e2fa4c907883cd114ee25491f490f))
-* **SplitPane:** options + fix overflow auto on 2nd pane ([69b1b2b](https://github.com/astahmer/openapi-zod-client/commit/69b1b2b86dd66eb1ca495a0edd03390a6b89f016))
-* updateSelectedTemplateName with override options ([9276cb4](https://github.com/astahmer/openapi-zod-client/commit/9276cb425e7885410146f9c12d42195e8a58b7d6))
-* useState/Memo -> Playground.machine ([ab0b863](https://github.com/astahmer/openapi-zod-client/commit/ab0b8632ecd724e32272c059266f81188b98e671))
+-   [#210](https://github.com/astahmer/openapi-zod-client/pull/210) [`675a132`](https://github.com/astahmer/openapi-zod-client/commit/675a13226ec3c4598130d16b09c5a79969d77177) Thanks [@eli0shin](https://github.com/eli0shin)! - Support nullable for array of types, oneOf, anyOf, and allOf in generated typescript types
 
+## 1.10.5
 
+### Patch Changes
 
-# [1.0.0](https://github.com/astahmer/openapi-zod-client/compare/v0.9.0...v1.0.0) (2022-10-26)
+-   [#206](https://github.com/astahmer/openapi-zod-client/pull/206) [`9a25ee0`](https://github.com/astahmer/openapi-zod-client/commit/9a25ee0a79e40f4221ba3565d39cb08f25b2bdf3) Thanks [@eli0shin](https://github.com/eli0shin)! - Add --export-types option to generate types for all schemas
 
+## 1.10.4
 
-### Bug Fixes
+### Patch Changes
 
-* add full zod chains for parameters ([b4e5af1](https://github.com/astahmer/openapi-zod-client/commit/b4e5af17c67e3a4d4a04f96dec6145cd4ee3e7cb))
-* response acceptance condition should not take default ([2b15d15](https://github.com/astahmer/openapi-zod-client/commit/2b15d151d960fce8aa00d6f5ca71fd09611259cf))
+-   [#204](https://github.com/astahmer/openapi-zod-client/pull/204) [`477bbec`](https://github.com/astahmer/openapi-zod-client/commit/477bbecda5669a99355cccde3290ef907325a4b7) Thanks [@filipbekic01](https://github.com/filipbekic01)! - Add nullable primitives and arrays support
 
+## 1.10.3
 
-### Features
+### Patch Changes
 
-* adds z.default(xxx) ([1e791f2](https://github.com/astahmer/openapi-zod-client/commit/1e791f22e53c09960e2b89ea06163b469f7098f1))
-* **CLI:** add --default-status option ([181ac76](https://github.com/astahmer/openapi-zod-client/commit/181ac765e73739a933842e6191ca43db7e9f1a04))
-* options.defaultStatusBehavior ([3c3456f](https://github.com/astahmer/openapi-zod-client/commit/3c3456fe7cbaf9df40a57983a8ae74a6f8935239))
-* requestFormat binary, form-url, form-data, text ([099d9da](https://github.com/astahmer/openapi-zod-client/commit/099d9da53e9030324b11c3ebda32765f905e2332))
+-   [#202](https://github.com/astahmer/openapi-zod-client/pull/202) [`f18e3ea`](https://github.com/astahmer/openapi-zod-client/commit/f18e3ea6b8f9606e9b505fcaf4fb311c81ce8a42) Thanks [@PeterMK85](https://github.com/PeterMK85)! - Add `camelCase` formatting to `hbs` files.
 
+-   [#197](https://github.com/astahmer/openapi-zod-client/pull/197) [`bd6e958`](https://github.com/astahmer/openapi-zod-client/commit/bd6e958337cd1085e2bc9eb122a0147d02937135) Thanks [@mjperrone](https://github.com/mjperrone)! - Fix bug with regex's that have / in them
 
+## 1.10.2
 
-# [0.9.0](https://github.com/astahmer/openapi-zod-client/compare/v0.8.0...v0.9.0) (2022-10-25)
+### Patch Changes
 
+-   [`8de58d5`](https://github.com/astahmer/openapi-zod-client/commit/8de58d54c13292ce433c30eb45e883967d1e06f6) Thanks [@astahmer](https://github.com/astahmer)! - update pastable again
 
-### Features
+## 1.10.1
 
-* options.complexityThreshold ([dd361cc](https://github.com/astahmer/openapi-zod-client/commit/dd361cc65f333fe75d6c8dbd1f6557e648723eec))
-* same schema different name will be re-used ([ed3e320](https://github.com/astahmer/openapi-zod-client/commit/ed3e320f525f40ff7e1e7e9f5171e096ed145db5))
+### Patch Changes
 
+-   [`ed41d1c`](https://github.com/astahmer/openapi-zod-client/commit/ed41d1cb7d482cc3e8bda6739e57b751d05d55aa) Thanks [@astahmer](https://github.com/astahmer)! - update pastable to a version with license
 
-### Reverts
+## 1.10.0
 
-* openapi3-ts to 3.0.2 ([3ab62f9](https://github.com/astahmer/openapi-zod-client/commit/3ab62f95f3b6032ec021dddb53c6417f6f953aec))
+### Minor Changes
 
+-   [#183](https://github.com/astahmer/openapi-zod-client/pull/183) [`c9118af`](https://github.com/astahmer/openapi-zod-client/commit/c9118af8bfc05e42daa1b3c50c63c394f73d74bf) Thanks [@simonbinwang](https://github.com/simonbinwang)! - Add nullable support for additional properties
 
+-   [#189](https://github.com/astahmer/openapi-zod-client/pull/189) [`d897485`](https://github.com/astahmer/openapi-zod-client/commit/d897485021271734c54925da53e829689ae06838) Thanks [@jbach](https://github.com/jbach)! - handle $ref in responses object
 
-# [0.8.0](https://github.com/astahmer/openapi-zod-client/compare/v0.7.0...v0.8.0) (2022-10-24)
+-   [#190](https://github.com/astahmer/openapi-zod-client/pull/190) [`e23b42d`](https://github.com/astahmer/openapi-zod-client/commit/e23b42de097f2fcf4b83de57a43495779946e449) Thanks [@imballinst](https://github.com/imballinst)! - feat: reduce dependency count threshold for a type to be imported from common file to just 1
 
+### Patch Changes
 
-### Features
+-   [#184](https://github.com/astahmer/openapi-zod-client/pull/184) [`44a5587`](https://github.com/astahmer/openapi-zod-client/commit/44a558767e85871b8116038fed3df60c46baf6d1) Thanks [@imballinst](https://github.com/imballinst)! - fix: fix order of schemas when using option groupStrategy: tag-file
 
-* `options.apiClientName` + custom for groups ([846ae52](https://github.com/astahmer/openapi-zod-client/commit/846ae52c90c24c6eb52809d67f1eea12b1fbc571))
-* basic --group-strategy option implementation ([596e9d4](https://github.com/astahmer/openapi-zod-client/commit/596e9d4ed22f6d2893854b9417b5334b7f413cd9))
-* **group-strategy:** `xxx-file` common.ts + index.ts ([a0c3170](https://github.com/astahmer/openapi-zod-client/commit/a0c31704488dc421da7cef972852b2a763bcd750))
-* include transitive dependencies / sort schemas by deps order + getRefName ([682b0e3](https://github.com/astahmer/openapi-zod-client/commit/682b0e3dd19021f2f0810bdc62d01785b949883e))
+## 1.9.0
 
+### Minor Changes
 
+-   [#163](https://github.com/astahmer/openapi-zod-client/pull/163) [`0270e4c`](https://github.com/astahmer/openapi-zod-client/commit/0270e4c50b3559ec284a0b75f338c76fdc006e48) Thanks [@WickyNilliams](https://github.com/WickyNilliams)! - treat additionalProperties as defaulting to true, allowing passthrough() unless explicitly opting-out
 
-# [0.7.0](https://github.com/astahmer/openapi-zod-client/compare/v0.6.1...v0.7.0) (2022-10-21)
+-   [#174](https://github.com/astahmer/openapi-zod-client/pull/174) [`b12151d`](https://github.com/astahmer/openapi-zod-client/commit/b12151d92b0998566ca450d38e647b42401e2b79) Thanks [@imballinst](https://github.com/imballinst)! - feat: add endpointDefinitionRefiner to TemplateContext options
 
+## 1.8.0
 
+### Minor Changes
 
-## [0.6.1](https://github.com/astahmer/openapi-zod-client/compare/v0.6.0...v0.6.1) (2022-10-20)
+-   [#166](https://github.com/astahmer/openapi-zod-client/pull/166) [`2308541`](https://github.com/astahmer/openapi-zod-client/commit/2308541bb9ecdca068243f1479a0fc0785439de0) Thanks [@scarf005](https://github.com/scarf005)! - take `withAlias: false` into account
 
+-   [#165](https://github.com/astahmer/openapi-zod-client/pull/165) [`4860e75`](https://github.com/astahmer/openapi-zod-client/commit/4860e75db9eb5904725e09d4d5e68ea7182ecc10) Thanks [@scarf005](https://github.com/scarf005)! - updated and used ts-pattern more
 
+## 1.7.2
 
-# [0.6.0](https://github.com/astahmer/openapi-zod-client/compare/v0.5.0...v0.6.0) (2022-10-20)
+### Patch Changes
 
+-   [#160](https://github.com/astahmer/openapi-zod-client/pull/160) [`bdcc143`](https://github.com/astahmer/openapi-zod-client/commit/bdcc143a157d28b80cc786eb491e2377e3fca362) Thanks [@WickyNilliams](https://github.com/WickyNilliams)! - add missing zod chains to response bodies
 
-### Bug Fixes
+-   [#161](https://github.com/astahmer/openapi-zod-client/pull/161) [`5d98868`](https://github.com/astahmer/openapi-zod-client/commit/5d98868b75a5464d4aa6ac02bdf4dd07a65e6c2b) Thanks [@WickyNilliams](https://github.com/WickyNilliams)! - allow timezones in date-time strings
 
-* #/xxx/ref params ([8b4417c](https://github.com/astahmer/openapi-zod-client/commit/8b4417c2c21639c6fd69433e1d1dc0ab3aa5eafd))
-* ref name with special characters ([4cfb627](https://github.com/astahmer/openapi-zod-client/commit/4cfb62748d848df9bd6612c8912fb9909e1338bd))
-* schema.pattern ([f3ef7ae](https://github.com/astahmer/openapi-zod-client/commit/f3ef7aee77fb51516449365140f438f635901d4f))
+## 1.7.1
 
+### Patch Changes
 
+-   [#154](https://github.com/astahmer/openapi-zod-client/pull/154) [`2486ce5`](https://github.com/astahmer/openapi-zod-client/commit/2486ce5535f4366a534e027ee1e92293be3034c7) Thanks [@janwvjaarsveld](https://github.com/janwvjaarsveld)! - Fix issue where path parameters containing underscores were also converted to camelCase
 
-# [0.5.0](https://github.com/astahmer/openapi-zod-client/compare/ca918dd95164b88277feb2e1c829da54f18f4fc9...v0.5.0) (2022-10-19)
+-   [#151](https://github.com/astahmer/openapi-zod-client/pull/151) [`2ef2cb1`](https://github.com/astahmer/openapi-zod-client/commit/2ef2cb137231557961feeebfecaa831937e38fa7) Thanks [@WickyNilliams](https://github.com/WickyNilliams)! - improve types for anyOf, to closer match json-schema behavior
 
+## 1.7.0
 
-### Bug Fixes
+### Minor Changes
 
-* **#15:** handle missing operationId for requestBody var name ([2d85f42](https://github.com/astahmer/openapi-zod-client/commit/2d85f42ad5e7aabd4b0b8f886493053c932c3f32)), closes [#15](https://github.com/astahmer/openapi-zod-client/issues/15)
-* **#21:** infer missing schema as `z.void()` when no matching MediaTypeObject or no ContentObject ([4aa9180](https://github.com/astahmer/openapi-zod-client/commit/4aa9180dde23785680e258bd7d3b3f7da160403b)), closes [#21](https://github.com/astahmer/openapi-zod-client/issues/21)
-* $ref in another file ([dcef06a](https://github.com/astahmer/openapi-zod-client/commit/dcef06ad74b462ece0f70d96dc4359e86b2cc4e9))
-* add fallback to requestBody.content ([dc0895e](https://github.com/astahmer/openapi-zod-client/commit/dc0895e3adfc4708b3578fca0317d5fb87cfd5b2))
-* add missing default response ([704d28f](https://github.com/astahmer/openapi-zod-client/commit/704d28f2f69a3c574f234d0e8b4f029e4d4ff414))
-* also generate types for deep dependencies of circular ref types ([cc616ea](https://github.com/astahmer/openapi-zod-client/commit/cc616ea82a4cd169f6473a6fa77b24f02faa377e))
-* autofix unusual ref format ([3521840](https://github.com/astahmer/openapi-zod-client/commit/3521840c4db27029a8583c0c363d9e9254dbe754))
-* **cli:** append .client after .yaml ([88b86b0](https://github.com/astahmer/openapi-zod-client/commit/88b86b05570d5cdbaba48ce7d387befc444dde8a))
-* **cli:** v0.0.7 generateZodClientFromOpenAPI templatePath ([d23069e](https://github.com/astahmer/openapi-zod-client/commit/d23069e505f5799c1aa09fcc5f4a6cedd31f5d9d))
-* default schemas overriding 200 response ([c746ef5](https://github.com/astahmer/openapi-zod-client/commit/c746ef5566f5bf49ed8d1ae647b8a445aa6fc15c))
-* do not fail if schema doesn't exist ([e7aa1ad](https://github.com/astahmer/openapi-zod-client/commit/e7aa1adb44f35756cd3ba2a61d8f01e224948e51))
-* **getZodClientTemplateContext:** replacer / variables order by dependencies ([ca918dd](https://github.com/astahmer/openapi-zod-client/commit/ca918dd95164b88277feb2e1c829da54f18f4fc9))
-* handle refs without var name (such as arrays) ([3a613e7](https://github.com/astahmer/openapi-zod-client/commit/3a613e7962cacbcc611ea6231d740aff2e99eae3))
-* **issue#2:** format path param ([1896dfb](https://github.com/astahmer/openapi-zod-client/commit/1896dfba6c111efe485c8bd7bb9d6accbcd09b61)), closes [issue#2](https://github.com/issue/issues/2)
-* kebab-case-in-props name should be normalized ([0127722](https://github.com/astahmer/openapi-zod-client/commit/0127722000950c8004536d36729ba0dd0767fdc6))
-* makeRefHash add letter as prefix ([b1ca8cb](https://github.com/astahmer/openapi-zod-client/commit/b1ca8cb7eb3a0286021fc2278cfba77ec0e09e4f))
-* missing maybeReplaceTokenOrVarnameWithRef on errors schema ([2c08ba0](https://github.com/astahmer/openapi-zod-client/commit/2c08ba0cc727ea8a93d5f54d1172608762eb0c09))
-* openApiToTypescript openapi integer -> bigint ([943f864](https://github.com/astahmer/openapi-zod-client/commit/943f8648246edc1d729fe7fb00d54419c229d7f8))
-* openApiToTypescript with enum as root ([098a8ad](https://github.com/astahmer/openapi-zod-client/commit/098a8ad60a12214c486cc9f0924001ac3cd545cb))
-* outputs all deep dependencies as TS for each circular schema ([868107f](https://github.com/astahmer/openapi-zod-client/commit/868107f0c8784613d100fdf3830530fc977a5f13))
-* reduce unions to single type when oneOf/anyOf/allOf length is 1 ([d042afb](https://github.com/astahmer/openapi-zod-client/commit/d042afb0027613cbd49dc9be7f717b46c675bdb2))
-* reverse order of schema kind in getOpenApiDependencyGraph ([091d469](https://github.com/astahmer/openapi-zod-client/commit/091d46958e240ae8ed39ff5383fc13b7e4986cf1))
-* rm bigint -> number ([b0c2181](https://github.com/astahmer/openapi-zod-client/commit/b0c2181455b45dbc7f100cc37efdb813c48133e9))
-* rm options.baseUrl default value ([4654ab4](https://github.com/astahmer/openapi-zod-client/commit/4654ab487438047a6659ece7945e523c1878900b))
-* rm unnecessary .optional() ([7c46eac](https://github.com/astahmer/openapi-zod-client/commit/7c46eacaa297f85f8374a34fd3ccffbaa9a47e8f))
-* unintentional shared context -> make a new object ([5e80cee](https://github.com/astahmer/openapi-zod-client/commit/5e80cee0543f3d863aac655cc25c18f70ac91217))
-* use `asApi` helper rather than `as const` ([59ee30b](https://github.com/astahmer/openapi-zod-client/commit/59ee30b101f23d3de5a2ab568525414823d1ca0d))
-* var names starting with number ([74c72db](https://github.com/astahmer/openapi-zod-client/commit/74c72db3b7fb6f055854c3aa2c70928d7ab75b33))
-* visit additionalProperties to determine schema deps ([15e3f5f](https://github.com/astahmer/openapi-zod-client/commit/15e3f5fc98f0061f153c883799526bc04a9ad9f8))
+-   [#148](https://github.com/astahmer/openapi-zod-client/pull/148) [`1fb7603`](https://github.com/astahmer/openapi-zod-client/commit/1fb7603633d6f78d0429908df73a545559a83964) Thanks [@astahmer](https://github.com/astahmer)! - parameter descriptions in openapi are included in the zod schema
 
+### Patch Changes
 
-### Features
+-   [#140](https://github.com/astahmer/openapi-zod-client/pull/140) [`6e5605b`](https://github.com/astahmer/openapi-zod-client/commit/6e5605b8e392f3fb482333de00a213f47f388a3b) Thanks [@janwvjaarsveld](https://github.com/janwvjaarsveld)! - Handle hyphenated path parameters on endpoint definition
 
-* --with-deprecated option (defaults to false) ([9a20e6f](https://github.com/astahmer/openapi-zod-client/commit/9a20e6fe47ca1dfb92646135a9a31d5bccc29660))
-* **#13:** implement zodios errors ([216cca1](https://github.com/astahmer/openapi-zod-client/commit/216cca19b07fba2407c94e0a80da0cb8340c3403)), closes [#13](https://github.com/astahmer/openapi-zod-client/issues/13) [#12](https://github.com/astahmer/openapi-zod-client/issues/12)
-* **#19:** --export-schemas option ([ed8d7bd](https://github.com/astahmer/openapi-zod-client/commit/ed8d7bd4bdd6357dcada8debcd44178b8f91af4c)), closes [#19](https://github.com/astahmer/openapi-zod-client/issues/19)
-* **#23:** withImplicitRequiredProps option ([31adcc2](https://github.com/astahmer/openapi-zod-client/commit/31adcc2053539a8c936291e4b4c7906d7161c1a1)), closes [#23](https://github.com/astahmer/openapi-zod-client/issues/23)
-* **#24:** add path params ([82094e9](https://github.com/astahmer/openapi-zod-client/commit/82094e9d0bd73f332d4e5cecffc852c4eaad99b4)), closes [#24](https://github.com/astahmer/openapi-zod-client/issues/24)
-* **cli:** -b, -a, -h, -v options ([bc6c249](https://github.com/astahmer/openapi-zod-client/commit/bc6c2495e579a98cda9056ccb9e2e2297435778a))
-* **cli:** add template/prettier args ([a8e8ba7](https://github.com/astahmer/openapi-zod-client/commit/a8e8ba7559904a93a604f680af7f6af99f01ff9a))
-* export getOpenApiDependencyGraph ([25eb3e3](https://github.com/astahmer/openapi-zod-client/commit/25eb3e3f043075905e4f91a09b1a5d378c9d7aee))
-* generate TS types so that z.lazy is typed properly ([635d0f5](https://github.com/astahmer/openapi-zod-client/commit/635d0f50d74bd634098c414ad096263a54e00d34))
-* infer as object when type not set but properties/additionalProperties is ([bdb220b](https://github.com/astahmer/openapi-zod-client/commit/bdb220bee1a9f5706f0cbcf9051df3668676f80d))
-* isMediaTypeAllowed option ([46bf611](https://github.com/astahmer/openapi-zod-client/commit/46bf6114ac918103fd082e37ff477aa0821bb3c7))
-* mark recursive schemas with [@circular](https://github.com/circular) token ([1944f41](https://github.com/astahmer/openapi-zod-client/commit/1944f41e92649f8273b34abbfb39c07aef120c3f))
-* openApiToTypescript with tanu.js ([b4f8352](https://github.com/astahmer/openapi-zod-client/commit/b4f835265257f2eea63ea2aaf8492e727b45833e))
-* **openApiToTypescript:** handle additionalProperties ([101e1b0](https://github.com/astahmer/openapi-zod-client/commit/101e1b05310f3968f85b9bbe87459b024c96909b))
-* string/number/array validations + format [#8](https://github.com/astahmer/openapi-zod-client/issues/8) + [#9](https://github.com/astahmer/openapi-zod-client/issues/9) ([e4d6354](https://github.com/astahmer/openapi-zod-client/commit/e4d6354cf3f63bd0e2f8a87181b05c610195073c))
+-   [#149](https://github.com/astahmer/openapi-zod-client/pull/149) [`d165193`](https://github.com/astahmer/openapi-zod-client/commit/d1651936c60f98abb5665d40294f128f8952e2fa) Thanks [@feychenie](https://github.com/feychenie)! - Fix TS generation of [any|one|all]Of when used with refs
 
+## 1.6.4
 
+### Patch Changes
 
+-   [#137](https://github.com/astahmer/openapi-zod-client/pull/137) [`d6091c9`](https://github.com/astahmer/openapi-zod-client/commit/d6091c9d87152e03a18e8e94b890c528b088b847) Thanks [@jmiller14](https://github.com/jmiller14)! - fix extraneous semicolon after discriminated union
+
+## 1.6.3
+
+### Patch Changes
+
+-   [#122](https://github.com/astahmer/openapi-zod-client/pull/122) [`5965c3f`](https://github.com/astahmer/openapi-zod-client/commit/5965c3fb2ad543de14c4c1546aadb0dc76948a1f) Thanks [@FakeGodd](https://github.com/FakeGodd)! - added support for requestBody.$ref
+
+## 1.6.2
+
+### Patch Changes
+
+-   [#119](https://github.com/astahmer/openapi-zod-client/pull/119) [`d340a17`](https://github.com/astahmer/openapi-zod-client/commit/d340a17df0907975148f06709baccdc57fecc980) Thanks [@robert-wysocki-sparkbit](https://github.com/robert-wysocki-sparkbit)! - Fix handling patterns with forward slashes
+
+-   [#113](https://github.com/astahmer/openapi-zod-client/pull/113) [`a4607b0`](https://github.com/astahmer/openapi-zod-client/commit/a4607b0f10fabbce9e291827712673581887c24b) Thanks [@robert-wysocki-sparkbit](https://github.com/robert-wysocki-sparkbit)! - Fix handling "exclusiveMinimum: false"
+
+## 1.6.1
+
+### Patch Changes
+
+-   [#106](https://github.com/astahmer/openapi-zod-client/pull/106) [`9594450`](https://github.com/astahmer/openapi-zod-client/commit/95944505551a2fc37e96d4f72c104af8f03e6a4e) Thanks [@dominik-parkopedia](https://github.com/dominik-parkopedia)! - Make use of discriminated unions if oneOf discriminator is defined
+
+## 1.6.0
+
+### Minor Changes
+
+-   [#98](https://github.com/astahmer/openapi-zod-client/pull/98) [`3e2406d`](https://github.com/astahmer/openapi-zod-client/commit/3e2406d8432e3f1de6edcf635e9946304533e38d) Thanks [@sirtimbly](https://github.com/sirtimbly)! - ## Feature: Support for Datetime string format
+
+    > **Warning**<br>
+    > Upgrade your zod package to version >= 3.2.0
+
+    Because zod now supports validating strings as proper ISO datetimes with `.datetime()` since [Zod 3.2.0](https://github.com/colinhacks/zod/releases/tag/v3.20), and 'date-time' is one of the supported string `format` values in the OpenAPI and JSON Schema spec. Any string with that datetime format will now be validated as being a ISO UTC datetime string.
+
+    ## Fixed: Minimum 0 and MinLength 0
+
+    Minimum 0 and MinLength 0 were not being converted to `.gte()` and `.min()` because of a type coercion bug.
+
+## 1.5.8
+
+### Patch Changes
+
+-   [#96](https://github.com/astahmer/openapi-zod-client/pull/96) [`dc16074`](https://github.com/astahmer/openapi-zod-client/commit/dc16074f377492d1337ae55366ce54573865adc9) Thanks [@feychenie](https://github.com/feychenie)! - Improvement: Add `withDefaultValues` (default `true`) config option to control presend of default values in the zod schemas
+
+-   [#96](https://github.com/astahmer/openapi-zod-client/pull/96) [`dc16074`](https://github.com/astahmer/openapi-zod-client/commit/dc16074f377492d1337ae55366ce54573865adc9) Thanks [@feychenie](https://github.com/feychenie)! - Improves default values conversion to not depend on the presence of a single-value "type" schema attribute
+
+## 1.5.7
+
+### Patch Changes
+
+-   [#93](https://github.com/astahmer/openapi-zod-client/pull/93) [`16f5ccc`](https://github.com/astahmer/openapi-zod-client/commit/16f5ccc43f738122c4e06f79ede41a35efb801c1) Thanks [@feychenie](https://github.com/feychenie)! - Improvement: add the ability to set a custom `alias` generation function in the `withAlias` option.
+
+## 1.5.6
+
+### Patch Changes
+
+-   [#91](https://github.com/astahmer/openapi-zod-client/pull/91) [`6ca10ff`](https://github.com/astahmer/openapi-zod-client/commit/6ca10ffae57332ef94e2e3b5f3bacf03a7759bbc) Thanks [@feychenie](https://github.com/feychenie)! - Fixed an issue with non-string enums containing a single value, resulting in an invalid zod union
+
+## 1.5.5
+
+### Patch Changes
+
+-   [#89](https://github.com/astahmer/openapi-zod-client/pull/89) [`b3e273a`](https://github.com/astahmer/openapi-zod-client/commit/b3e273abc89a3b7240119ba61ee48ad0de86c38f) Thanks [@feychenie](https://github.com/feychenie)! - Fixes and issue where default values for objects are incorrectly set (or ommited) in the zod schema.
+
+## 1.5.4
+
+### Patch Changes
+
+-   [#86](https://github.com/astahmer/openapi-zod-client/pull/86) [`e582b84`](https://github.com/astahmer/openapi-zod-client/commit/e582b84d33d86fbbd6f32ac6522ad30258031dac) Thanks [@feychenie](https://github.com/feychenie)! - Fixes and issue where default values for arrays are incorrectly set (or ommited) in the zod schema.
+
+-   [#87](https://github.com/astahmer/openapi-zod-client/pull/87) [`7a21616`](https://github.com/astahmer/openapi-zod-client/commit/7a216161c6f4f8de3b4f014bcfc39a1fae075e42) Thanks [@feychenie](https://github.com/feychenie)! - Fixed an issue where 'oneOf', 'anyOf', 'allOf' schemas containing a single item being a '$ref' would cause the zod schema generation to fail.
+
+## 1.5.3
+
+### Patch Changes
+
+-   [#82](https://github.com/astahmer/openapi-zod-client/pull/82) [`1b1cde2`](https://github.com/astahmer/openapi-zod-client/commit/1b1cde2c7b61ede4494ae829706e5682a05eb85d) Thanks [@astahmer](https://github.com/astahmer)! - feat(default template): createApiClient options?
+
+## 1.5.2
+
+### Patch Changes
+
+-   [#79](https://github.com/astahmer/openapi-zod-client/pull/79) [`e88a7cc`](https://github.com/astahmer/openapi-zod-client/commit/e88a7ccd35871b09030e822bf11d84f5c419b2f8) Thanks [@astahmer](https://github.com/astahmer)! - feat(#78): support common PathItemObject["parameters"]
+
+## 1.5.1
+
+### Patch Changes
+
+-   [`b9d5360`](https://github.com/astahmer/openapi-zod-client/commit/b9d536099994150db40ab044dee069437fc2f219) Thanks [@astahmer](https://github.com/astahmer)! - [feat: support undefined schema refs #76](https://github.com/astahmer/openapi-zod-client/pull/76), thanks to [alex-lucas](https://github.com/alex-lucas)
+
+## 1.5.0
+
+### Minor Changes
+
+-   [#74](https://github.com/astahmer/openapi-zod-client/pull/74) [`1267233`](https://github.com/astahmer/openapi-zod-client/commit/126723319262c882d0ee0cd10397472a58dd61de) Thanks [@astahmer](https://github.com/astahmer)! - fix(#73): fallback response to void when no schemas
+
+## 1.4.20
+
+### Patch Changes
+
+-   [#71](https://github.com/astahmer/openapi-zod-client/pull/71) [`6a111d1`](https://github.com/astahmer/openapi-zod-client/commit/6a111d1e1574450e53e6fe91299863223108688c) Thanks [@astahmer](https://github.com/astahmer)! - feat: add an exported createApiClient function in default templates
+
+-   [#71](https://github.com/astahmer/openapi-zod-client/pull/71) [`85828be`](https://github.com/astahmer/openapi-zod-client/commit/85828be2b4ad4f07cb3c969cac94c45a912cc85e) Thanks [@astahmer](https://github.com/astahmer)! - feat: export schemas object in default templates
+
+## 1.4.19
+
+### Patch Changes
+
+-   [`af7d9d8`](https://github.com/astahmer/openapi-zod-client/commit/af7d9d86dd01d6f1df51d194e6da36ebdd2ee0f7) Thanks [@astahmer](https://github.com/astahmer)! - bump
