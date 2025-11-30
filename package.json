@@ -1,5 +1,5 @@
 {
-    "name": "openapi-zod-client-monorepo",
+    "name": "openapi-zod-client",
     "private": true,
     "version": "1.4.18",
     "repository": {
