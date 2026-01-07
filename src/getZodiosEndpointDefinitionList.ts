@@ -467,7 +467,7 @@ const allowedParamMediaTypes = [
 ] as const;
 const isAllowedParamMediaTypes = (
     mediaType: string
-): mediaType is typeof allowedParamMediaTypes[number] | `application/${string}json${string}` | `text/${string}` =>
+): mediaType is (typeof allowedParamMediaTypes)[number] | `application/${string}json${string}` | `text/${string}` =>
     (mediaType.includes("application/") && mediaType.includes("json")) ||
     allowedParamMediaTypes.includes(mediaType as any) ||
     mediaType.includes("text/");

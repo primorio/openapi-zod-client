@@ -16,5 +16,5 @@ type GenerateZodClientFromOpenApiArgs<TOptions extends TemplateContext["options"
     distPath: string;
     disableWriteToFile?: false;
 });
-export declare const generateZodClientFromOpenAPI: <TOptions extends import("./template-context.js").TemplateContextOptions | undefined>({ openApiDoc, distPath, templatePath, prettierConfig, options, disableWriteToFile, handlebars, }: GenerateZodClientFromOpenApiArgs<TOptions>) => Promise<TOptions extends import("./template-context.js").TemplateContextOptions ? undefined extends TOptions["groupStrategy"] ? string : TOptions["groupStrategy"] extends "none" | "tag" | "method" ? string : Record<string, string> : string>;
+export declare const generateZodClientFromOpenAPI: <TOptions extends TemplateContext["options"]>({ openApiDoc, distPath, templatePath, prettierConfig, options, disableWriteToFile, handlebars, }: GenerateZodClientFromOpenApiArgs<TOptions>) => Promise<TOptions extends NonNullable<TemplateContext["options"]> ? undefined extends TOptions["groupStrategy"] ? string : TOptions["groupStrategy"] extends "none" | "tag" | "method" ? string : Record<string, string> : string>;
 export {};

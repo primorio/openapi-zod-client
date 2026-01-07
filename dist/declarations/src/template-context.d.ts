@@ -1,4 +1,4 @@
-import type { OperationObject, ReferenceObject, SchemaObject } from "openapi3-ts";
+import type { OpenAPIObject, OperationObject, ReferenceObject, SchemaObject } from "openapi3-ts";
 import type { EndpointDefinitionWithRefs } from "./getZodiosEndpointDefinitionList.js";
 import type { CodeMetaData } from "./CodeMeta.js";
 export declare const getZodClientTemplateContext: (openApiDoc: OpenAPIObject, options?: TemplateContext["options"]) => TemplateContext;
