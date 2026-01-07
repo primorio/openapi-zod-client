@@ -22,6 +22,7 @@ import { getSchemaComplexity } from "./schema-complexity";
 import type { TemplateContext } from "./template-context";
 import {
     asComponentSchema,
+    convertPropertyName,
     normalizeString,
     pathParamToVariableName,
     pathToVariableName,
@@ -269,7 +270,7 @@ export const getZodiosEndpointDefinitionList = (doc: OpenAPIObject, options?: Te
                     endpointDefinition.parameters.push({
                         name: match(paramItem.in)
                             .with("path", () => pathParamToVariableName(paramItem.name))
-                            .otherwise(() => paramItem.name),
+                            .otherwise(() => convertPropertyName(paramItem.name)),
                         type: match(paramItem.in)
                             .with("header", () => "Header")
                             .with("query", () => "Query")

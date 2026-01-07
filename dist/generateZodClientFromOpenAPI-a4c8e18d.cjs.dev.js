@@ -1878,7 +1878,7 @@ var getZodiosEndpointDefinitionList = function getZodiosEndpointDefinitionList(d
               name: tsPattern.match(paramItem["in"])["with"]("path", function () {
                 return pathParamToVariableName(paramItem.name);
               }).otherwise(function () {
-                return paramItem.name;
+                return convertPropertyName(paramItem.name);
               }),
               type: tsPattern.match(paramItem["in"])["with"]("header", function () {
                 return "Header";
