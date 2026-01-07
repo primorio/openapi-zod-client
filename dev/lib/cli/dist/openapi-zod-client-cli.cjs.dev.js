@@ -1,6 +1,6 @@
 'use strict';
 
-var generateZodClientFromOpenAPI = require('../../dist/generateZodClientFromOpenAPI-a4c8e18d.cjs.dev.js');
+var generateZodClientFromOpenAPI = require('../../dist/generateZodClientFromOpenAPI-1155e700.cjs.dev.js');
 var node_fs = require('node:fs');
 var path = require('node:path');
 var SwaggerParser = require('@apidevtools/swagger-parser');
@@ -28,24 +28,24 @@ cli.command("<input>", "path/url to OpenAPI/Swagger document as json/yaml").opti
 }).option("--strict-objects", "Use strict validation for objects so we don't allow unknown keys. Defaults to false.", {
   "default": false
 }).action(/*#__PURE__*/function () {
-  var _ref = generateZodClientFromOpenAPI._asyncToGenerator(/*#__PURE__*/generateZodClientFromOpenAPI._regeneratorRuntime().mark(function _callee(input, options) {
+  var _ref = generateZodClientFromOpenAPI._asyncToGenerator(/*#__PURE__*/generateZodClientFromOpenAPI._regenerator().m(function _callee(input, options) {
     var openApiDoc, prettierConfig, distPath, withAlias, additionalPropertiesDefaultValue;
-    return generateZodClientFromOpenAPI._regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
+    return generateZodClientFromOpenAPI._regenerator().w(function (_context) {
+      while (1) switch (_context.n) {
         case 0:
           console.log("Retrieving OpenAPI document from", input);
-          _context.next = 3;
+          _context.n = 1;
           return SwaggerParser__default["default"].bundle(input);
-        case 3:
-          openApiDoc = _context.sent;
-          _context.next = 6;
+        case 1:
+          openApiDoc = _context.v;
+          _context.n = 2;
           return prettier.resolveConfig(options.prettier || "./");
-        case 6:
-          prettierConfig = _context.sent;
+        case 2:
+          prettierConfig = _context.v;
           distPath = options.output || input + ".client.ts";
           withAlias = generateZodClientFromOpenAPI.toBoolean(options.withAlias, true);
           additionalPropertiesDefaultValue = generateZodClientFromOpenAPI.toBoolean(options.additionalPropsDefaultValue, true);
-          _context.next = 12;
+          _context.n = 3;
           return generateZodClientFromOpenAPI.generateZodClientFromOpenAPI({
             openApiDoc: openApiDoc,
             distPath: distPath,
@@ -72,11 +72,10 @@ cli.command("<input>", "path/url to OpenAPI/Swagger document as json/yaml").opti
               additionalPropertiesDefaultValue: additionalPropertiesDefaultValue
             }
           });
-        case 12:
+        case 3:
           console.log("Done generating <".concat(distPath, "> !"));
-        case 13:
-        case "end":
-          return _context.stop();
+        case 4:
+          return _context.a(2);
       }
     }, _callee);
   }));

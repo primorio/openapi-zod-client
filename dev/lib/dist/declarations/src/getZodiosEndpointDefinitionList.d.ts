@@ -1,4 +1,5 @@
 import type { ZodiosEndpointDefinition } from "@zodios/core";
+import type { OpenAPIObject } from "openapi3-ts";
 import type { TemplateContext } from "./template-context.js";
 export declare const getZodiosEndpointDefinitionList: (doc: OpenAPIObject, options?: TemplateContext["options"]) => {
     endpoints: EndpointDefinitionWithRefs[];
@@ -8,19 +9,7 @@ export declare const getZodiosEndpointDefinitionList: (doc: OpenAPIObject, optio
     };
     refsDependencyGraph: Record<string, Set<string>>;
     deepDependencyGraph: Record<string, Set<string>>;
-    resolver: {
-        getSchemaByRef: (ref: string) => SchemaObject;
-        resolveRef: (ref: string) => {
-            ref: string;
-            name: string;
-            normalized: string;
-        };
-        resolveSchemaName: (normalized: string) => {
-            ref: string;
-            name: string;
-            normalized: string;
-        };
-    };
+    resolver: import("./makeSchemaResolver.js").DocumentResolver;
     zodSchemaByName: Record<string, string>;
     schemaByName: Record<string, string>;
     schemasByName: Record<string, string[]>;

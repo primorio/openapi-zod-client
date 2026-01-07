@@ -1,3 +1,4 @@
+import type { OpenAPIObject, SchemaObject } from "openapi3-ts";
 type RefInfo = {
     ref: string;
     name: string;
