@@ -50,9 +50,8 @@ const pathParamWithBracketsRegex = /({\w+})/g;
 const wordPrecededByNonWordCharacter = /[^\w\-]+/g;
 
 export const pathParamToVariableName = (name: string) => {
-    // Replace all underscores with # to preserve them when doing snakeToCamel
-    const preserveUnderscore = name.replaceAll("_", "#");
-    return snakeToCamel(preserveUnderscore.replaceAll("-", "_")).replaceAll("#", "_");
+    // Convert snake_case to camelCase for path parameters
+    return snakeToCamel(name.replaceAll("-", "_"));
 };
 
 const matcherRegex = /{(\b\w+(?:-\w+)*\b)}/g;
