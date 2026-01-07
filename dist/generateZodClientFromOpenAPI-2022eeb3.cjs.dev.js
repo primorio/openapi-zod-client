@@ -2659,6 +2659,33 @@ var getPureSchemaNames = function getPureSchemaNames(fullSchemaNames) {
   });
 };
 
+/**
+ * Converts snake_case property names to camelCase in both schemas and types
+ */
+var convertSnakeToCamelInSchemaAndTypes = function convertSnakeToCamelInSchemaAndTypes(code) {
+  // Convert property names in z.object({ snake_case: ... }) and TypeScript types
+  // This regex matches property names in object literals (both quoted and unquoted)
+  // It looks for patterns like: property_name: or "property_name": or property_name?:
+  code = code.replace(/(['"]?)([a-z_][a-z0-9_]*)(['"]?)(\??\s*):/g, function (match, quote1, propName, quote2, optional, offset, fullString) {
+    // Only convert if it contains underscores and is a property key (not in a string)
+    if (!propName.includes("_")) {
+      return match;
+    }
+
+    // Check if we're inside a string literal by looking at surrounding context
+    // Skip conversion if this appears to be inside a template string or regular string
+    var beforeMatch = fullString.substring(Math.max(0, offset - 50), offset);
+    var inString = (beforeMatch.match(/[`"']/g) || []).length % 2 !== 0;
+    if (inString) {
+      return match;
+    }
+    var camelCase = server.snakeToCamel(propName);
+    // Use quotes if the original had them or if the camelCase version needs them
+    var needsQuotes = quote1 || quote2 || !/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(camelCase);
+    return needsQuotes ? "\"".concat(camelCase, "\"").concat(optional, ":") : "".concat(camelCase).concat(optional, ":");
+  });
+  return code;
+};
 var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(_ref) {
     var _options$groupStrateg, _options$apiClientNam;
@@ -2707,9 +2734,9 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
         case 21:
           indexSource = _context.sent;
           indexTemplate = hbs.compile(indexSource);
-          indexOutput = maybePretty(indexTemplate({
+          indexOutput = maybePretty(convertSnakeToCamelInSchemaAndTypes(indexTemplate({
             groupNames: groupNames
-          }), prettierConfig);
+          })), prettierConfig);
           outputByGroupName["__index"] = indexOutput;
           if (!willWriteToFile) {
             _context.next = 28;
@@ -2728,10 +2755,10 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
             _context.next = 39;
             break;
           }
-          commonOutput = maybePretty(commonTemplate({
+          commonOutput = maybePretty(convertSnakeToCamelInSchemaAndTypes(commonTemplate({
             schemas: server.pick(data.schemas, commonSchemaNames),
             types: server.pick(data.types, commonSchemaNames)
-          }), prettierConfig);
+          })), prettierConfig);
           outputByGroupName["__common"] = commonOutput;
           if (!willWriteToFile) {
             _context.next = 39;
@@ -2753,7 +2780,7 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
               apiClientName: "".concat(server.capitalize(groupName), "Api")
             })
           }));
-          prettyGroupOutput = maybePretty(groupOutput, prettierConfig);
+          prettyGroupOutput = maybePretty(convertSnakeToCamelInSchemaAndTypes(groupOutput), prettierConfig);
           outputByGroupName[groupName] = prettyGroupOutput;
           if (!willWriteToFile) {
             _context.next = 49;
@@ -2773,7 +2800,7 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
               apiClientName: (_options$apiClientNam = options === null || options === void 0 ? void 0 : options.apiClientName) !== null && _options$apiClientNam !== void 0 ? _options$apiClientNam : "api"
             })
           }));
-          prettyOutput = maybePretty(output, prettierConfig);
+          prettyOutput = maybePretty(convertSnakeToCamelInSchemaAndTypes(output), prettierConfig);
           if (!willWriteToFile) {
             _context.next = 57;
             break;

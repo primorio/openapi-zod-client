@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var generateZodClientFromOpenAPI = require('./generateZodClientFromOpenAPI-672b0788.cjs.dev.js');
+var generateZodClientFromOpenAPI = require('./generateZodClientFromOpenAPI-dc14c3d2.cjs.prod.js');
 require('node:path');
 require('pastable/server');
 require('ts-pattern');
