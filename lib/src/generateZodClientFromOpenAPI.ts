@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import type { OpenAPIObject } from "openapi3-ts";
-import { capitalize, pick } from "pastable/server";
+import { capitalize, pick, snakeToCamel } from "pastable/server";
 import type { Options } from "prettier";
 import { match } from "ts-pattern";
 
@@ -24,6 +24,39 @@ type GenerateZodClientFromOpenApiArgs<TOptions extends TemplateContext["options"
       }
     | { distPath: string; disableWriteToFile?: false }
 );
+
+/**
+ * Converts snake_case property names to camelCase in both schemas and types
+ */
+const convertSnakeToCamelInSchemaAndTypes = (code: string): string => {
+    // Convert property names in z.object({ snake_case: ... }) and TypeScript types
+    // This regex matches property names in object literals (both quoted and unquoted)
+    // It looks for patterns like: property_name: or "property_name": or property_name?:
+    code = code.replace(
+        /(['"]?)([a-z_][a-z0-9_]*)(['"]?)(\??\s*):/g,
+        (match, quote1, propName, quote2, optional, offset, fullString) => {
+            // Only convert if it contains underscores and is a property key (not in a string)
+            if (!propName.includes("_")) {
+                return match;
+            }
+
+            // Check if we're inside a string literal by looking at surrounding context
+            // Skip conversion if this appears to be inside a template string or regular string
+            const beforeMatch = fullString.substring(Math.max(0, offset - 50), offset);
+            const inString = (beforeMatch.match(/[`"']/g) || []).length % 2 !== 0;
+            if (inString) {
+                return match;
+            }
+
+            const camelCase = snakeToCamel(propName);
+            // Use quotes if the original had them or if the camelCase version needs them
+            const needsQuotes = quote1 || quote2 || !/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(camelCase);
+            return needsQuotes ? `"${camelCase}"${optional}:` : `${camelCase}${optional}:`;
+        }
+    );
+
+    return code;
+};
 
 export const generateZodClientFromOpenAPI = async <TOptions extends TemplateContext["options"]>({
     openApiDoc,
@@ -72,7 +105,10 @@ export const generateZodClientFromOpenAPI = async <TOptions extends TemplateCont
 
         const indexSource = await fs.readFile(path.join(__dirname, "../src/templates/grouped-index.hbs"), "utf8");
         const indexTemplate = hbs.compile(indexSource);
-        const indexOutput = maybePretty(indexTemplate({ groupNames }), prettierConfig);
+        const indexOutput = maybePretty(
+            convertSnakeToCamelInSchemaAndTypes(indexTemplate({ groupNames })),
+            prettierConfig
+        );
         outputByGroupName["__index"] = indexOutput;
 
         if (willWriteToFile) {
@@ -85,10 +121,12 @@ export const generateZodClientFromOpenAPI = async <TOptions extends TemplateCont
 
         if (commonSchemaNames.length > 0) {
             const commonOutput = maybePretty(
-                commonTemplate({
-                    schemas: pick(data.schemas, commonSchemaNames),
-                    types: pick(data.types, commonSchemaNames),
-                }),
+                convertSnakeToCamelInSchemaAndTypes(
+                    commonTemplate({
+                        schemas: pick(data.schemas, commonSchemaNames),
+                        types: pick(data.types, commonSchemaNames),
+                    })
+                ),
                 prettierConfig
             );
             outputByGroupName["__common"] = commonOutput;
@@ -108,7 +146,7 @@ export const generateZodClientFromOpenAPI = async <TOptions extends TemplateCont
                     apiClientName: `${capitalize(groupName)}Api`,
                 },
             });
-            const prettyGroupOutput = maybePretty(groupOutput, prettierConfig);
+            const prettyGroupOutput = maybePretty(convertSnakeToCamelInSchemaAndTypes(groupOutput), prettierConfig);
             outputByGroupName[groupName] = prettyGroupOutput;
 
             if (willWriteToFile) {
@@ -121,7 +159,7 @@ export const generateZodClientFromOpenAPI = async <TOptions extends TemplateCont
     }
 
     const output = template({ ...data, options: { ...options, apiClientName: options?.apiClientName ?? "api" } });
-    const prettyOutput = maybePretty(output, prettierConfig);
+    const prettyOutput = maybePretty(convertSnakeToCamelInSchemaAndTypes(output), prettierConfig);
 
     if (willWriteToFile) {
         await fs.writeFile(distPath, prettyOutput);
