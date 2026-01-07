@@ -23,6 +23,20 @@ export const wrapWithQuotesIfNeeded = (str: string) => {
     return `"${str}"`;
 };
 
+/**
+ * Converts a property name from snake_case to camelCase
+ * @example "user_name" -> "userName"
+ * @example "api_key" -> "apiKey"
+ * @example "alreadyCamel" -> "alreadyCamel"
+ */
+export const convertPropertyName = (prop: string): string => {
+    // If the property contains underscores, convert from snake_case to camelCase
+    if (prop.includes("_")) {
+        return snakeToCamel(prop);
+    }
+    return prop;
+};
+
 const prefixStringStartingWithNumberIfNeeded = (str: string) => {
     const firstAsNumber = Number(str[0]);
     if (typeof firstAsNumber === "number" && !Number.isNaN(firstAsNumber)) {

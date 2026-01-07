@@ -5,7 +5,7 @@ import type { TypeDefinition, TypeDefinitionObject } from "tanu/dist/type";
 import { isReferenceObject } from "./isReferenceObject";
 import type { DocumentResolver } from "./makeSchemaResolver";
 import type { TemplateContext } from "./template-context";
-import { wrapWithQuotesIfNeeded } from "./utils";
+import { wrapWithQuotesIfNeeded, convertPropertyName } from "./utils";
 import { inferRequiredSchema } from "./inferRequiredOnly";
 import generateJSDocArray from "./generateJSDocArray";
 
@@ -270,6 +270,7 @@ TsConversionArgs): ts.Node | TypeDefinitionObject | string => {
 
             const props = Object.fromEntries(
                 Object.entries(schema.properties).map(([prop, propSchema]) => {
+                    const convertedProp = convertPropertyName(prop);
                     let propType = getTypescriptFromOpenApi({
                         schema: propSchema,
                         ctx,
@@ -283,7 +284,7 @@ TsConversionArgs): ts.Node | TypeDefinitionObject | string => {
                     }
 
                     const isRequired = Boolean(isPartial ? true : schema.required?.includes(prop));
-                    return [`${wrapWithQuotesIfNeeded(prop)}`, isRequired ? propType : t.optional(propType)];
+                    return [`${wrapWithQuotesIfNeeded(convertedProp)}`, isRequired ? propType : t.optional(propType)];
                 })
             );
 
