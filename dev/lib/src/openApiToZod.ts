@@ -5,7 +5,7 @@ import type { CodeMetaData, ConversionTypeContext } from "./CodeMeta";
 import { CodeMeta } from "./CodeMeta";
 import { isReferenceObject } from "./isReferenceObject";
 import type { TemplateContext } from "./template-context";
-import { escapeControlCharacters, isPrimitiveType, wrapWithQuotesIfNeeded } from "./utils";
+import { escapeControlCharacters, isPrimitiveType, wrapWithQuotesIfNeeded, convertPropertyName } from "./utils";
 import { inferRequiredSchema } from "./inferRequiredOnly";
 
 type ConversionArgs = {
@@ -264,6 +264,7 @@ export function getZodSchema({ schema: $schema, ctx, meta: inheritedMeta, option
 
         if (schema.properties) {
             const propsMap = Object.entries(schema.properties).map(([prop, propSchema]) => {
+                const convertedProp = convertPropertyName(prop);
                 const propMetadata = {
                     ...meta,
                     isRequired: isPartial
@@ -271,7 +272,7 @@ export function getZodSchema({ schema: $schema, ctx, meta: inheritedMeta, option
                         : hasRequiredArray
                         ? schema.required?.includes(prop)
                         : options?.withImplicitRequiredProps,
-                    name: prop,
+                    name: convertedProp,
                 } as CodeMetaData;
 
                 let propActualSchema = propSchema;
@@ -287,7 +288,7 @@ export function getZodSchema({ schema: $schema, ctx, meta: inheritedMeta, option
                     getZodSchema({ schema: propSchema, ctx, meta: propMetadata, options }) +
                     getZodChain({ schema: propActualSchema as SchemaObject, meta: propMetadata, options });
 
-                return [prop, propCode.toString()];
+                return [convertedProp, propCode.toString()];
             });
 
             properties =
