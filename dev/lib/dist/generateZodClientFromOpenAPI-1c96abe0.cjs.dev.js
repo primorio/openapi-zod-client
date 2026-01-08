@@ -1937,6 +1937,10 @@ function generateJSDocArray(schema) {
   return comments;
 }
 
+// Helper function to remove "Schema" suffix from schema names for type names
+var getTypeNameFromSchemaName$1 = function getTypeNameFromSchemaName(schemaName) {
+  return schemaName.endsWith("Schema") ? schemaName.slice(0, -"Schema".length) : schemaName;
+};
 var wrapReadOnly = function wrapReadOnly(options) {
   return function (theType) {
     if (options !== null && options !== void 0 && options.allReadonly) {
@@ -1967,8 +1971,9 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
       if (!(ctx !== null && ctx !== void 0 && ctx.visitedsRefs) || !(ctx !== null && ctx !== void 0 && ctx.resolver)) throw new Error("Context is required for OpenAPI $ref");
       var result = ctx.nodeByRef[schema.$ref];
       var schemaName = (_ctx$resolver$resolve = ctx.resolver.resolveRef(schema.$ref)) === null || _ctx$resolver$resolve === void 0 ? void 0 : _ctx$resolver$resolve.normalized;
+      var typeName = schemaName ? getTypeNameFromSchemaName$1(schemaName) : schemaName;
       if (ctx.visitedsRefs[schema.$ref]) {
-        return tanu.t.reference(schemaName);
+        return tanu.t.reference(typeName);
       }
       if (!result) {
         var actualSchema = ctx.resolver.getSchemaByRef(schema.$ref);
@@ -1987,7 +1992,7 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
         var _ctx$resolver$resolve2;
         schemaName = (_ctx$resolver$resolve2 = ctx.resolver.resolveRef(schema.$ref)) === null || _ctx$resolver$resolve2 === void 0 ? void 0 : _ctx$resolver$resolve2.normalized;
       }
-      return tanu.t.reference(schemaName);
+      return tanu.t.reference(getTypeNameFromSchemaName$1(schemaName));
     }
     if (Array.isArray(schema.type)) {
       if (schema.type.length === 1) {
@@ -2254,6 +2259,11 @@ var printer = tanu.ts.createPrinter({
 var printTs = function printTs(node) {
   return printer.printNode(tanu.ts.EmitHint.Unspecified, node, file);
 };
+
+// Helper function to remove "Schema" suffix from schema names for type names
+var getTypeNameFromSchemaName = function getTypeNameFromSchemaName(schemaName) {
+  return schemaName.endsWith("Schema") ? schemaName.slice(0, -"Schema".length) : schemaName;
+};
 var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDoc, options) {
   var _openApiDoc$component, _openApiDoc$component2, _options$groupStrateg;
   var result = getZodiosEndpointDefinitionList(openApiDoc, options);
@@ -2304,6 +2314,7 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
     var schemaName = shouldGenerateType ? result.resolver.resolveRef(ref).normalized : undefined;
     if (shouldGenerateType && schemaName && !data.types[schemaName]) {
       var _depsGraphs$deepDepen3;
+      var typeName = getTypeNameFromSchemaName(schemaName);
       var node = _getTypescriptFromOpenApi({
         schema: result.resolver.getSchemaByRef(ref),
         ctx: ctx,
@@ -2312,8 +2323,8 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
         },
         options: options
       });
-      data.types[schemaName] = printTs(node).replace("export ", "");
-      data.emittedType[schemaName] = true;
+      data.types[typeName] = printTs(node).replace("export ", "");
+      data.emittedType[typeName] = true;
       var _iterator = _createForOfIteratorHelper((_depsGraphs$deepDepen3 = depsGraphs.deepDependencyGraph[ref]) !== null && _depsGraphs$deepDepen3 !== void 0 ? _depsGraphs$deepDepen3 : []),
         _step;
       try {
@@ -2321,8 +2332,9 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
           var _depsGraphs$deepDepen4;
           var depRef = _step.value;
           var depSchemaName = result.resolver.resolveRef(depRef).normalized;
+          var depTypeName = getTypeNameFromSchemaName(depSchemaName);
           var isDepCircular = (_depsGraphs$deepDepen4 = depsGraphs.deepDependencyGraph[depRef]) === null || _depsGraphs$deepDepen4 === void 0 ? void 0 : _depsGraphs$deepDepen4.has(depRef);
-          if (!isDepCircular && !data.types[depSchemaName]) {
+          if (!isDepCircular && !data.types[depTypeName]) {
             var nodeSchema = result.resolver.getSchemaByRef(depRef);
             var _node = _getTypescriptFromOpenApi({
               schema: nodeSchema,
@@ -2332,11 +2344,11 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
               },
               options: options
             });
-            data.types[depSchemaName] = printTs(_node).replace("export ", "");
+            data.types[depTypeName] = printTs(_node).replace("export ", "");
             // defining types for strings and using the `z.ZodType<string>` type for their schema
             // prevents consumers of the type from adding zod validations like `.min()` to the type
             if (options !== null && options !== void 0 && options.shouldExportAllTypes && nodeSchema.type === "object") {
-              data.emittedType[depSchemaName] = true;
+              data.emittedType[depTypeName] = true;
             }
           }
         }
