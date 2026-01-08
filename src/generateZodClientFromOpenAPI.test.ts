@@ -3814,8 +3814,8 @@ test("with optional, partial, all required objects", async () => {
               "Root2Schema": true,
           },
           "emittedType": {
-              "Nested2": true,
-              "Root2": true,
+              "Nested2Schema": "Nested2",
+              "Root2Schema": "Root2",
           },
           "endpoints": [
               {
@@ -3868,25 +3868,25 @@ test("with optional, partial, all required objects", async () => {
               "VeryDeeplyNestedSchema": "z.enum(["aaa", "bbb", "ccc"])",
           },
           "types": {
-              "DeeplyNested": "type DeeplyNestedSchema = Array<VeryDeeplyNested>;",
-              "Nested2": "type Nested2Schema = {
+              "DeeplyNested": "type DeeplyNested = Array<VeryDeeplyNested>;",
+              "Nested2": "type Nested2 = {
           nestedProp?: boolean | undefined;
           deeplyNested?: DeeplyNested | undefined;
           circularToRoot?: Root2 | undefined;
           requiredProp: string;
       };",
-              "PartialObject": "type PartialObjectSchema = Partial<{
+              "PartialObject": "type PartialObject = Partial<{
           something: string;
           another: number;
       }>;",
-              "Root2": "type Root2Schema = {
+              "Root2": "type Root2 = {
           str: string;
           nb: number;
           nested: Nested2;
           partial?: PartialObject | undefined;
           optionalProp?: string | undefined;
       };",
-              "VeryDeeplyNested": "type VeryDeeplyNestedSchema = "aaa" | "bbb" | "ccc";",
+              "VeryDeeplyNested": "type VeryDeeplyNested = "aaa" | "bbb" | "ccc";",
           },
       }
     `);
@@ -3896,20 +3896,20 @@ test("with optional, partial, all required objects", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      type Root2Schema = {
+      type Root2 = {
         str: string;
         nb: number;
         nested: Nested2;
         partial?: PartialObject | undefined;
         optionalProp?: string | undefined;
       };
-      type DeeplyNestedSchema = Array<VeryDeeplyNested>;
-      type VeryDeeplyNestedSchema = "aaa" | "bbb" | "ccc";
-      type PartialObjectSchema = Partial<{
+      type DeeplyNested = Array<VeryDeeplyNested>;
+      type VeryDeeplyNested = "aaa" | "bbb" | "ccc";
+      type PartialObject = Partial<{
         something: string;
         another: number;
       }>;
-      type Nested2Schema = {
+      type Nested2 = {
         nestedProp?: boolean | undefined;
         deeplyNested?: DeeplyNested | undefined;
         circularToRoot?: Root2 | undefined;
@@ -3922,7 +3922,7 @@ test("with optional, partial, all required objects", async () => {
         .object({ something: z.string(), another: z.number() })
         .partial()
         .passthrough();
-      const Root2Schema = z.lazy(() =>
+      const Root2Schema: z.ZodType<Root2> = z.lazy(() =>
         z
           .object({
             str: z.string(),
@@ -3933,7 +3933,7 @@ test("with optional, partial, all required objects", async () => {
           })
           .passthrough()
       );
-      const Nested2Schema = z.lazy(() =>
+      const Nested2Schema: z.ZodType<Nested2> = z.lazy(() =>
         z
           .object({
             nestedProp: z.boolean().optional(),

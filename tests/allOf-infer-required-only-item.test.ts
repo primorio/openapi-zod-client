@@ -73,28 +73,26 @@ test("allOf-infer-required-only-item", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      type userResponseSchema = Partial<{
+      type userResponse = Partial<{
         user: user & {
           name: string;
         };
       }>;
-      type userSchema = Partial<{
+      type user = Partial<{
         name: string;
         email: string;
       }>;
 
-      const userSchema = z
+      const userSchema: z.ZodType<user> = z
         .object({ name: z.string(), email: z.string() })
         .passthrough();
-      const userResponseSchema = z
+      const userResponseSchema: z.ZodType<userResponse> = z
         .object({
           user: userSchema.and(z.object({ name: z.string() }).passthrough()),
         })
         .passthrough();
-      const user: z.ZodType<user> = z
-        .object({ name: z.string(), email: z.string() })
-        .passthrough();
-      const userResponse: z.ZodType<userResponse> = z
+      const user = z.object({ name: z.string(), email: z.string() }).passthrough();
+      const userResponse = z
         .object({
           user: userSchema.and(z.object({ name: z.string() }).passthrough()),
         })
