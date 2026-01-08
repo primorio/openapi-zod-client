@@ -643,7 +643,7 @@ var makeSchemaResolver = function makeSchemaResolver(doc) {
 
     // "#/components/schemas/Something.jsonld" -> "Something.jsonld"
     var name = split[split.length - 1];
-    var normalized = normalizeString(name);
+    var normalized = normalizeString(name) + "Schema";
     nameByRef.set(correctRef, normalized);
     refByName.set(normalized, correctRef);
     var infos = {
@@ -1517,7 +1517,7 @@ var getZodiosEndpointDefinitionList = function getZodiosEndpointDefinitionList(d
       if (input.complexity < complexityThreshold) {
         return result;
       }
-      var safeName = normalizeString(fallbackName);
+      var safeName = normalizeString(fallbackName) + "Schema";
 
       // if schema is already assigned to a variable, re-use that variable name
       if (!(options !== null && options !== void 0 && options.exportAllNamedSchemas) && ctx.schemaByName[result]) {

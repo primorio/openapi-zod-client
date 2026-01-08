@@ -85,7 +85,7 @@ export const getZodiosEndpointDefinitionList = (doc: OpenAPIObject, options?: Te
                 return result;
             }
 
-            const safeName = normalizeString(fallbackName);
+            const safeName = normalizeString(fallbackName) + "Schema";
 
             // if schema is already assigned to a variable, re-use that variable name
             if (!options?.exportAllNamedSchemas && ctx.schemaByName[result]) {

@@ -32,7 +32,7 @@ export const makeSchemaResolver = (doc: OpenAPIObject) => {
 
         // "#/components/schemas/Something.jsonld" -> "Something.jsonld"
         const name = split[split.length - 1]!;
-        const normalized = normalizeString(name);
+        const normalized = normalizeString(name) + "Schema";
 
         nameByRef.set(correctRef, normalized);
         refByName.set(normalized, correctRef);

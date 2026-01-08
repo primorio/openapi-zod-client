@@ -100,7 +100,7 @@ test("schema-name-already-used", async () => {
                   "parameters": [
                       {
                           "name": "schemaNameAlreadyUsed",
-                          "schema": "schemaNameAlreadyUsed",
+                          "schema": "schemaNameAlreadyUsedSchema",
                           "type": "Query",
                       },
                   ],
@@ -115,7 +115,7 @@ test("schema-name-already-used", async () => {
                   "parameters": [
                       {
                           "name": "schemaNameAlreadyUsed",
-                          "schema": "schemaNameAlreadyUsed__2",
+                          "schema": "schemaNameAlreadyUsedSchema__2",
                           "type": "Query",
                       },
                   ],
@@ -130,7 +130,7 @@ test("schema-name-already-used", async () => {
                   "parameters": [
                       {
                           "name": "schemaNameAlreadyUsed",
-                          "schema": "schemaNameAlreadyUsed__3",
+                          "schema": "schemaNameAlreadyUsedSchema__3",
                           "type": "Query",
                       },
                   ],
@@ -145,7 +145,7 @@ test("schema-name-already-used", async () => {
                   "parameters": [
                       {
                           "name": "schemaNameAlreadyUsed",
-                          "schema": "schemaNameAlreadyUsed__4",
+                          "schema": "schemaNameAlreadyUsedSchema__4",
                           "type": "Query",
                       },
                   ],
@@ -160,10 +160,10 @@ test("schema-name-already-used", async () => {
               "withAlias": false,
           },
           "schemas": {
-              "schemaNameAlreadyUsed": "z.enum(["xxx", "yyy", "zzz"]).optional()",
-              "schemaNameAlreadyUsed__2": "z.enum(["aaa", "bbb", "ccc"]).optional()",
-              "schemaNameAlreadyUsed__3": "z.enum(["ddd", "eee", "fff"]).optional()",
-              "schemaNameAlreadyUsed__4": "z.enum(["ggg", "hhh", "iii"]).optional()",
+              "schemaNameAlreadyUsedSchema": "z.enum(["xxx", "yyy", "zzz"]).optional()",
+              "schemaNameAlreadyUsedSchema__2": "z.enum(["aaa", "bbb", "ccc"]).optional()",
+              "schemaNameAlreadyUsedSchema__3": "z.enum(["ddd", "eee", "fff"]).optional()",
+              "schemaNameAlreadyUsedSchema__4": "z.enum(["ggg", "hhh", "iii"]).optional()",
           },
           "types": {},
       }
@@ -179,16 +179,16 @@ test("schema-name-already-used", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const schemaNameAlreadyUsed = z.enum(["xxx", "yyy", "zzz"]).optional();
-      const schemaNameAlreadyUsed__2 = z.enum(["aaa", "bbb", "ccc"]).optional();
-      const schemaNameAlreadyUsed__3 = z.enum(["ddd", "eee", "fff"]).optional();
-      const schemaNameAlreadyUsed__4 = z.enum(["ggg", "hhh", "iii"]).optional();
+      const schemaNameAlreadyUsedSchema = z.enum(["xxx", "yyy", "zzz"]).optional();
+      const schemaNameAlreadyUsedSchema__2 = z.enum(["aaa", "bbb", "ccc"]).optional();
+      const schemaNameAlreadyUsedSchema__3 = z.enum(["ddd", "eee", "fff"]).optional();
+      const schemaNameAlreadyUsedSchema__4 = z.enum(["ggg", "hhh", "iii"]).optional();
 
       export const schemas = {
-        schemaNameAlreadyUsed,
-        schemaNameAlreadyUsed__2,
-        schemaNameAlreadyUsed__3,
-        schemaNameAlreadyUsed__4,
+        schemaNameAlreadyUsedSchema,
+        schemaNameAlreadyUsedSchema__2,
+        schemaNameAlreadyUsedSchema__3,
+        schemaNameAlreadyUsedSchema__4,
       };
 
       const endpoints = makeApi([
@@ -200,7 +200,7 @@ test("schema-name-already-used", async () => {
             {
               name: "schemaNameAlreadyUsed",
               type: "Query",
-              schema: schemaNameAlreadyUsed,
+              schema: schemaNameAlreadyUsedSchema,
             },
           ],
           response: z.string(),
@@ -213,7 +213,7 @@ test("schema-name-already-used", async () => {
             {
               name: "schemaNameAlreadyUsed",
               type: "Query",
-              schema: schemaNameAlreadyUsed__2,
+              schema: schemaNameAlreadyUsedSchema__2,
             },
           ],
           response: z.string(),
@@ -226,7 +226,7 @@ test("schema-name-already-used", async () => {
             {
               name: "schemaNameAlreadyUsed",
               type: "Query",
-              schema: schemaNameAlreadyUsed__3,
+              schema: schemaNameAlreadyUsedSchema__3,
             },
           ],
           response: z.string(),
@@ -239,7 +239,7 @@ test("schema-name-already-used", async () => {
             {
               name: "schemaNameAlreadyUsed",
               type: "Query",
-              schema: schemaNameAlreadyUsed__4,
+              schema: schemaNameAlreadyUsedSchema__4,
             },
           ],
           response: z.string(),
