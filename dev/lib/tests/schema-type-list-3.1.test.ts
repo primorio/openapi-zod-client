@@ -47,7 +47,7 @@ test("schema-type-list-3.1", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const test1 = z.union([
+      const test1Schema = z.union([
         z
           .object({
             text1: z.string(),
@@ -58,21 +58,21 @@ test("schema-type-list-3.1", async () => {
           .passthrough(),
         z.null(),
       ]);
-      const test2 = z.union([
+      const test2Schema = z.union([
         z.object({ text2: z.number() }).partial().passthrough(),
         z.boolean(),
       ]);
-      const test3 = z.union([
+      const test3Schema = z.union([
         z.number(),
         z.object({ text3: z.boolean() }).partial().passthrough(),
       ]);
-      const test4 = test1.and(test2).and(test3);
+      const test4Schema = test1Schema.and(test2Schema).and(test3Schema);
 
       export const schemas = {
-        test1,
-        test2,
-        test3,
-        test4,
+        test1Schema,
+        test2Schema,
+        test3Schema,
+        test4Schema,
       };
 
       const endpoints = makeApi([
@@ -80,7 +80,7 @@ test("schema-type-list-3.1", async () => {
           method: "put",
           path: "/pet",
           requestFormat: "json",
-          response: test4,
+          response: test4Schema,
         },
       ]);
 

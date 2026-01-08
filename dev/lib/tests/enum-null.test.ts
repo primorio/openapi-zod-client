@@ -111,29 +111,37 @@ test("enum-null", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      type Compound = Partial<{
+      type CompoundSchema = Partial<{
         field: Null1 | Null2 | Null3 | Null4 | string;
       }>;
-      type Null1 = null;
-      type Null2 = "a" | null;
-      type Null3 = "a" | null;
-      type Null4 = null;
+      type Null1Schema = null;
+      type Null2Schema = "a" | null;
+      type Null3Schema = "a" | null;
+      type Null4Schema = null;
 
-      const Null1 = z.literal(null);
-      const Null2 = z.enum(["a", null]);
-      const Null3 = z.enum(["a", null]);
-      const Null4 = z.literal(null);
-      const Compound: z.ZodType<Compound> = z
-        .object({ field: z.union([Null1, Null2, Null3, Null4, z.string()]) })
+      const Null1Schema = z.literal(null);
+      const Null2Schema = z.enum(["a", null]);
+      const Null3Schema = z.enum(["a", null]);
+      const Null4Schema = z.literal(null);
+      const CompoundSchema = z
+        .object({
+          field: z.union([
+            Null1Schema,
+            Null2Schema,
+            Null3Schema,
+            Null4Schema,
+            z.string(),
+          ]),
+        })
         .partial()
         .passthrough();
 
       export const schemas = {
-        Null1,
-        Null2,
-        Null3,
-        Null4,
-        Compound,
+        Null1Schema,
+        Null2Schema,
+        Null3Schema,
+        Null4Schema,
+        CompoundSchema,
       };
 
       const endpoints = makeApi([
@@ -161,7 +169,7 @@ test("enum-null", async () => {
             {
               status: 403,
               description: \`object that references null\`,
-              schema: Compound,
+              schema: CompoundSchema,
             },
           ],
         },

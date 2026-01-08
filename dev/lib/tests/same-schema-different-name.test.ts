@@ -67,7 +67,7 @@ test("same-schema-different-name", async () => {
                   "parameters": [
                       {
                           "name": "sameSchemaDifferentName",
-                          "schema": "sameSchemaDifferentName",
+                          "schema": "sameSchemaDifferentNameSchema",
                           "type": "Query",
                       },
                   ],
@@ -82,12 +82,12 @@ test("same-schema-different-name", async () => {
                   "parameters": [
                       {
                           "name": "differentNameSameSchema",
-                          "schema": "sameSchemaDifferentName",
+                          "schema": "sameSchemaDifferentNameSchema",
                           "type": "Query",
                       },
                       {
                           "name": "anotherDifferentNameWithSlightlyDifferentSchema",
-                          "schema": "anotherDifferentNameWithSlightlyDifferentSchema",
+                          "schema": "anotherDifferentNameWithSlightlyDifferentSchemaSchema",
                           "type": "Query",
                       },
                   ],
@@ -102,8 +102,8 @@ test("same-schema-different-name", async () => {
               "withAlias": false,
           },
           "schemas": {
-              "anotherDifferentNameWithSlightlyDifferentSchema": "z.enum(["aaa", "bbb", "ccc"]).optional().default("aaa")",
-              "sameSchemaDifferentName": "z.enum(["aaa", "bbb", "ccc"]).optional()",
+              "anotherDifferentNameWithSlightlyDifferentSchemaSchema": "z.enum(["aaa", "bbb", "ccc"]).optional().default("aaa")",
+              "sameSchemaDifferentNameSchema": "z.enum(["aaa", "bbb", "ccc"]).optional()",
           },
           "types": {},
       }
@@ -118,15 +118,15 @@ test("same-schema-different-name", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const sameSchemaDifferentName = z.enum(["aaa", "bbb", "ccc"]).optional();
-      const anotherDifferentNameWithSlightlyDifferentSchema = z
+      const sameSchemaDifferentNameSchema = z.enum(["aaa", "bbb", "ccc"]).optional();
+      const anotherDifferentNameWithSlightlyDifferentSchemaSchema = z
         .enum(["aaa", "bbb", "ccc"])
         .optional()
         .default("aaa");
 
       export const schemas = {
-        sameSchemaDifferentName,
-        anotherDifferentNameWithSlightlyDifferentSchema,
+        sameSchemaDifferentNameSchema,
+        anotherDifferentNameWithSlightlyDifferentSchemaSchema,
       };
 
       const endpoints = makeApi([
@@ -138,7 +138,7 @@ test("same-schema-different-name", async () => {
             {
               name: "sameSchemaDifferentName",
               type: "Query",
-              schema: sameSchemaDifferentName,
+              schema: sameSchemaDifferentNameSchema,
             },
           ],
           response: z.string(),
@@ -151,12 +151,12 @@ test("same-schema-different-name", async () => {
             {
               name: "differentNameSameSchema",
               type: "Query",
-              schema: sameSchemaDifferentName,
+              schema: sameSchemaDifferentNameSchema,
             },
             {
               name: "anotherDifferentNameWithSlightlyDifferentSchema",
               type: "Query",
-              schema: anotherDifferentNameWithSlightlyDifferentSchema,
+              schema: anotherDifferentNameWithSlightlyDifferentSchemaSchema,
             },
           ],
           response: z.string(),

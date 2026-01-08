@@ -69,7 +69,7 @@ test("autofix-unusual-ref-format", () => {
           },
           "schemaByName": {},
           "zodSchemaByName": {
-              "Basic": "z.string()",
+              "BasicSchema": "z.string()",
           },
       }
     `);

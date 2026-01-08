@@ -103,20 +103,20 @@ test("array-default-values", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const array_object = z
+      const array_objectSchema = z
         .array(z.object({ foo: z.string() }).partial().passthrough())
         .optional()
         .default([{ foo: "bar" }]);
-      const MyComponent = z
+      const MyComponentSchema = z
         .object({ id: z.number(), name: z.string() })
         .partial()
         .passthrough();
-      const MyEnum = z.enum(["one", "two", "three"]);
+      const MyEnumSchema = z.enum(["one", "two", "three"]);
 
       export const schemas = {
-        array_object,
-        MyComponent,
-        MyEnum,
+        array_objectSchema,
+        MyComponentSchema,
+        MyEnumSchema,
       };
 
       const endpoints = makeApi([
@@ -143,20 +143,20 @@ test("array-default-values", async () => {
             {
               name: "array-object",
               type: "Query",
-              schema: array_object,
+              schema: array_objectSchema,
             },
             {
               name: "array-ref-object",
               type: "Query",
               schema: z
-                .array(MyComponent)
+                .array(MyComponentSchema)
                 .optional()
                 .default([{ id: 1, name: "foo" }]),
             },
             {
               name: "array-ref-enum",
               type: "Query",
-              schema: z.array(MyEnum).optional().default(["one", "two"]),
+              schema: z.array(MyEnumSchema).optional().default(["one", "two"]),
             },
           ],
           response: z.void(),

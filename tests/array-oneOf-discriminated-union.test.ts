@@ -59,7 +59,7 @@ test("array-oneOf-discriminated-union", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const ArrayRequest = z.array(
+      const ArrayRequestSchema = z.array(
         z.discriminatedUnion("type", [
           z.object({ type: z.literal("a") }).passthrough(),
           z.object({ type: z.literal("b") }).passthrough(),
@@ -67,7 +67,7 @@ test("array-oneOf-discriminated-union", async () => {
       );
 
       export const schemas = {
-        ArrayRequest,
+        ArrayRequestSchema,
       };
 
       const endpoints = makeApi([
@@ -79,7 +79,7 @@ test("array-oneOf-discriminated-union", async () => {
             {
               name: "body",
               type: "Body",
-              schema: ArrayRequest,
+              schema: ArrayRequestSchema,
             },
           ],
           response: z.void(),

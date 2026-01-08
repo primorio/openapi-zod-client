@@ -170,23 +170,23 @@ it("determines which status are considered errors-responses", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const VeryDeeplyNested = z.enum(["aaa", "bbb", "ccc"]);
-      const DeeplyNested = z.array(VeryDeeplyNested);
-      const Main = z.object({ str: z.string(), nb: z.number() }).passthrough();
-      const Nested = z
+      const VeryDeeplyNestedSchema = z.enum(["aaa", "bbb", "ccc"]);
+      const DeeplyNestedSchema = z.array(VeryDeeplyNestedSchema);
+      const MainSchema = z.object({ str: z.string(), nb: z.number() }).passthrough();
+      const NestedSchema = z
         .object({
-          nested_prop: z.boolean().optional(),
-          deeplyNested: DeeplyNested.optional(),
-          circularToMain: Main.optional(),
+          nestedProp: z.boolean().optional(),
+          deeplyNested: DeeplyNestedSchema.optional(),
+          circularToMain: MainSchema.optional(),
           requiredProp: z.string(),
         })
         .passthrough();
 
       export const schemas = {
-        VeryDeeplyNested,
-        DeeplyNested,
-        Main,
-        Nested,
+        VeryDeeplyNestedSchema,
+        DeeplyNestedSchema,
+        MainSchema,
+        NestedSchema,
       };
 
       const endpoints = makeApi([
@@ -200,7 +200,7 @@ it("determines which status are considered errors-responses", async () => {
               status: 400,
               description: \`Bad request\`,
               schema: z
-                .object({ is400: z.boolean(), nested: Nested })
+                .object({ is400: z.boolean(), nested: NestedSchema })
                 .partial()
                 .passthrough(),
             },
@@ -233,23 +233,23 @@ it("determines which status are considered errors-responses", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const VeryDeeplyNested = z.enum(["aaa", "bbb", "ccc"]);
-      const DeeplyNested = z.array(VeryDeeplyNested);
-      const Main = z.object({ str: z.string(), nb: z.number() }).passthrough();
-      const Nested = z
+      const VeryDeeplyNestedSchema = z.enum(["aaa", "bbb", "ccc"]);
+      const DeeplyNestedSchema = z.array(VeryDeeplyNestedSchema);
+      const MainSchema = z.object({ str: z.string(), nb: z.number() }).passthrough();
+      const NestedSchema = z
         .object({
-          nested_prop: z.boolean().optional(),
-          deeplyNested: DeeplyNested.optional(),
-          circularToMain: Main.optional(),
+          nestedProp: z.boolean().optional(),
+          deeplyNested: DeeplyNestedSchema.optional(),
+          circularToMain: MainSchema.optional(),
           requiredProp: z.string(),
         })
         .passthrough();
 
       export const schemas = {
-        VeryDeeplyNested,
-        DeeplyNested,
-        Main,
-        Nested,
+        VeryDeeplyNestedSchema,
+        DeeplyNestedSchema,
+        MainSchema,
+        NestedSchema,
       };
 
       const endpoints = makeApi([
@@ -263,7 +263,7 @@ it("determines which status are considered errors-responses", async () => {
               status: 400,
               description: \`Bad request\`,
               schema: z
-                .object({ is400: z.boolean(), nested: Nested })
+                .object({ is400: z.boolean(), nested: NestedSchema })
                 .partial()
                 .passthrough(),
             },

@@ -72,13 +72,13 @@ test("object-default-values", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const MyComponent = z
+      const MyComponentSchema = z
         .object({ id: z.number(), name: z.string() })
         .partial()
         .passthrough();
 
       export const schemas = {
-        MyComponent,
+        MyComponentSchema,
       };
 
       const endpoints = makeApi([
@@ -111,7 +111,7 @@ test("object-default-values", async () => {
               name: "ref-object",
               type: "Query",
               schema: z
-                .record(MyComponent)
+                .record(MyComponentSchema)
                 .optional()
                 .default({ id: 1, name: "foo" }),
             },

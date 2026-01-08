@@ -114,7 +114,7 @@ test("getSchemaAsTsString", () => {
           str: string;
           nb: number;
           nested: Partial<{
-              nested_prop: boolean;
+              nestedProp: boolean;
           }>;
       }>;"
     `);
@@ -233,7 +233,7 @@ test("getSchemaAsTsString", () => {
 
     expect(
         getSchemaAsTsString({ nullable: true, anyOf: [{ type: "string" }, { type: "number" }] })
-    ).toMatchInlineSnapshot('"(string | number) | Array<string | number> | null"');
+    ).toMatchInlineSnapshot('"string | number | null"');
     expect(
         getSchemaAsTsString({ nullable: true, oneOf: [{ type: "string" }, { type: "number" }] })
     ).toMatchInlineSnapshot('"string | number | null"');
@@ -708,7 +708,7 @@ test("getSchemaAsTsString with readonly", () => {
           str: string;
           nb: number;
           nested: Partial<Readonly<{
-              nested_prop: boolean;
+              nestedProp: boolean;
           }>>;
       }>>;"
     `);
@@ -839,7 +839,7 @@ test("getSchemaAsTsString with readonly", () => {
 
     expect(
         getSchemaAsTsString({ nullable: true, anyOf: [{ type: "string" }, { type: "number" }] }, undefined, options)
-    ).toMatchInlineSnapshot('"(string | number) | Readonly<Array<string | number>> | null"');
+    ).toMatchInlineSnapshot('"string | number | null"');
     expect(
         getSchemaAsTsString({ nullable: true, oneOf: [{ type: "string" }, { type: "number" }] }, undefined, options)
     ).toMatchInlineSnapshot('"string | number | null"');

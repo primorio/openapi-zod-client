@@ -51,31 +51,31 @@ test("missing-zod-chains-on-z-object-with-refs-props", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const Email = z.string();
-      const Password = z.string();
-      const AddUser = z
+      const EmailSchema = z.string();
+      const PasswordSchema = z.string();
+      const AddUserSchema = z
         .object({
-          email: Email.min(6)
+          email: EmailSchema.min(6)
             .max(255)
             .regex(/(EmailRegex)/),
-          password: Password.min(16)
+          password: PasswordSchema.min(16)
             .max(255)
             .regex(/(PasswordRegex)/),
         })
         .passthrough();
-      const PasswordReminder = z
+      const PasswordReminderSchema = z
         .object({
-          email: Email.min(6)
+          email: EmailSchema.min(6)
             .max(255)
             .regex(/(EmailRegex)/),
         })
         .passthrough();
 
       export const schemas = {
-        Email,
-        Password,
-        AddUser,
-        PasswordReminder,
+        EmailSchema,
+        PasswordSchema,
+        AddUserSchema,
+        PasswordReminderSchema,
       };
 
       const endpoints = makeApi([
@@ -89,10 +89,10 @@ test("missing-zod-chains-on-z-object-with-refs-props", async () => {
               type: "Body",
               schema: z
                 .object({
-                  email: Email.min(6)
+                  email: EmailSchema.min(6)
                     .max(255)
                     .regex(/(EmailRegex)/),
-                  password: Password.min(16)
+                  password: PasswordSchema.min(16)
                     .max(255)
                     .regex(/(PasswordRegex)/),
                 })
@@ -111,7 +111,7 @@ test("missing-zod-chains-on-z-object-with-refs-props", async () => {
               type: "Body",
               schema: z
                 .object({
-                  email: Email.min(6)
+                  email: EmailSchema.min(6)
                     .max(255)
                     .regex(/(EmailRegex)/),
                 })

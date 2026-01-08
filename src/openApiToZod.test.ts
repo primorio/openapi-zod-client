@@ -66,7 +66,7 @@ test("getSchemaAsZodString", () => {
             },
         })
     ).toMatchInlineSnapshot(
-        '"z.object({ str: z.string(), nb: z.number(), nested: z.object({ nested_prop: z.boolean() }).partial().passthrough() }).partial().passthrough()"'
+        '"z.object({ str: z.string(), nb: z.number(), nested: z.object({ nestedProp: z.boolean() }).partial().passthrough() }).partial().passthrough()"'
     );
 
     expect(
@@ -372,13 +372,13 @@ test("CodeMeta with ref", () => {
         ctx,
     });
     expect(code.toString()).toMatchInlineSnapshot(
-        '"z.object({ str: z.string(), reference: Example, inline: z.object({ nested_prop: z.boolean() }).partial().passthrough() }).partial().passthrough()"'
+        '"z.object({ str: z.string(), reference: ExampleSchema, inline: z.object({ nestedProp: z.boolean() }).partial().passthrough() }).partial().passthrough()"'
     );
     expect(code.children).toMatchInlineSnapshot(`
       [
           "z.string()",
-          "Example",
-          "z.object({ nested_prop: z.boolean() }).partial().passthrough()",
+          "ExampleSchema",
+          "z.object({ nestedProp: z.boolean() }).partial().passthrough()",
       ]
     `);
 });
@@ -430,16 +430,16 @@ test("CodeMeta with nested refs", () => {
         ctx,
     });
     expect(code.toString()).toMatchInlineSnapshot(
-        '"z.object({ str: z.string(), reference: ObjectWithArrayOfRef, inline: z.object({ nested_prop: z.boolean() }).partial().passthrough(), another: WithNested, basic: Basic, differentPropSameRef: Basic }).partial().passthrough()"'
+        '"z.object({ str: z.string(), reference: ObjectWithArrayOfRefSchema, inline: z.object({ nestedProp: z.boolean() }).partial().passthrough(), another: WithNestedSchema, basic: BasicSchema, differentPropSameRef: BasicSchema }).partial().passthrough()"'
     );
     expect(code.children).toMatchInlineSnapshot(`
       [
           "z.string()",
-          "ObjectWithArrayOfRef",
-          "z.object({ nested_prop: z.boolean() }).partial().passthrough()",
-          "WithNested",
-          "Basic",
-          "Basic",
+          "ObjectWithArrayOfRefSchema",
+          "z.object({ nestedProp: z.boolean() }).partial().passthrough()",
+          "WithNestedSchema",
+          "BasicSchema",
+          "BasicSchema",
       ]
     `);
     expect(ctx).toMatchInlineSnapshot(`
@@ -451,10 +451,10 @@ test("CodeMeta with nested refs", () => {
           },
           "schemaByName": {},
           "zodSchemaByName": {
-              "Basic": "z.object({ prop: z.string(), second: z.number() }).partial().passthrough()",
-              "DeepNested": "z.object({ deep: z.boolean() }).partial().passthrough()",
-              "ObjectWithArrayOfRef": "z.object({ exampleProp: z.string(), another: z.number(), link: z.array(WithNested), someReference: Basic }).partial().passthrough()",
-              "WithNested": "z.object({ nested: z.string(), nestedRef: DeepNested }).partial().passthrough()",
+              "BasicSchema": "z.object({ prop: z.string(), second: z.number() }).partial().passthrough()",
+              "DeepNestedSchema": "z.object({ deep: z.boolean() }).partial().passthrough()",
+              "ObjectWithArrayOfRefSchema": "z.object({ exampleProp: z.string(), another: z.number(), link: z.array(WithNestedSchema), someReference: BasicSchema }).partial().passthrough()",
+              "WithNestedSchema": "z.object({ nested: z.string(), nestedRef: DeepNestedSchema }).partial().passthrough()",
           },
       }
     `);

@@ -64,7 +64,7 @@ describe("anyOf behavior", () => {
         });
 
         expect(zodSchema).toMatchInlineSnapshot(
-            '"z.union([z.object({ age: z.number().int(), nickname: z.string().optional() }).passthrough(), z.object({ pet_type: z.enum(["Cat", "Dog"]), hunts: z.boolean().optional() }).passthrough()])"'
+            '"z.union([z.object({ age: z.number().int(), nickname: z.string().optional() }).passthrough(), z.object({ petType: z.enum(["Cat", "Dog"]), hunts: z.boolean().optional() }).passthrough()])"'
         );
 
         const validator = createValidator(zodSchema);
@@ -109,7 +109,7 @@ describe("anyOf behavior", () => {
         });
 
         expect(zodSchema).toMatchInlineSnapshot(
-            '"z.union([z.object({ age: z.number().int(), nickname: z.string().optional() }).passthrough(), z.object({ pet_type: z.enum(["Cat", "Dog"]), hunts: z.boolean().optional() }).passthrough(), z.number()])"'
+            '"z.union([z.object({ age: z.number().int(), nickname: z.string().optional() }).passthrough(), z.object({ petType: z.enum(["Cat", "Dog"]), hunts: z.boolean().optional() }).passthrough(), z.number()])"'
         );
 
         const validator = createValidator(zodSchema);
@@ -158,7 +158,7 @@ describe("anyOf behavior", () => {
         });
 
         expect(zodSchema).toMatchInlineSnapshot(
-            '"z.union([z.union([z.number(), z.boolean()]), z.object({ age: z.number().int(), nickname: z.string().optional() }).passthrough(), z.object({ pet_type: z.enum(["Cat", "Dog"]), hunts: z.boolean().optional() }).passthrough(), z.string()])"'
+            '"z.union([z.union([z.number(), z.boolean()]), z.object({ age: z.number().int(), nickname: z.string().optional() }).passthrough(), z.object({ petType: z.enum(["Cat", "Dog"]), hunts: z.boolean().optional() }).passthrough(), z.string()])"'
         );
 
         const validator = createValidator(zodSchema);
@@ -232,18 +232,18 @@ describe("anyOf behavior", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const PetByAge = z
+          const PetByAgeSchema = z
             .object({ age: z.number().int(), nickname: z.string().optional() })
             .passthrough();
-          const PetByType = z
-            .object({ pet_type: z.enum(["Cat", "Dog"]), hunts: z.boolean().optional() })
+          const PetByTypeSchema = z
+            .object({ petType: z.enum(["Cat", "Dog"]), hunts: z.boolean().optional() })
             .passthrough();
-          const anyOfRef = z.union([PetByAge, PetByType]).optional();
+          const anyOfRefSchema = z.union([PetByAgeSchema, PetByTypeSchema]).optional();
 
           export const schemas = {
-            PetByAge,
-            PetByType,
-            anyOfRef,
+            PetByAgeSchema,
+            PetByTypeSchema,
+            anyOfRefSchema,
           };
 
           const endpoints = makeApi([
@@ -255,7 +255,7 @@ describe("anyOf behavior", () => {
                 {
                   name: "anyOfRef",
                   type: "Query",
-                  schema: anyOfRef,
+                  schema: anyOfRefSchema,
                 },
               ],
               response: z.void(),

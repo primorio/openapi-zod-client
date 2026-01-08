@@ -59,23 +59,23 @@ test("missing-zod-chains", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const test1 = z.string();
-      const test2 = z.number();
-      const test3 = z
+      const test1Schema = z.string();
+      const test2Schema = z.number();
+      const test3Schema = z
         .object({ text: z.string().min(5), num: z.number().int().gte(10) })
         .passthrough();
-      const nulltype = z.object({}).partial().passthrough();
-      const anyOfType = z.union([
+      const nulltypeSchema = z.object({}).partial().passthrough();
+      const anyOfTypeSchema = z.union([
         z.object({}).partial().passthrough(),
         z.object({ foo: z.string() }).partial().passthrough(),
       ]);
 
       export const schemas = {
-        test1,
-        test2,
-        test3,
-        nulltype,
-        anyOfType,
+        test1Schema,
+        test2Schema,
+        test3Schema,
+        nulltypeSchema,
+        anyOfTypeSchema,
       };
 
       const endpoints = makeApi([
@@ -105,7 +105,7 @@ test("missing-zod-chains", async () => {
             {
               status: 404,
               description: \`Successful operation\`,
-              schema: anyOfType,
+              schema: anyOfTypeSchema,
             },
           ],
         },

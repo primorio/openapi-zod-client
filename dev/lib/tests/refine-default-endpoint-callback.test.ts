@@ -51,7 +51,7 @@ test("refine-default-endpoint-callback", () => {
           },
           "schemaByName": {},
           "zodSchemaByName": {
-              "Basic": "z.string()",
+              "BasicSchema": "z.string()",
           },
       }
     `);
@@ -127,7 +127,7 @@ test("refine-default-endpoint-callback", () => {
           },
           "schemaByName": {},
           "zodSchemaByName": {
-              "Basic": "z.string()",
+              "BasicSchema": "z.string()",
           },
       }
     `);

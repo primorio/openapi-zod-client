@@ -37,7 +37,7 @@ test("number-default-cast", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const test1 = z
+      const test1Schema = z
         .object({
           text1: z.string().default("aaa"),
           shouldBeFixed: z.number().default(20),
@@ -47,7 +47,7 @@ test("number-default-cast", async () => {
         .passthrough();
 
       export const schemas = {
-        test1,
+        test1Schema,
       };
 
       const endpoints = makeApi([
@@ -55,7 +55,7 @@ test("number-default-cast", async () => {
           method: "put",
           path: "/pet",
           requestFormat: "json",
-          response: test1,
+          response: test1Schema,
         },
       ]);
 

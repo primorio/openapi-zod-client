@@ -41,13 +41,13 @@ test("getZodClientTemplateContext", async () => {
                       {
                           "description": "Update an existent pet in the store",
                           "name": "body",
-                          "schema": "Pet",
+                          "schema": "PetSchema",
                           "type": "Body",
                       },
                   ],
                   "path": "/pet",
                   "requestFormat": "json",
-                  "response": "Pet",
+                  "response": "PetSchema",
               },
               {
                   "description": "Add a new pet to the store",
@@ -63,13 +63,13 @@ test("getZodClientTemplateContext", async () => {
                       {
                           "description": "Create a new pet in the store",
                           "name": "body",
-                          "schema": "Pet",
+                          "schema": "PetSchema",
                           "type": "Body",
                       },
                   ],
                   "path": "/pet",
                   "requestFormat": "json",
-                  "response": "Pet",
+                  "response": "PetSchema",
               },
               {
                   "description": "Returns a single pet",
@@ -95,7 +95,7 @@ test("getZodClientTemplateContext", async () => {
                   ],
                   "path": "/pet/:petId",
                   "requestFormat": "json",
-                  "response": "Pet",
+                  "response": "PetSchema",
               },
               {
                   "description": "",
@@ -140,7 +140,7 @@ test("getZodClientTemplateContext", async () => {
                   "method": "delete",
                   "parameters": [
                       {
-                          "name": "api_key",
+                          "name": "apiKey",
                           "schema": "z.string().optional()",
                           "type": "Header",
                       },
@@ -178,7 +178,7 @@ test("getZodClientTemplateContext", async () => {
                   ],
                   "path": "/pet/:petId/uploadImage",
                   "requestFormat": "binary",
-                  "response": "ApiResponse",
+                  "response": "ApiResponseSchema",
               },
               {
                   "description": "Multiple status values can be provided with comma separated strings",
@@ -199,7 +199,7 @@ test("getZodClientTemplateContext", async () => {
                   ],
                   "path": "/pet/findByStatus",
                   "requestFormat": "json",
-                  "response": "z.array(Pet)",
+                  "response": "z.array(PetSchema)",
               },
               {
                   "description": "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
@@ -220,7 +220,7 @@ test("getZodClientTemplateContext", async () => {
                   ],
                   "path": "/pet/findByTags",
                   "requestFormat": "json",
-                  "response": "z.array(Pet)",
+                  "response": "z.array(PetSchema)",
               },
               {
                   "description": "Returns a map of status codes to quantities",
@@ -245,13 +245,13 @@ test("getZodClientTemplateContext", async () => {
                       {
                           "description": undefined,
                           "name": "body",
-                          "schema": "Order",
+                          "schema": "OrderSchema",
                           "type": "Body",
                       },
                   ],
                   "path": "/store/order",
                   "requestFormat": "json",
-                  "response": "Order",
+                  "response": "OrderSchema",
               },
               {
                   "description": "For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.",
@@ -277,7 +277,7 @@ test("getZodClientTemplateContext", async () => {
                   ],
                   "path": "/store/order/:orderId",
                   "requestFormat": "json",
-                  "response": "Order",
+                  "response": "OrderSchema",
               },
               {
                   "description": "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
@@ -313,7 +313,7 @@ test("getZodClientTemplateContext", async () => {
                       {
                           "description": "Created user object",
                           "name": "body",
-                          "schema": "User",
+                          "schema": "UserSchema",
                           "type": "Body",
                       },
                   ],
@@ -345,7 +345,7 @@ test("getZodClientTemplateContext", async () => {
                   ],
                   "path": "/user/:username",
                   "requestFormat": "json",
-                  "response": "User",
+                  "response": "UserSchema",
               },
               {
                   "description": "This can only be done by the logged in user.",
@@ -355,7 +355,7 @@ test("getZodClientTemplateContext", async () => {
                       {
                           "description": "Update an existent user in the store",
                           "name": "body",
-                          "schema": "User",
+                          "schema": "UserSchema",
                           "type": "Body",
                       },
                       {
@@ -402,13 +402,13 @@ test("getZodClientTemplateContext", async () => {
                       {
                           "description": undefined,
                           "name": "body",
-                          "schema": "z.array(User)",
+                          "schema": "z.array(UserSchema)",
                           "type": "Body",
                       },
                   ],
                   "path": "/user/createWithList",
                   "requestFormat": "json",
-                  "response": "User",
+                  "response": "UserSchema",
               },
               {
                   "description": "",
@@ -452,12 +452,12 @@ test("getZodClientTemplateContext", async () => {
               "withAlias": false,
           },
           "schemas": {
-              "ApiResponse": "z.object({ code: z.number().int(), type: z.string(), message: z.string() }).partial().passthrough()",
-              "Category": "z.object({ id: z.number().int(), name: z.string() }).partial().passthrough()",
-              "Order": "z.object({ id: z.number().int(), petId: z.number().int(), quantity: z.number().int(), shipDate: z.string().datetime({ offset: true }), status: z.enum(["placed", "approved", "delivered"]), complete: z.boolean() }).partial().passthrough()",
-              "Pet": "z.object({ id: z.number().int().optional(), name: z.string(), category: Category.optional(), photoUrls: z.array(z.string()), tags: z.array(Tag).optional(), status: z.enum(["available", "pending", "sold"]).optional() }).passthrough()",
-              "Tag": "z.object({ id: z.number().int(), name: z.string() }).partial().passthrough()",
-              "User": "z.object({ id: z.number().int(), username: z.string(), firstName: z.string(), lastName: z.string(), email: z.string(), password: z.string(), phone: z.string(), userStatus: z.number().int() }).partial().passthrough()",
+              "ApiResponseSchema": "z.object({ code: z.number().int(), type: z.string(), message: z.string() }).partial().passthrough()",
+              "CategorySchema": "z.object({ id: z.number().int(), name: z.string() }).partial().passthrough()",
+              "OrderSchema": "z.object({ id: z.number().int(), petId: z.number().int(), quantity: z.number().int(), shipDate: z.string().datetime({ offset: true }), status: z.enum(["placed", "approved", "delivered"]), complete: z.boolean() }).partial().passthrough()",
+              "PetSchema": "z.object({ id: z.number().int().optional(), name: z.string(), category: CategorySchema.optional(), photoUrls: z.array(z.string()), tags: z.array(TagSchema).optional(), status: z.enum(["available", "pending", "sold"]).optional() }).passthrough()",
+              "TagSchema": "z.object({ id: z.number().int(), name: z.string() }).partial().passthrough()",
+              "UserSchema": "z.object({ id: z.number().int(), username: z.string(), firstName: z.string(), lastName: z.string(), email: z.string(), password: z.string(), phone: z.string(), userStatus: z.number().int() }).partial().passthrough()",
           },
           "types": {},
       }
@@ -471,29 +471,29 @@ describe("generateZodClientFromOpenAPI", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const Category = z
+          const CategorySchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Tag = z
+          const TagSchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Pet = z
+          const PetSchema = z
             .object({
               id: z.number().int().optional(),
               name: z.string(),
-              category: Category.optional(),
+              category: CategorySchema.optional(),
               photoUrls: z.array(z.string()),
-              tags: z.array(Tag).optional(),
+              tags: z.array(TagSchema).optional(),
               status: z.enum(["available", "pending", "sold"]).optional(),
             })
             .passthrough();
-          const ApiResponse = z
+          const ApiResponseSchema = z
             .object({ code: z.number().int(), type: z.string(), message: z.string() })
             .partial()
             .passthrough();
-          const Order = z
+          const OrderSchema = z
             .object({
               id: z.number().int(),
               petId: z.number().int(),
@@ -504,7 +504,7 @@ describe("generateZodClientFromOpenAPI", () => {
             })
             .partial()
             .passthrough();
-          const User = z
+          const UserSchema = z
             .object({
               id: z.number().int(),
               username: z.string(),
@@ -519,12 +519,12 @@ describe("generateZodClientFromOpenAPI", () => {
             .passthrough();
 
           export const schemas = {
-            Category,
-            Tag,
-            Pet,
-            ApiResponse,
-            Order,
-            User,
+            CategorySchema,
+            TagSchema,
+            PetSchema,
+            ApiResponseSchema,
+            OrderSchema,
+            UserSchema,
           };
 
           const endpoints = makeApi([
@@ -538,10 +538,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -570,10 +570,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Create a new pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 405,
@@ -594,7 +594,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -645,7 +645,7 @@ describe("generateZodClientFromOpenAPI", () => {
               requestFormat: "json",
               parameters: [
                 {
-                  name: "api_key",
+                  name: "apiKey",
                   type: "Header",
                   schema: z.string().optional(),
                 },
@@ -685,7 +685,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string().optional(),
                 },
               ],
-              response: ApiResponse,
+              response: ApiResponseSchema,
             },
             {
               method: "get",
@@ -702,7 +702,7 @@ describe("generateZodClientFromOpenAPI", () => {
                     .default("available"),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -723,7 +723,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.array(z.string()).optional(),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -748,10 +748,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: Order,
+                  schema: OrderSchema,
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 405,
@@ -772,7 +772,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 400,
@@ -822,7 +822,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Created user object\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
               ],
               response: z.void(),
@@ -838,7 +838,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string(),
                 },
               ],
-              response: User,
+              response: UserSchema,
               errors: [
                 {
                   status: 400,
@@ -862,7 +862,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent user in the store\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
                 {
                   name: "username",
@@ -907,10 +907,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: z.array(User),
+                  schema: z.array(UserSchema),
                 },
               ],
-              response: User,
+              response: UserSchema,
             },
             {
               method: "get",
@@ -964,29 +964,29 @@ describe("generateZodClientFromOpenAPI", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const Category = z
+          const CategorySchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Tag = z
+          const TagSchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Pet = z
+          const PetSchema = z
             .object({
               id: z.number().int().optional(),
               name: z.string(),
-              category: Category.optional(),
+              category: CategorySchema.optional(),
               photoUrls: z.array(z.string()),
-              tags: z.array(Tag).optional(),
+              tags: z.array(TagSchema).optional(),
               status: z.enum(["available", "pending", "sold"]).optional(),
             })
             .passthrough();
-          const ApiResponse = z
+          const ApiResponseSchema = z
             .object({ code: z.number().int(), type: z.string(), message: z.string() })
             .partial()
             .passthrough();
-          const Order = z
+          const OrderSchema = z
             .object({
               id: z.number().int(),
               petId: z.number().int(),
@@ -997,7 +997,7 @@ describe("generateZodClientFromOpenAPI", () => {
             })
             .partial()
             .passthrough();
-          const User = z
+          const UserSchema = z
             .object({
               id: z.number().int(),
               username: z.string(),
@@ -1012,12 +1012,12 @@ describe("generateZodClientFromOpenAPI", () => {
             .passthrough();
 
           export const schemas = {
-            Category,
-            Tag,
-            Pet,
-            ApiResponse,
-            Order,
-            User,
+            CategorySchema,
+            TagSchema,
+            PetSchema,
+            ApiResponseSchema,
+            OrderSchema,
+            UserSchema,
           };
 
           const endpoints = makeApi([
@@ -1032,10 +1032,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -1065,10 +1065,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Create a new pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 405,
@@ -1090,7 +1090,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -1143,7 +1143,7 @@ describe("generateZodClientFromOpenAPI", () => {
               requestFormat: "json",
               parameters: [
                 {
-                  name: "api_key",
+                  name: "apiKey",
                   type: "Header",
                   schema: z.string().optional(),
                 },
@@ -1184,7 +1184,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string().optional(),
                 },
               ],
-              response: ApiResponse,
+              response: ApiResponseSchema,
             },
             {
               method: "get",
@@ -1202,7 +1202,7 @@ describe("generateZodClientFromOpenAPI", () => {
                     .default("available"),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -1224,7 +1224,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.array(z.string()).optional(),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -1251,10 +1251,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: Order,
+                  schema: OrderSchema,
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 405,
@@ -1276,7 +1276,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 400,
@@ -1328,7 +1328,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Created user object\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
               ],
               response: z.void(),
@@ -1345,7 +1345,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string(),
                 },
               ],
-              response: User,
+              response: UserSchema,
               errors: [
                 {
                   status: 400,
@@ -1370,7 +1370,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent user in the store\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
                 {
                   name: "username",
@@ -1417,10 +1417,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: z.array(User),
+                  schema: z.array(UserSchema),
                 },
               ],
-              response: User,
+              response: UserSchema,
             },
             {
               method: "get",
@@ -1476,29 +1476,29 @@ describe("generateZodClientFromOpenAPI", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const Category = z
+          const CategorySchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Tag = z
+          const TagSchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Pet = z
+          const PetSchema = z
             .object({
               id: z.number().int().optional(),
               name: z.string(),
-              category: Category.optional(),
+              category: CategorySchema.optional(),
               photoUrls: z.array(z.string()),
-              tags: z.array(Tag).optional(),
+              tags: z.array(TagSchema).optional(),
               status: z.enum(["available", "pending", "sold"]).optional(),
             })
             .passthrough();
-          const ApiResponse = z
+          const ApiResponseSchema = z
             .object({ code: z.number().int(), type: z.string(), message: z.string() })
             .partial()
             .passthrough();
-          const Order = z
+          const OrderSchema = z
             .object({
               id: z.number().int(),
               petId: z.number().int(),
@@ -1509,7 +1509,7 @@ describe("generateZodClientFromOpenAPI", () => {
             })
             .partial()
             .passthrough();
-          const User = z
+          const UserSchema = z
             .object({
               id: z.number().int(),
               username: z.string(),
@@ -1524,12 +1524,12 @@ describe("generateZodClientFromOpenAPI", () => {
             .passthrough();
 
           export const schemas = {
-            Category,
-            Tag,
-            Pet,
-            ApiResponse,
-            Order,
-            User,
+            CategorySchema,
+            TagSchema,
+            PetSchema,
+            ApiResponseSchema,
+            OrderSchema,
+            UserSchema,
           };
 
           const endpoints = makeApi([
@@ -1543,10 +1543,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -1575,10 +1575,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Create a new pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 405,
@@ -1599,7 +1599,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -1650,7 +1650,7 @@ describe("generateZodClientFromOpenAPI", () => {
               requestFormat: "json",
               parameters: [
                 {
-                  name: "api_key",
+                  name: "apiKey",
                   type: "Header",
                   schema: z.string().optional(),
                 },
@@ -1690,7 +1690,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string().optional(),
                 },
               ],
-              response: ApiResponse,
+              response: ApiResponseSchema,
             },
             {
               method: "get",
@@ -1707,7 +1707,7 @@ describe("generateZodClientFromOpenAPI", () => {
                     .default("available"),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -1728,7 +1728,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.array(z.string()).optional(),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -1753,10 +1753,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: Order,
+                  schema: OrderSchema,
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 405,
@@ -1777,7 +1777,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 400,
@@ -1827,7 +1827,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Created user object\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
               ],
               response: z.void(),
@@ -1843,7 +1843,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string(),
                 },
               ],
-              response: User,
+              response: UserSchema,
               errors: [
                 {
                   status: 400,
@@ -1867,7 +1867,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent user in the store\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
                 {
                   name: "username",
@@ -1912,10 +1912,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: z.array(User),
+                  schema: z.array(UserSchema),
                 },
               ],
-              response: User,
+              response: UserSchema,
             },
             {
               method: "get",
@@ -1974,29 +1974,29 @@ describe("generateZodClientFromOpenAPI", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const Category = z
+          const CategorySchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Tag = z
+          const TagSchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Pet = z
+          const PetSchema = z
             .object({
               id: z.number().int().optional(),
               name: z.string(),
-              category: Category.optional(),
+              category: CategorySchema.optional(),
               photoUrls: z.array(z.string()),
-              tags: z.array(Tag).optional(),
+              tags: z.array(TagSchema).optional(),
               status: z.enum(["available", "pending", "sold"]).optional(),
             })
             .passthrough();
-          const ApiResponse = z
+          const ApiResponseSchema = z
             .object({ code: z.number().int(), type: z.string(), message: z.string() })
             .partial()
             .passthrough();
-          const Order = z
+          const OrderSchema = z
             .object({
               id: z.number().int(),
               petId: z.number().int(),
@@ -2007,7 +2007,7 @@ describe("generateZodClientFromOpenAPI", () => {
             })
             .partial()
             .passthrough();
-          const User = z
+          const UserSchema = z
             .object({
               id: z.number().int(),
               username: z.string(),
@@ -2022,12 +2022,12 @@ describe("generateZodClientFromOpenAPI", () => {
             .passthrough();
 
           export const schemas = {
-            Category,
-            Tag,
-            Pet,
-            ApiResponse,
-            Order,
-            User,
+            CategorySchema,
+            TagSchema,
+            PetSchema,
+            ApiResponseSchema,
+            OrderSchema,
+            UserSchema,
           };
 
           const endpoints = makeApi([
@@ -2042,10 +2042,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -2075,10 +2075,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Create a new pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 405,
@@ -2100,7 +2100,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -2153,7 +2153,7 @@ describe("generateZodClientFromOpenAPI", () => {
               requestFormat: "json",
               parameters: [
                 {
-                  name: "api_key",
+                  name: "apiKey",
                   type: "Header",
                   schema: z.string().optional(),
                 },
@@ -2194,7 +2194,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string().optional(),
                 },
               ],
-              response: ApiResponse,
+              response: ApiResponseSchema,
             },
             {
               method: "get",
@@ -2212,7 +2212,7 @@ describe("generateZodClientFromOpenAPI", () => {
                     .default("available"),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -2234,7 +2234,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.array(z.string()).optional(),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -2261,10 +2261,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: Order,
+                  schema: OrderSchema,
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 405,
@@ -2286,7 +2286,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 400,
@@ -2338,7 +2338,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Created user object\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
               ],
               response: z.void(),
@@ -2355,7 +2355,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string(),
                 },
               ],
-              response: User,
+              response: UserSchema,
               errors: [
                 {
                   status: 400,
@@ -2380,7 +2380,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent user in the store\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
                 {
                   name: "username",
@@ -2427,10 +2427,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: z.array(User),
+                  schema: z.array(UserSchema),
                 },
               ],
-              response: User,
+              response: UserSchema,
             },
             {
               method: "get",
@@ -2488,29 +2488,29 @@ describe("generateZodClientFromOpenAPI", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const Category = z
+          const CategorySchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Tag = z
+          const TagSchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Pet = z
+          const PetSchema = z
             .object({
               id: z.number().int().optional(),
               name: z.string(),
-              category: Category.optional(),
+              category: CategorySchema.optional(),
               photoUrls: z.array(z.string()),
-              tags: z.array(Tag).optional(),
+              tags: z.array(TagSchema).optional(),
               status: z.enum(["available", "pending", "sold"]).optional(),
             })
             .passthrough();
-          const ApiResponse = z
+          const ApiResponseSchema = z
             .object({ code: z.number().int(), type: z.string(), message: z.string() })
             .partial()
             .passthrough();
-          const Order = z
+          const OrderSchema = z
             .object({
               id: z.number().int(),
               petId: z.number().int(),
@@ -2521,7 +2521,7 @@ describe("generateZodClientFromOpenAPI", () => {
             })
             .partial()
             .passthrough();
-          const User = z
+          const UserSchema = z
             .object({
               id: z.number().int(),
               username: z.string(),
@@ -2536,12 +2536,12 @@ describe("generateZodClientFromOpenAPI", () => {
             .passthrough();
 
           export const schemas = {
-            Category,
-            Tag,
-            Pet,
-            ApiResponse,
-            Order,
-            User,
+            CategorySchema,
+            TagSchema,
+            PetSchema,
+            ApiResponseSchema,
+            OrderSchema,
+            UserSchema,
           };
 
           const endpoints = makeApi([
@@ -2555,10 +2555,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -2587,10 +2587,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Create a new pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 405,
@@ -2611,7 +2611,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -2662,7 +2662,7 @@ describe("generateZodClientFromOpenAPI", () => {
               requestFormat: "json",
               parameters: [
                 {
-                  name: "api_key",
+                  name: "apiKey",
                   type: "Header",
                   schema: z.string().optional(),
                 },
@@ -2702,7 +2702,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string().optional(),
                 },
               ],
-              response: ApiResponse,
+              response: ApiResponseSchema,
             },
             {
               method: "get",
@@ -2719,7 +2719,7 @@ describe("generateZodClientFromOpenAPI", () => {
                     .default("available"),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -2740,7 +2740,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.array(z.string()).optional(),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -2765,10 +2765,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: Order,
+                  schema: OrderSchema,
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 405,
@@ -2789,7 +2789,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 400,
@@ -2839,7 +2839,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Created user object\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
               ],
               response: z.void(),
@@ -2855,7 +2855,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string(),
                 },
               ],
-              response: User,
+              response: UserSchema,
               errors: [
                 {
                   status: 400,
@@ -2879,7 +2879,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent user in the store\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
                 {
                   name: "username",
@@ -2924,10 +2924,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: z.array(User),
+                  schema: z.array(UserSchema),
                 },
               ],
-              response: User,
+              response: UserSchema,
             },
             {
               method: "get",
@@ -2983,29 +2983,29 @@ describe("generateZodClientFromOpenAPI", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const Category = z
+          const CategorySchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Tag = z
+          const TagSchema = z
             .object({ id: z.number().int(), name: z.string() })
             .partial()
             .passthrough();
-          const Pet = z
+          const PetSchema = z
             .object({
               id: z.number().int().optional(),
               name: z.string(),
-              category: Category.optional(),
+              category: CategorySchema.optional(),
               photoUrls: z.array(z.string()),
-              tags: z.array(Tag).optional(),
+              tags: z.array(TagSchema).optional(),
               status: z.enum(["available", "pending", "sold"]).optional(),
             })
             .passthrough();
-          const ApiResponse = z
+          const ApiResponseSchema = z
             .object({ code: z.number().int(), type: z.string(), message: z.string() })
             .partial()
             .passthrough();
-          const Order = z
+          const OrderSchema = z
             .object({
               id: z.number().int(),
               petId: z.number().int(),
@@ -3016,7 +3016,7 @@ describe("generateZodClientFromOpenAPI", () => {
             })
             .partial()
             .passthrough();
-          const User = z
+          const UserSchema = z
             .object({
               id: z.number().int(),
               username: z.string(),
@@ -3031,12 +3031,12 @@ describe("generateZodClientFromOpenAPI", () => {
             .passthrough();
 
           export const schemas = {
-            Category,
-            Tag,
-            Pet,
-            ApiResponse,
-            Order,
-            User,
+            CategorySchema,
+            TagSchema,
+            PetSchema,
+            ApiResponseSchema,
+            OrderSchema,
+            UserSchema,
           };
 
           const endpoints = makeApi([
@@ -3050,10 +3050,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -3082,10 +3082,10 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Create a new pet in the store\`,
                   type: "Body",
-                  schema: Pet,
+                  schema: PetSchema,
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 405,
@@ -3106,7 +3106,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Pet,
+              response: PetSchema,
               errors: [
                 {
                   status: 400,
@@ -3157,7 +3157,7 @@ describe("generateZodClientFromOpenAPI", () => {
               requestFormat: "json",
               parameters: [
                 {
-                  name: "api_key",
+                  name: "apiKey",
                   type: "Header",
                   schema: z.string().optional(),
                 },
@@ -3197,7 +3197,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string().optional(),
                 },
               ],
-              response: ApiResponse,
+              response: ApiResponseSchema,
             },
             {
               method: "get",
@@ -3211,7 +3211,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.enum(["available", "pending", "sold"]).optional(),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -3232,7 +3232,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.array(z.string()).optional(),
                 },
               ],
-              response: z.array(Pet),
+              response: z.array(PetSchema),
               errors: [
                 {
                   status: 400,
@@ -3257,10 +3257,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: Order,
+                  schema: OrderSchema,
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 405,
@@ -3281,7 +3281,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.number().int(),
                 },
               ],
-              response: Order,
+              response: OrderSchema,
               errors: [
                 {
                   status: 400,
@@ -3331,7 +3331,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Created user object\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
               ],
               response: z.void(),
@@ -3347,7 +3347,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   schema: z.string(),
                 },
               ],
-              response: User,
+              response: UserSchema,
               errors: [
                 {
                   status: 400,
@@ -3371,7 +3371,7 @@ describe("generateZodClientFromOpenAPI", () => {
                   name: "body",
                   description: \`Update an existent user in the store\`,
                   type: "Body",
-                  schema: User,
+                  schema: UserSchema,
                 },
                 {
                   name: "username",
@@ -3416,10 +3416,10 @@ describe("generateZodClientFromOpenAPI", () => {
                 {
                   name: "body",
                   type: "Body",
-                  schema: z.array(User),
+                  schema: z.array(UserSchema),
                 },
               ],
-              response: User,
+              response: UserSchema,
             },
             {
               method: "get",
@@ -3470,253 +3470,253 @@ describe("generateZodClientFromOpenAPI", () => {
             options: { groupStrategy: "tag-file" },
         });
         expect(prettyOutput["pet"]).toMatchInlineSnapshot(`
-        "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
-        import { z } from "zod";
+          "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
+          import { z } from "zod";
 
-        const Category = z
-          .object({ id: z.number().int(), name: z.string() })
-          .partial()
-          .passthrough();
-        const Tag = z
-          .object({ id: z.number().int(), name: z.string() })
-          .partial()
-          .passthrough();
-        const Pet = z
-          .object({
-            id: z.number().int().optional(),
-            name: z.string(),
-            category: Category.optional(),
-            photoUrls: z.array(z.string()),
-            tags: z.array(Tag).optional(),
-            status: z.enum(["available", "pending", "sold"]).optional(),
-          })
-          .passthrough();
-        const ApiResponse = z
-          .object({ code: z.number().int(), type: z.string(), message: z.string() })
-          .partial()
-          .passthrough();
+          const PetSchema = z
+            .object({
+              id: z.number().int().optional(),
+              name: z.string(),
+              category: CategorySchema.optional(),
+              photoUrls: z.array(z.string()),
+              tags: z.array(TagSchema).optional(),
+              status: z.enum(["available", "pending", "sold"]).optional(),
+            })
+            .passthrough();
+          const CategorySchema = z
+            .object({ id: z.number().int(), name: z.string() })
+            .partial()
+            .passthrough();
+          const TagSchema = z
+            .object({ id: z.number().int(), name: z.string() })
+            .partial()
+            .passthrough();
+          const ApiResponseSchema = z
+            .object({ code: z.number().int(), type: z.string(), message: z.string() })
+            .partial()
+            .passthrough();
 
-        export const schemas = {
-          Category,
-          Tag,
-          Pet,
-          ApiResponse,
-        };
+          export const schemas = {
+            PetSchema,
+            CategorySchema,
+            TagSchema,
+            ApiResponseSchema,
+          };
 
-        const endpoints = makeApi([
-          {
-            method: "put",
-            path: "/pet",
-            description: \`Update an existing pet by Id\`,
-            requestFormat: "json",
-            parameters: [
-              {
-                name: "body",
-                description: \`Update an existent pet in the store\`,
-                type: "Body",
-                schema: Pet,
-              },
-            ],
-            response: Pet,
-            errors: [
-              {
-                status: 400,
-                description: \`Invalid ID supplied\`,
-                schema: z.void(),
-              },
-              {
-                status: 404,
-                description: \`Pet not found\`,
-                schema: z.void(),
-              },
-              {
-                status: 405,
-                description: \`Validation exception\`,
-                schema: z.void(),
-              },
-            ],
-          },
-          {
-            method: "post",
-            path: "/pet",
-            description: \`Add a new pet to the store\`,
-            requestFormat: "json",
-            parameters: [
-              {
-                name: "body",
-                description: \`Create a new pet in the store\`,
-                type: "Body",
-                schema: Pet,
-              },
-            ],
-            response: Pet,
-            errors: [
-              {
-                status: 405,
-                description: \`Invalid input\`,
-                schema: z.void(),
-              },
-            ],
-          },
-          {
-            method: "get",
-            path: "/pet/findByStatus",
-            description: \`Multiple status values can be provided with comma separated strings\`,
-            requestFormat: "json",
-            parameters: [
-              {
-                name: "status",
-                type: "Query",
-                schema: z
-                  .enum(["available", "pending", "sold"])
-                  .optional()
-                  .default("available"),
-              },
-            ],
-            response: z.array(Pet),
-            errors: [
-              {
-                status: 400,
-                description: \`Invalid status value\`,
-                schema: z.void(),
-              },
-            ],
-          },
-          {
-            method: "get",
-            path: "/pet/findByTags",
-            description: \`Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.\`,
-            requestFormat: "json",
-            parameters: [
-              {
-                name: "tags",
-                type: "Query",
-                schema: z.array(z.string()).optional(),
-              },
-            ],
-            response: z.array(Pet),
-            errors: [
-              {
-                status: 400,
-                description: \`Invalid tag value\`,
-                schema: z.void(),
-              },
-            ],
-          },
-          {
-            method: "get",
-            path: "/pet/:petId",
-            description: \`Returns a single pet\`,
-            requestFormat: "json",
-            parameters: [
-              {
-                name: "petId",
-                type: "Path",
-                schema: z.number().int(),
-              },
-            ],
-            response: Pet,
-            errors: [
-              {
-                status: 400,
-                description: \`Invalid ID supplied\`,
-                schema: z.void(),
-              },
-              {
-                status: 404,
-                description: \`Pet not found\`,
-                schema: z.void(),
-              },
-            ],
-          },
-          {
-            method: "post",
-            path: "/pet/:petId",
-            requestFormat: "json",
-            parameters: [
-              {
-                name: "petId",
-                type: "Path",
-                schema: z.number().int(),
-              },
-              {
-                name: "name",
-                type: "Query",
-                schema: z.string().optional(),
-              },
-              {
-                name: "status",
-                type: "Query",
-                schema: z.string().optional(),
-              },
-            ],
-            response: z.void(),
-            errors: [
-              {
-                status: 405,
-                description: \`Invalid input\`,
-                schema: z.void(),
-              },
-            ],
-          },
-          {
-            method: "delete",
-            path: "/pet/:petId",
-            description: \`delete a pet\`,
-            requestFormat: "json",
-            parameters: [
-              {
-                name: "api_key",
-                type: "Header",
-                schema: z.string().optional(),
-              },
-              {
-                name: "petId",
-                type: "Path",
-                schema: z.number().int(),
-              },
-            ],
-            response: z.void(),
-            errors: [
-              {
-                status: 400,
-                description: \`Invalid pet value\`,
-                schema: z.void(),
-              },
-            ],
-          },
-          {
-            method: "post",
-            path: "/pet/:petId/uploadImage",
-            requestFormat: "binary",
-            parameters: [
-              {
-                name: "body",
-                type: "Body",
-                schema: z.instanceof(File),
-              },
-              {
-                name: "petId",
-                type: "Path",
-                schema: z.number().int(),
-              },
-              {
-                name: "additionalMetadata",
-                type: "Query",
-                schema: z.string().optional(),
-              },
-            ],
-            response: ApiResponse,
-          },
-        ]);
+          const endpoints = makeApi([
+            {
+              method: "put",
+              path: "/pet",
+              description: \`Update an existing pet by Id\`,
+              requestFormat: "json",
+              parameters: [
+                {
+                  name: "body",
+                  description: \`Update an existent pet in the store\`,
+                  type: "Body",
+                  schema: PetSchema,
+                },
+              ],
+              response: PetSchema,
+              errors: [
+                {
+                  status: 400,
+                  description: \`Invalid ID supplied\`,
+                  schema: z.void(),
+                },
+                {
+                  status: 404,
+                  description: \`Pet not found\`,
+                  schema: z.void(),
+                },
+                {
+                  status: 405,
+                  description: \`Validation exception\`,
+                  schema: z.void(),
+                },
+              ],
+            },
+            {
+              method: "post",
+              path: "/pet",
+              description: \`Add a new pet to the store\`,
+              requestFormat: "json",
+              parameters: [
+                {
+                  name: "body",
+                  description: \`Create a new pet in the store\`,
+                  type: "Body",
+                  schema: PetSchema,
+                },
+              ],
+              response: PetSchema,
+              errors: [
+                {
+                  status: 405,
+                  description: \`Invalid input\`,
+                  schema: z.void(),
+                },
+              ],
+            },
+            {
+              method: "get",
+              path: "/pet/findByStatus",
+              description: \`Multiple status values can be provided with comma separated strings\`,
+              requestFormat: "json",
+              parameters: [
+                {
+                  name: "status",
+                  type: "Query",
+                  schema: z
+                    .enum(["available", "pending", "sold"])
+                    .optional()
+                    .default("available"),
+                },
+              ],
+              response: z.array(PetSchema),
+              errors: [
+                {
+                  status: 400,
+                  description: \`Invalid status value\`,
+                  schema: z.void(),
+                },
+              ],
+            },
+            {
+              method: "get",
+              path: "/pet/findByTags",
+              description: \`Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.\`,
+              requestFormat: "json",
+              parameters: [
+                {
+                  name: "tags",
+                  type: "Query",
+                  schema: z.array(z.string()).optional(),
+                },
+              ],
+              response: z.array(PetSchema),
+              errors: [
+                {
+                  status: 400,
+                  description: \`Invalid tag value\`,
+                  schema: z.void(),
+                },
+              ],
+            },
+            {
+              method: "get",
+              path: "/pet/:petId",
+              description: \`Returns a single pet\`,
+              requestFormat: "json",
+              parameters: [
+                {
+                  name: "petId",
+                  type: "Path",
+                  schema: z.number().int(),
+                },
+              ],
+              response: PetSchema,
+              errors: [
+                {
+                  status: 400,
+                  description: \`Invalid ID supplied\`,
+                  schema: z.void(),
+                },
+                {
+                  status: 404,
+                  description: \`Pet not found\`,
+                  schema: z.void(),
+                },
+              ],
+            },
+            {
+              method: "post",
+              path: "/pet/:petId",
+              requestFormat: "json",
+              parameters: [
+                {
+                  name: "petId",
+                  type: "Path",
+                  schema: z.number().int(),
+                },
+                {
+                  name: "name",
+                  type: "Query",
+                  schema: z.string().optional(),
+                },
+                {
+                  name: "status",
+                  type: "Query",
+                  schema: z.string().optional(),
+                },
+              ],
+              response: z.void(),
+              errors: [
+                {
+                  status: 405,
+                  description: \`Invalid input\`,
+                  schema: z.void(),
+                },
+              ],
+            },
+            {
+              method: "delete",
+              path: "/pet/:petId",
+              description: \`delete a pet\`,
+              requestFormat: "json",
+              parameters: [
+                {
+                  name: "apiKey",
+                  type: "Header",
+                  schema: z.string().optional(),
+                },
+                {
+                  name: "petId",
+                  type: "Path",
+                  schema: z.number().int(),
+                },
+              ],
+              response: z.void(),
+              errors: [
+                {
+                  status: 400,
+                  description: \`Invalid pet value\`,
+                  schema: z.void(),
+                },
+              ],
+            },
+            {
+              method: "post",
+              path: "/pet/:petId/uploadImage",
+              requestFormat: "binary",
+              parameters: [
+                {
+                  name: "body",
+                  type: "Body",
+                  schema: z.instanceof(File),
+                },
+                {
+                  name: "petId",
+                  type: "Path",
+                  schema: z.number().int(),
+                },
+                {
+                  name: "additionalMetadata",
+                  type: "Query",
+                  schema: z.string().optional(),
+                },
+              ],
+              response: ApiResponseSchema,
+            },
+          ]);
 
-        export const PetApi = new Zodios(endpoints);
+          export const PetApi = new Zodios(endpoints);
 
-        export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
-          return new Zodios(baseUrl, endpoints, options);
-        }
-        "
-      `);
+          export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
+            return new Zodios(baseUrl, endpoints, options);
+          }
+          "
+        `);
     });
 });
 
@@ -3810,8 +3810,8 @@ test("with optional, partial, all required objects", async () => {
     expect(data).toMatchInlineSnapshot(`
       {
           "circularTypeByName": {
-              "Nested2": true,
-              "Root2": true,
+              "Nested2Schema": true,
+              "Root2Schema": true,
           },
           "emittedType": {
               "Nested2": true,
@@ -3825,7 +3825,7 @@ test("with optional, partial, all required objects", async () => {
                   "parameters": [],
                   "path": "/deeplyNested",
                   "requestFormat": "json",
-                  "response": "z.array(VeryDeeplyNested)",
+                  "response": "z.array(VeryDeeplyNestedSchema)",
               },
               {
                   "description": undefined,
@@ -3834,7 +3834,7 @@ test("with optional, partial, all required objects", async () => {
                   "parameters": [],
                   "path": "/nested",
                   "requestFormat": "json",
-                  "response": "z.object({ nested_prop: z.boolean().optional(), deeplyNested: DeeplyNested.optional(), circularToRoot: Root2.optional(), requiredProp: z.string() }).passthrough()",
+                  "response": "z.object({ nestedProp: z.boolean().optional(), deeplyNested: DeeplyNestedSchema.optional(), circularToRoot: Root2Schema.optional(), requiredProp: z.string() }).passthrough()",
               },
               {
                   "description": undefined,
@@ -3843,7 +3843,7 @@ test("with optional, partial, all required objects", async () => {
                   "parameters": [],
                   "path": "/root",
                   "requestFormat": "json",
-                  "response": "z.object({ str: z.string(), nb: z.number(), nested: Nested2, partial: PartialObject.optional(), optionalProp: z.string().optional() }).passthrough()",
+                  "response": "z.object({ str: z.string(), nb: z.number(), nested: Nested2Schema, partial: PartialObjectSchema.optional(), optionalProp: z.string().optional() }).passthrough()",
               },
               {
                   "description": undefined,
@@ -3861,32 +3861,32 @@ test("with optional, partial, all required objects", async () => {
               "withAlias": false,
           },
           "schemas": {
-              "DeeplyNested": "z.array(VeryDeeplyNested)",
-              "Nested2": "z.lazy(() => z.object({ nested_prop: z.boolean().optional(), deeplyNested: DeeplyNested.optional(), circularToRoot: Root2.optional(), requiredProp: z.string() }).passthrough())",
-              "PartialObject": "z.object({ something: z.string(), another: z.number() }).partial().passthrough()",
-              "Root2": "z.lazy(() => z.object({ str: z.string(), nb: z.number(), nested: Nested2, partial: PartialObject.optional(), optionalProp: z.string().optional() }).passthrough())",
-              "VeryDeeplyNested": "z.enum(["aaa", "bbb", "ccc"])",
+              "DeeplyNestedSchema": "z.array(VeryDeeplyNestedSchema)",
+              "Nested2Schema": "z.lazy(() => z.object({ nestedProp: z.boolean().optional(), deeplyNested: DeeplyNestedSchema.optional(), circularToRoot: Root2Schema.optional(), requiredProp: z.string() }).passthrough())",
+              "PartialObjectSchema": "z.object({ something: z.string(), another: z.number() }).partial().passthrough()",
+              "Root2Schema": "z.lazy(() => z.object({ str: z.string(), nb: z.number(), nested: Nested2Schema, partial: PartialObjectSchema.optional(), optionalProp: z.string().optional() }).passthrough())",
+              "VeryDeeplyNestedSchema": "z.enum(["aaa", "bbb", "ccc"])",
           },
           "types": {
-              "DeeplyNested": "type DeeplyNested = Array<VeryDeeplyNested>;",
-              "Nested2": "type Nested2 = {
-          nested_prop?: boolean | undefined;
+              "DeeplyNested": "type DeeplyNestedSchema = Array<VeryDeeplyNested>;",
+              "Nested2": "type Nested2Schema = {
+          nestedProp?: boolean | undefined;
           deeplyNested?: DeeplyNested | undefined;
           circularToRoot?: Root2 | undefined;
           requiredProp: string;
       };",
-              "PartialObject": "type PartialObject = Partial<{
+              "PartialObject": "type PartialObjectSchema = Partial<{
           something: string;
           another: number;
       }>;",
-              "Root2": "type Root2 = {
+              "Root2": "type Root2Schema = {
           str: string;
           nb: number;
           nested: Nested2;
           partial?: PartialObject | undefined;
           optionalProp?: string | undefined;
       };",
-              "VeryDeeplyNested": "type VeryDeeplyNested = "aaa" | "bbb" | "ccc";",
+              "VeryDeeplyNested": "type VeryDeeplyNestedSchema = "aaa" | "bbb" | "ccc";",
           },
       }
     `);
@@ -3896,60 +3896,60 @@ test("with optional, partial, all required objects", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      type Root2 = {
+      type Root2Schema = {
         str: string;
         nb: number;
         nested: Nested2;
         partial?: PartialObject | undefined;
         optionalProp?: string | undefined;
       };
-      type DeeplyNested = Array<VeryDeeplyNested>;
-      type VeryDeeplyNested = "aaa" | "bbb" | "ccc";
-      type PartialObject = Partial<{
+      type DeeplyNestedSchema = Array<VeryDeeplyNested>;
+      type VeryDeeplyNestedSchema = "aaa" | "bbb" | "ccc";
+      type PartialObjectSchema = Partial<{
         something: string;
         another: number;
       }>;
-      type Nested2 = {
-        nested_prop?: boolean | undefined;
+      type Nested2Schema = {
+        nestedProp?: boolean | undefined;
         deeplyNested?: DeeplyNested | undefined;
         circularToRoot?: Root2 | undefined;
         requiredProp: string;
       };
 
-      const VeryDeeplyNested = z.enum(["aaa", "bbb", "ccc"]);
-      const DeeplyNested = z.array(VeryDeeplyNested);
-      const PartialObject = z
+      const VeryDeeplyNestedSchema = z.enum(["aaa", "bbb", "ccc"]);
+      const DeeplyNestedSchema = z.array(VeryDeeplyNestedSchema);
+      const PartialObjectSchema = z
         .object({ something: z.string(), another: z.number() })
         .partial()
         .passthrough();
-      const Root2: z.ZodType<Root2> = z.lazy(() =>
+      const Root2Schema = z.lazy(() =>
         z
           .object({
             str: z.string(),
             nb: z.number(),
-            nested: Nested2,
-            partial: PartialObject.optional(),
+            nested: Nested2Schema,
+            partial: PartialObjectSchema.optional(),
             optionalProp: z.string().optional(),
           })
           .passthrough()
       );
-      const Nested2: z.ZodType<Nested2> = z.lazy(() =>
+      const Nested2Schema = z.lazy(() =>
         z
           .object({
-            nested_prop: z.boolean().optional(),
-            deeplyNested: DeeplyNested.optional(),
-            circularToRoot: Root2.optional(),
+            nestedProp: z.boolean().optional(),
+            deeplyNested: DeeplyNestedSchema.optional(),
+            circularToRoot: Root2Schema.optional(),
             requiredProp: z.string(),
           })
           .passthrough()
       );
 
       export const schemas = {
-        VeryDeeplyNested,
-        DeeplyNested,
-        PartialObject,
-        Root2,
-        Nested2,
+        VeryDeeplyNestedSchema,
+        DeeplyNestedSchema,
+        PartialObjectSchema,
+        Root2Schema,
+        Nested2Schema,
       };
 
       const endpoints = makeApi([
@@ -3957,7 +3957,7 @@ test("with optional, partial, all required objects", async () => {
           method: "get",
           path: "/deeplyNested",
           requestFormat: "json",
-          response: z.array(VeryDeeplyNested),
+          response: z.array(VeryDeeplyNestedSchema),
         },
         {
           method: "get",
@@ -3965,9 +3965,9 @@ test("with optional, partial, all required objects", async () => {
           requestFormat: "json",
           response: z
             .object({
-              nested_prop: z.boolean().optional(),
-              deeplyNested: DeeplyNested.optional(),
-              circularToRoot: Root2.optional(),
+              nestedProp: z.boolean().optional(),
+              deeplyNested: DeeplyNestedSchema.optional(),
+              circularToRoot: Root2Schema.optional(),
               requiredProp: z.string(),
             })
             .passthrough(),
@@ -3980,8 +3980,8 @@ test("with optional, partial, all required objects", async () => {
             .object({
               str: z.string(),
               nb: z.number(),
-              nested: Nested2,
-              partial: PartialObject.optional(),
+              nested: Nested2Schema,
+              partial: PartialObjectSchema.optional(),
               optionalProp: z.string().optional(),
             })
             .passthrough(),
@@ -4036,13 +4036,13 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                       {
                           "description": "Update an existent pet in the store",
                           "name": "body",
-                          "schema": "Pet",
+                          "schema": "PetSchema",
                           "type": "Body",
                       },
                   ],
                   "path": "/pet",
                   "requestFormat": "json",
-                  "response": "Pet",
+                  "response": "PetSchema",
               },
               {
                   "description": "Add a new pet to the store",
@@ -4058,13 +4058,13 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                       {
                           "description": "Create a new pet in the store",
                           "name": "body",
-                          "schema": "Pet",
+                          "schema": "PetSchema",
                           "type": "Body",
                       },
                   ],
                   "path": "/pet",
                   "requestFormat": "json",
-                  "response": "Pet",
+                  "response": "PetSchema",
               },
               {
                   "description": "Returns a single pet",
@@ -4090,7 +4090,7 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                   ],
                   "path": "/pet/:petId",
                   "requestFormat": "json",
-                  "response": "Pet",
+                  "response": "PetSchema",
               },
               {
                   "description": "",
@@ -4135,7 +4135,7 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                   "method": "delete",
                   "parameters": [
                       {
-                          "name": "api_key",
+                          "name": "apiKey",
                           "schema": "z.string().optional()",
                           "type": "Header",
                       },
@@ -4173,7 +4173,7 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                   ],
                   "path": "/pet/:petId/uploadImage",
                   "requestFormat": "binary",
-                  "response": "ApiResponse",
+                  "response": "ApiResponseSchema",
               },
               {
                   "description": "Multiple status values can be provided with comma separated strings",
@@ -4194,7 +4194,7 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                   ],
                   "path": "/pet/findByStatus",
                   "requestFormat": "json",
-                  "response": "z.array(Pet).readonly()",
+                  "response": "z.array(PetSchema).readonly()",
               },
               {
                   "description": "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
@@ -4215,7 +4215,7 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                   ],
                   "path": "/pet/findByTags",
                   "requestFormat": "json",
-                  "response": "z.array(Pet).readonly()",
+                  "response": "z.array(PetSchema).readonly()",
               },
               {
                   "description": "Returns a map of status codes to quantities",
@@ -4240,13 +4240,13 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                       {
                           "description": undefined,
                           "name": "body",
-                          "schema": "Order",
+                          "schema": "OrderSchema",
                           "type": "Body",
                       },
                   ],
                   "path": "/store/order",
                   "requestFormat": "json",
-                  "response": "Order",
+                  "response": "OrderSchema",
               },
               {
                   "description": "For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.",
@@ -4272,7 +4272,7 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                   ],
                   "path": "/store/order/:orderId",
                   "requestFormat": "json",
-                  "response": "Order",
+                  "response": "OrderSchema",
               },
               {
                   "description": "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
@@ -4308,7 +4308,7 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                       {
                           "description": "Created user object",
                           "name": "body",
-                          "schema": "User",
+                          "schema": "UserSchema",
                           "type": "Body",
                       },
                   ],
@@ -4340,7 +4340,7 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                   ],
                   "path": "/user/:username",
                   "requestFormat": "json",
-                  "response": "User",
+                  "response": "UserSchema",
               },
               {
                   "description": "This can only be done by the logged in user.",
@@ -4350,7 +4350,7 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                       {
                           "description": "Update an existent user in the store",
                           "name": "body",
-                          "schema": "User",
+                          "schema": "UserSchema",
                           "type": "Body",
                       },
                       {
@@ -4397,13 +4397,13 @@ test('getZodClientTemplateContext with allReadonly', async () => {
                       {
                           "description": undefined,
                           "name": "body",
-                          "schema": "z.array(User).readonly()",
+                          "schema": "z.array(UserSchema).readonly()",
                           "type": "Body",
                       },
                   ],
                   "path": "/user/createWithList",
                   "requestFormat": "json",
-                  "response": "User",
+                  "response": "UserSchema",
               },
               {
                   "description": "",
@@ -4447,12 +4447,12 @@ test('getZodClientTemplateContext with allReadonly', async () => {
               "withAlias": false,
           },
           "schemas": {
-              "ApiResponse": "z.object({ code: z.number().int(), type: z.string(), message: z.string() }).partial().passthrough().readonly()",
-              "Category": "z.object({ id: z.number().int(), name: z.string() }).partial().passthrough().readonly()",
-              "Order": "z.object({ id: z.number().int(), petId: z.number().int(), quantity: z.number().int(), shipDate: z.string().datetime({ offset: true }), status: z.enum(["placed", "approved", "delivered"]), complete: z.boolean() }).partial().passthrough().readonly()",
-              "Pet": "z.object({ id: z.number().int().optional(), name: z.string(), category: Category.optional(), photoUrls: z.array(z.string()).readonly(), tags: z.array(Tag).readonly().optional(), status: z.enum(["available", "pending", "sold"]).optional() }).passthrough().readonly()",
-              "Tag": "z.object({ id: z.number().int(), name: z.string() }).partial().passthrough().readonly()",
-              "User": "z.object({ id: z.number().int(), username: z.string(), firstName: z.string(), lastName: z.string(), email: z.string(), password: z.string(), phone: z.string(), userStatus: z.number().int() }).partial().passthrough().readonly()",
+              "ApiResponseSchema": "z.object({ code: z.number().int(), type: z.string(), message: z.string() }).partial().passthrough().readonly()",
+              "CategorySchema": "z.object({ id: z.number().int(), name: z.string() }).partial().passthrough().readonly()",
+              "OrderSchema": "z.object({ id: z.number().int(), petId: z.number().int(), quantity: z.number().int(), shipDate: z.string().datetime({ offset: true }), status: z.enum(["placed", "approved", "delivered"]), complete: z.boolean() }).partial().passthrough().readonly()",
+              "PetSchema": "z.object({ id: z.number().int().optional(), name: z.string(), category: CategorySchema.optional(), photoUrls: z.array(z.string()).readonly(), tags: z.array(TagSchema).readonly().optional(), status: z.enum(["available", "pending", "sold"]).optional() }).passthrough().readonly()",
+              "TagSchema": "z.object({ id: z.number().int(), name: z.string() }).partial().passthrough().readonly()",
+              "UserSchema": "z.object({ id: z.number().int(), username: z.string(), firstName: z.string(), lastName: z.string(), email: z.string(), password: z.string(), phone: z.string(), userStatus: z.number().int() }).partial().passthrough().readonly()",
           },
           "types": {},
       }

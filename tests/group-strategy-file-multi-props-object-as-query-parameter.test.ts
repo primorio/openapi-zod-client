@@ -83,7 +83,83 @@ export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
           ? `{\n${expectedIndex}\n${expectedApi}\n}`
           : `{\n${expectedApi}\n${expectedIndex}\n}`;
 
-        expect(output).toMatchInlineSnapshot(expected);
+        expect(output).toMatchInlineSnapshot(expected`
+          {
+              "Default": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
+          import { z } from "zod";
+
+          const reqSchema = z
+            .object({ prop1: z.number().int(), prop2: z.number().int() })
+            .passthrough();
+
+          export const schemas = {
+            reqSchema,
+          };
+
+          const endpoints = makeApi([
+            {
+              method: "post",
+              path: "/api/v1/test",
+              requestFormat: "json",
+              parameters: [
+                {
+                  name: "req",
+                  type: "Query",
+                  schema: reqSchema,
+                },
+              ],
+              response: z.void(),
+            },
+          ]);
+
+          export const DefaultApi = new Zodios(endpoints);
+
+          export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
+            return new Zodios(baseUrl, endpoints, options);
+          }
+          ",
+              "__index": "export { DefaultApi } from "./Default";
+          ",
+          }
+        ``
+          {
+              "__index": "export { PostApi } from "./post";
+          ",
+              "post": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
+          import { z } from "zod";
+
+          const reqSchema = z
+            .object({ prop1: z.number().int(), prop2: z.number().int() })
+            .passthrough();
+
+          export const schemas = {
+            reqSchema,
+          };
+
+          const endpoints = makeApi([
+            {
+              method: "post",
+              path: "/api/v1/test",
+              requestFormat: "json",
+              parameters: [
+                {
+                  name: "req",
+                  type: "Query",
+                  schema: reqSchema,
+                },
+              ],
+              response: z.void(),
+            },
+          ]);
+
+          export const PostApi = new Zodios(endpoints);
+
+          export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
+            return new Zodios(baseUrl, endpoints, options);
+          }
+          ",
+          }
+        `);
     };
 
     test("tag file", () => runTest("tag-file"));

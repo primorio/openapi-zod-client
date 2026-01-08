@@ -48,10 +48,10 @@ test("name-with-special-characters", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const _1Name_With_Special_Characters = z.string();
+      const _1Name_With_Special_CharactersSchema = z.string();
 
       export const schemas = {
-        _1Name_With_Special_Characters,
+        _1Name_With_Special_CharactersSchema,
       };
 
       const endpoints = makeApi([

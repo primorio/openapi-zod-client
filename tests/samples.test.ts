@@ -98,17 +98,17 @@ describe("samples-generator", async () => {
               "v3.0/link-example.": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const user = z.object({ username: z.string(), uuid: z.string() }).partial().passthrough();
-          const repository = z.object({ slug: z.string(), owner: user }).partial().passthrough();
-          const pullrequest = z
-              .object({ id: z.number().int(), title: z.string(), repository: repository, author: user })
+          const userSchema = z.object({ username: z.string(), uuid: z.string() }).partial().passthrough();
+          const repositorySchema = z.object({ slug: z.string(), owner: userSchema }).partial().passthrough();
+          const pullrequestSchema = z
+              .object({ id: z.number().int(), title: z.string(), repository: repositorySchema, author: userSchema })
               .partial()
               .passthrough();
 
           export const schemas = {
-              user,
-              repository,
-              pullrequest,
+              userSchema,
+              repositorySchema,
+              pullrequestSchema,
           };
 
           const endpoints = makeApi([
@@ -123,7 +123,7 @@ describe("samples-generator", async () => {
                           schema: z.string(),
                       },
                   ],
-                  response: z.array(repository),
+                  response: z.array(repositorySchema),
               },
               {
                   method: "get",
@@ -141,7 +141,7 @@ describe("samples-generator", async () => {
                           schema: z.string(),
                       },
                   ],
-                  response: repository,
+                  response: repositorySchema,
               },
               {
                   method: "get",
@@ -164,7 +164,7 @@ describe("samples-generator", async () => {
                           schema: z.enum(["open", "merged", "declined"]).optional(),
                       },
                   ],
-                  response: z.array(pullrequest),
+                  response: z.array(pullrequestSchema),
               },
               {
                   method: "get",
@@ -187,7 +187,7 @@ describe("samples-generator", async () => {
                           schema: z.string(),
                       },
                   ],
-                  response: pullrequest,
+                  response: pullrequestSchema,
               },
               {
                   method: "post",
@@ -223,7 +223,7 @@ describe("samples-generator", async () => {
                           schema: z.string(),
                       },
                   ],
-                  response: user,
+                  response: userSchema,
               },
           ]);
 
@@ -236,14 +236,14 @@ describe("samples-generator", async () => {
               "v3.0/petstore-expanded.": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const NewPet = z.object({ name: z.string(), tag: z.string().optional() }).passthrough();
-          const Pet = NewPet.and(z.object({ id: z.number().int() }).passthrough());
-          const Error = z.object({ code: z.number().int(), message: z.string() }).passthrough();
+          const NewPetSchema = z.object({ name: z.string(), tag: z.string().optional() }).passthrough();
+          const PetSchema = NewPetSchema.and(z.object({ id: z.number().int() }).passthrough());
+          const ErrorSchema = z.object({ code: z.number().int(), message: z.string() }).passthrough();
 
           export const schemas = {
-              NewPet,
-              Pet,
-              Error,
+              NewPetSchema,
+              PetSchema,
+              ErrorSchema,
           };
 
           const endpoints = makeApi([
@@ -268,7 +268,7 @@ describe("samples-generator", async () => {
                           schema: z.number().int().optional(),
                       },
                   ],
-                  response: z.array(Pet),
+                  response: z.array(PetSchema),
               },
               {
                   method: "post",
@@ -280,10 +280,10 @@ describe("samples-generator", async () => {
                           name: "body",
                           description: \`Pet to add to the store\`,
                           type: "Body",
-                          schema: NewPet,
+                          schema: NewPetSchema,
                       },
                   ],
-                  response: Pet,
+                  response: PetSchema,
               },
               {
                   method: "get",
@@ -297,7 +297,7 @@ describe("samples-generator", async () => {
                           schema: z.number().int(),
                       },
                   ],
-                  response: Pet,
+                  response: PetSchema,
               },
               {
                   method: "delete",
@@ -324,14 +324,14 @@ describe("samples-generator", async () => {
               "v3.0/petstore.": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const Pet = z.object({ id: z.number().int(), name: z.string(), tag: z.string().optional() }).passthrough();
-          const Pets = z.array(Pet);
-          const Error = z.object({ code: z.number().int(), message: z.string() }).passthrough();
+          const PetSchema = z.object({ id: z.number().int(), name: z.string(), tag: z.string().optional() }).passthrough();
+          const PetsSchema = z.array(PetSchema);
+          const ErrorSchema = z.object({ code: z.number().int(), message: z.string() }).passthrough();
 
           export const schemas = {
-              Pet,
-              Pets,
-              Error,
+              PetSchema,
+              PetsSchema,
+              ErrorSchema,
           };
 
           const endpoints = makeApi([
@@ -346,7 +346,7 @@ describe("samples-generator", async () => {
                           schema: z.number().int().optional(),
                       },
                   ],
-                  response: z.array(Pet),
+                  response: z.array(PetSchema),
               },
               {
                   method: "post",
@@ -365,7 +365,7 @@ describe("samples-generator", async () => {
                           schema: z.string(),
                       },
                   ],
-                  response: Pet,
+                  response: PetSchema,
               },
           ]);
 
@@ -378,7 +378,7 @@ describe("samples-generator", async () => {
               "v3.0/uspto.": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          const dataSetList = z
+          const dataSetListSchema = z
               .object({
                   total: z.number().int(),
                   apis: z.array(
@@ -395,7 +395,7 @@ describe("samples-generator", async () => {
               })
               .partial()
               .passthrough();
-          const perform_search_Body = z
+          const perform_search_BodySchema = z
               .object({
                   criteria: z.string().default("*:*"),
                   start: z.number().int().optional().default(0),
@@ -404,8 +404,8 @@ describe("samples-generator", async () => {
               .passthrough();
 
           export const schemas = {
-              dataSetList,
-              perform_search_Body,
+              dataSetListSchema,
+              perform_search_BodySchema,
           };
 
           const endpoints = makeApi([
@@ -413,7 +413,7 @@ describe("samples-generator", async () => {
                   method: "get",
                   path: "/",
                   requestFormat: "json",
-                  response: dataSetList,
+                  response: dataSetListSchema,
               },
               {
                   method: "get",
@@ -450,7 +450,7 @@ describe("samples-generator", async () => {
                       {
                           name: "body",
                           type: "Body",
-                          schema: perform_search_Body,
+                          schema: perform_search_BodySchema,
                       },
                       {
                           name: "version",

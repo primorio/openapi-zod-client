@@ -9,11 +9,6 @@ import { wrapWithQuotesIfNeeded, convertPropertyName } from "./utils";
 import { inferRequiredSchema } from "./inferRequiredOnly";
 import generateJSDocArray from "./generateJSDocArray";
 
-// Helper function to remove "Schema" suffix from schema names for type names
-const getTypeNameFromSchemaName = (schemaName: string): string => {
-    return schemaName.endsWith("Schema") ? schemaName.slice(0, -"Schema".length) : schemaName;
-};
-
 type TsConversionArgs = {
     schema: SchemaObject | ReferenceObject;
     ctx?: TsConversionContext | undefined;
@@ -80,9 +75,8 @@ TsConversionArgs): ts.Node | TypeDefinitionObject | string => {
 
             let result = ctx.nodeByRef[schema.$ref];
             let schemaName = ctx.resolver.resolveRef(schema.$ref)?.normalized;
-            const typeName = schemaName ? getTypeNameFromSchemaName(schemaName) : schemaName;
             if (ctx.visitedsRefs[schema.$ref]) {
-                return t.reference(typeName);
+                return t.reference(schemaName);
             }
 
             if (!result) {
@@ -99,7 +93,7 @@ TsConversionArgs): ts.Node | TypeDefinitionObject | string => {
                 schemaName = ctx.resolver.resolveRef(schema.$ref)?.normalized;
             }
 
-            return t.reference(getTypeNameFromSchemaName(schemaName));
+            return t.reference(schemaName);
         }
 
         if (Array.isArray(schema.type)) {

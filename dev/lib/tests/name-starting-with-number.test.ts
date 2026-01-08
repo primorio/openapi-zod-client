@@ -49,10 +49,10 @@ test("operationId-starting-with-number", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const Basic = z.string();
+      const BasicSchema = z.string();
 
       export const schemas = {
-        Basic,
+        BasicSchema,
       };
 
       const endpoints = makeApi([

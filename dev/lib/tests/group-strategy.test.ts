@@ -569,21 +569,21 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
       {
           "__common": "import { z } from "zod";
 
-      export const Category = z
+      export const CategorySchema = z
         .object({ id: z.number().int(), name: z.string() })
         .partial()
         .passthrough();
-      export const Tag = z
+      export const TagSchema = z
         .object({ id: z.number().int(), name: z.string() })
         .partial()
         .passthrough();
-      export const Pet = z
+      export const PetSchema = z
         .object({
           id: z.number().int().optional(),
           name: z.string(),
-          category: Category.optional(),
+          category: CategorySchema.optional(),
           photoUrls: z.array(z.string()),
-          tags: z.array(Tag).optional(),
+          tags: z.array(TagSchema).optional(),
           status: z.enum(["available", "pending", "sold"]).optional(),
         })
         .passthrough();
@@ -594,20 +594,20 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
       ",
           "pet": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
-      
-      import { Pet } from "./common";
-      import { Category } from "./common";
-      import { Tag } from "./common";
-      
-      const ApiResponse = z
+
+      import { PetSchema } from "./common";
+      import { CategorySchema } from "./common";
+      import { TagSchema } from "./common";
+
+      const ApiResponseSchema = z
         .object({ code: z.number().int(), type: z.string(), message: z.string() })
         .partial()
         .passthrough();
-      
+
       export const schemas = {
-        ApiResponse,
+        ApiResponseSchema,
       };
-      
+
       const endpoints = makeApi([
         {
           method: "put",
@@ -619,10 +619,10 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
               name: "body",
               description: \`Update an existent pet in the store\`,
               type: "Body",
-              schema: Pet,
+              schema: PetSchema,
             },
           ],
-          response: Pet,
+          response: PetSchema,
           errors: [
             {
               status: 400,
@@ -651,10 +651,10 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
               name: "body",
               description: \`Create a new pet in the store\`,
               type: "Body",
-              schema: Pet,
+              schema: PetSchema,
             },
           ],
-          response: Pet,
+          response: PetSchema,
           errors: [
             {
               status: 405,
@@ -678,7 +678,7 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
                 .default("available"),
             },
           ],
-          response: z.array(Pet),
+          response: z.array(PetSchema),
           errors: [
             {
               status: 400,
@@ -699,7 +699,7 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
               schema: z.array(z.string()).optional(),
             },
           ],
-          response: z.array(Pet),
+          response: z.array(PetSchema),
           errors: [
             {
               status: 400,
@@ -720,7 +720,7 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
               schema: z.number().int(),
             },
           ],
-          response: Pet,
+          response: PetSchema,
           errors: [
             {
               status: 400,
@@ -771,7 +771,7 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
           requestFormat: "json",
           parameters: [
             {
-              name: "api_key",
+              name: "apiKey",
               type: "Header",
               schema: z.string().optional(),
             },
@@ -811,24 +811,24 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
               schema: z.string().optional(),
             },
           ],
-          response: ApiResponse,
+          response: ApiResponseSchema,
         },
       ]);
-      
+
       export const PetApi = new Zodios(endpoints);
-      
+
       export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
         return new Zodios(baseUrl, endpoints, options);
       }
       ",
           "store": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
-      
-      import { Pet } from "./common";
-      import { Category } from "./common";
-      import { Tag } from "./common";
-      
-      const Order = z
+
+      import { PetSchema } from "./common";
+      import { CategorySchema } from "./common";
+      import { TagSchema } from "./common";
+
+      const OrderSchema = z
         .object({
           id: z.number().int(),
           petId: z.number().int(),
@@ -836,15 +836,15 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
           shipDate: z.string().datetime({ offset: true }),
           status: z.enum(["placed", "approved", "delivered"]),
           complete: z.boolean(),
-          pet: Pet,
+          pet: PetSchema,
         })
         .partial()
         .passthrough();
-      
+
       export const schemas = {
-        Order,
+        OrderSchema,
       };
-      
+
       const endpoints = makeApi([
         {
           method: "get",
@@ -862,10 +862,10 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
             {
               name: "body",
               type: "Body",
-              schema: Order,
+              schema: OrderSchema,
             },
           ],
-          response: Order,
+          response: OrderSchema,
           errors: [
             {
               status: 405,
@@ -886,7 +886,7 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
               schema: z.number().int(),
             },
           ],
-          response: Order,
+          response: OrderSchema,
           errors: [
             {
               status: 400,
@@ -927,17 +927,17 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
           ],
         },
       ]);
-      
+
       export const StoreApi = new Zodios(endpoints);
-      
+
       export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
         return new Zodios(baseUrl, endpoints, options);
       }
       ",
           "user": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
-      
-      const User = z
+
+      const UserSchema = z
         .object({
           id: z.number().int(),
           username: z.string(),
@@ -950,11 +950,11 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
         })
         .partial()
         .passthrough();
-      
+
       export const schemas = {
-        User,
+        UserSchema,
       };
-      
+
       const endpoints = makeApi([
         {
           method: "post",
@@ -966,7 +966,7 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
               name: "body",
               description: \`Created user object\`,
               type: "Body",
-              schema: User,
+              schema: UserSchema,
             },
           ],
           response: z.void(),
@@ -980,10 +980,10 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
             {
               name: "body",
               type: "Body",
-              schema: z.array(User),
+              schema: z.array(UserSchema),
             },
           ],
-          response: User,
+          response: UserSchema,
         },
         {
           method: "get",
@@ -1027,7 +1027,7 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
               schema: z.string(),
             },
           ],
-          response: User,
+          response: UserSchema,
           errors: [
             {
               status: 400,
@@ -1051,7 +1051,7 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
               name: "body",
               description: \`Update an existent user in the store\`,
               type: "Body",
-              schema: User,
+              schema: UserSchema,
             },
             {
               name: "username",
@@ -1088,9 +1088,9 @@ test("group-strategy: tag-file with modified petstore schema", async () => {
           ],
         },
       ]);
-      
+
       export const UserApi = new Zodios(endpoints);
-      
+
       export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
         return new Zodios(baseUrl, endpoints, options);
       }
@@ -1240,13 +1240,13 @@ test("group-strategy with complex schemas + split files", async () => {
                       "parameters": [],
                       "path": "/countries",
                       "requestFormat": "json",
-                      "response": "Country",
+                      "response": "CountrySchema",
                   },
               ],
               "imports": {
-                  "Country": "common",
-                  "Store": "common",
-                  "User": "common",
+                  "CountrySchema": "common",
+                  "StoreSchema": "common",
+                  "UserSchema": "common",
               },
               "schemas": {},
               "types": {},
@@ -1260,7 +1260,7 @@ test("group-strategy with complex schemas + split files", async () => {
                       "parameters": [],
                       "path": "/pet",
                       "requestFormat": "json",
-                      "response": "Pet",
+                      "response": "PetSchema",
                   },
                   {
                       "description": undefined,
@@ -1269,7 +1269,7 @@ test("group-strategy with complex schemas + split files", async () => {
                       "parameters": [],
                       "path": "/pet",
                       "requestFormat": "json",
-                      "response": "Pet",
+                      "response": "PetSchema",
                   },
                   {
                       "description": undefined,
@@ -1278,7 +1278,7 @@ test("group-strategy with complex schemas + split files", async () => {
                       "parameters": [],
                       "path": "/pet/all",
                       "requestFormat": "json",
-                      "response": "z.array(Pet)",
+                      "response": "z.array(PetSchema)",
                   },
                   {
                       "description": undefined,
@@ -1287,14 +1287,14 @@ test("group-strategy with complex schemas + split files", async () => {
                       "parameters": [],
                       "path": "/pet/all",
                       "requestFormat": "json",
-                      "response": "Pet",
+                      "response": "PetSchema",
                   },
               ],
               "imports": {
-                  "User": "common",
+                  "UserSchema": "common",
               },
               "schemas": {
-                  "Pet": "z.object({ id: z.number().int(), nickname: z.string(), owner: User }).partial().passthrough()",
+                  "PetSchema": "z.object({ id: z.number().int(), nickname: z.string(), owner: UserSchema }).partial().passthrough()",
               },
               "types": {},
           },
@@ -1307,7 +1307,7 @@ test("group-strategy with complex schemas + split files", async () => {
                       "parameters": [],
                       "path": "/store",
                       "requestFormat": "json",
-                      "response": "Store",
+                      "response": "StoreSchema",
                   },
                   {
                       "description": undefined,
@@ -1316,13 +1316,13 @@ test("group-strategy with complex schemas + split files", async () => {
                       "parameters": [],
                       "path": "/store",
                       "requestFormat": "json",
-                      "response": "Store",
+                      "response": "StoreSchema",
                   },
               ],
               "imports": {
-                  "Country": "common",
-                  "Store": "common",
-                  "User": "common",
+                  "CountrySchema": "common",
+                  "StoreSchema": "common",
+                  "UserSchema": "common",
               },
               "schemas": {},
               "types": {},
@@ -1336,7 +1336,7 @@ test("group-strategy with complex schemas + split files", async () => {
                       "parameters": [],
                       "path": "/user",
                       "requestFormat": "json",
-                      "response": "User",
+                      "response": "UserSchema",
                   },
                   {
                       "description": undefined,
@@ -1345,11 +1345,11 @@ test("group-strategy with complex schemas + split files", async () => {
                       "parameters": [],
                       "path": "/user",
                       "requestFormat": "json",
-                      "response": "User",
+                      "response": "UserSchema",
                   },
               ],
               "imports": {
-                  "User": "common",
+                  "UserSchema": "common",
               },
               "schemas": {},
               "types": {},
@@ -1368,16 +1368,16 @@ test("group-strategy with complex schemas + split files", async () => {
           "Default": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      import { Country } from "./common";
-      import { Store } from "./common";
-      import { User } from "./common";
+      import { CountrySchema } from "./common";
+      import { StoreSchema } from "./common";
+      import { UserSchema } from "./common";
 
       const endpoints = makeApi([
         {
           method: "get",
           path: "/countries",
           requestFormat: "json",
-          response: Country,
+          response: CountrySchema,
         },
       ]);
 
@@ -1389,58 +1389,37 @@ test("group-strategy with complex schemas + split files", async () => {
       ",
           "__common": "import { z } from "zod";
 
-      export type User = Partial<{
-        id: number;
-        firstname: string;
-        lastname: string;
-        email: string;
-        friends: Array<User>;
-      }>;
-      export type Store = Partial<{
-        id: number;
-        name: string;
-        address: string;
-        country: Country;
-        owner: User;
-      }>;
-      export type Country = Partial<{
-        id: number;
-        name: string;
-        code: string;
-        store_list: Array<Store>;
-      }>;
-
-      export const User = z.lazy(() =>
+      export const UserSchema = z.lazy(() =>
         z
           .object({
             id: z.number().int(),
             firstname: z.string(),
             lastname: z.string(),
             email: z.string(),
-            friends: z.array(User),
+            friends: z.array(UserSchema),
           })
           .partial()
           .passthrough()
       );
-      export const Country = z.lazy(() =>
+      export const CountrySchema = z.lazy(() =>
         z
           .object({
             id: z.number().int(),
             name: z.string(),
             code: z.string(),
-            store_list: z.array(Store),
+            storeList: z.array(StoreSchema),
           })
           .partial()
           .passthrough()
       );
-      export const Store = z.lazy(() =>
+      export const StoreSchema = z.lazy(() =>
         z
           .object({
             id: z.number().int(),
             name: z.string(),
             address: z.string(),
-            country: Country,
-            owner: User,
+            country: CountrySchema,
+            owner: UserSchema,
           })
           .partial()
           .passthrough()
@@ -1454,15 +1433,15 @@ test("group-strategy with complex schemas + split files", async () => {
           "pet": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      import { User } from "./common";
+      import { UserSchema } from "./common";
 
-      const Pet = z
-        .object({ id: z.number().int(), nickname: z.string(), owner: User })
+      const PetSchema = z
+        .object({ id: z.number().int(), nickname: z.string(), owner: UserSchema })
         .partial()
         .passthrough();
 
       export const schemas = {
-        Pet,
+        PetSchema,
       };
 
       const endpoints = makeApi([
@@ -1470,25 +1449,25 @@ test("group-strategy with complex schemas + split files", async () => {
           method: "get",
           path: "/pet",
           requestFormat: "json",
-          response: Pet,
+          response: PetSchema,
         },
         {
           method: "put",
           path: "/pet",
           requestFormat: "json",
-          response: Pet,
+          response: PetSchema,
         },
         {
           method: "get",
           path: "/pet/all",
           requestFormat: "json",
-          response: z.array(Pet),
+          response: z.array(PetSchema),
         },
         {
           method: "post",
           path: "/pet/all",
           requestFormat: "json",
-          response: Pet,
+          response: PetSchema,
         },
       ]);
 
@@ -1501,22 +1480,22 @@ test("group-strategy with complex schemas + split files", async () => {
           "store": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      import { Store } from "./common";
-      import { Country } from "./common";
-      import { User } from "./common";
+      import { StoreSchema } from "./common";
+      import { CountrySchema } from "./common";
+      import { UserSchema } from "./common";
 
       const endpoints = makeApi([
         {
           method: "get",
           path: "/store",
           requestFormat: "json",
-          response: Store,
+          response: StoreSchema,
         },
         {
           method: "put",
           path: "/store",
           requestFormat: "json",
-          response: Store,
+          response: StoreSchema,
         },
       ]);
 
@@ -1529,20 +1508,20 @@ test("group-strategy with complex schemas + split files", async () => {
           "user": "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      import { User } from "./common";
+      import { UserSchema } from "./common";
 
       const endpoints = makeApi([
         {
           method: "get",
           path: "/user",
           requestFormat: "json",
-          response: User,
+          response: UserSchema,
         },
         {
           method: "put",
           path: "/user",
           requestFormat: "json",
-          response: User,
+          response: UserSchema,
         },
       ]);
 

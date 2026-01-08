@@ -105,7 +105,7 @@ test("export-all-named-schemas", async () => {
                   "parameters": [
                       {
                           "name": "sameSchemaSameName",
-                          "schema": "sameSchemaSameName",
+                          "schema": "sameSchemaSameNameSchema",
                           "type": "Query",
                       },
                   ],
@@ -120,7 +120,7 @@ test("export-all-named-schemas", async () => {
                   "parameters": [
                       {
                           "name": "schemaNameAlreadyUsed",
-                          "schema": "schemaNameAlreadyUsed",
+                          "schema": "schemaNameAlreadyUsedSchema",
                           "type": "Query",
                       },
                   ],
@@ -135,12 +135,12 @@ test("export-all-named-schemas", async () => {
                   "parameters": [
                       {
                           "name": "sameSchemaDifferentName",
-                          "schema": "sameSchemaDifferentName",
+                          "schema": "sameSchemaDifferentNameSchema",
                           "type": "Query",
                       },
                       {
                           "name": "sameSchemaSameName",
-                          "schema": "sameSchemaSameName",
+                          "schema": "sameSchemaSameNameSchema",
                           "type": "Query",
                       },
                   ],
@@ -155,7 +155,7 @@ test("export-all-named-schemas", async () => {
                   "parameters": [
                       {
                           "name": "schemaNameAlreadyUsed",
-                          "schema": "schemaNameAlreadyUsed__2",
+                          "schema": "schemaNameAlreadyUsedSchema__2",
                           "type": "Query",
                       },
                   ],
@@ -170,10 +170,10 @@ test("export-all-named-schemas", async () => {
               "withAlias": false,
           },
           "schemas": {
-              "sameSchemaDifferentName": "z.enum(["xxx", "yyy", "zzz"]).optional()",
-              "sameSchemaSameName": "z.enum(["xxx", "yyy", "zzz"]).optional()",
-              "schemaNameAlreadyUsed": "z.enum(["aaa", "bbb", "ccc"]).optional()",
-              "schemaNameAlreadyUsed__2": "z.enum(["ggg", "hhh", "iii"]).optional()",
+              "sameSchemaDifferentNameSchema": "z.enum(["xxx", "yyy", "zzz"]).optional()",
+              "sameSchemaSameNameSchema": "z.enum(["xxx", "yyy", "zzz"]).optional()",
+              "schemaNameAlreadyUsedSchema": "z.enum(["aaa", "bbb", "ccc"]).optional()",
+              "schemaNameAlreadyUsedSchema__2": "z.enum(["ggg", "hhh", "iii"]).optional()",
           },
           "types": {},
       }
@@ -189,16 +189,16 @@ test("export-all-named-schemas", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const sameSchemaSameName = z.enum(["xxx", "yyy", "zzz"]).optional();
-      const schemaNameAlreadyUsed = z.enum(["aaa", "bbb", "ccc"]).optional();
-      const sameSchemaDifferentName = z.enum(["xxx", "yyy", "zzz"]).optional();
-      const schemaNameAlreadyUsed__2 = z.enum(["ggg", "hhh", "iii"]).optional();
+      const sameSchemaSameNameSchema = z.enum(["xxx", "yyy", "zzz"]).optional();
+      const schemaNameAlreadyUsedSchema = z.enum(["aaa", "bbb", "ccc"]).optional();
+      const sameSchemaDifferentNameSchema = z.enum(["xxx", "yyy", "zzz"]).optional();
+      const schemaNameAlreadyUsedSchema__2 = z.enum(["ggg", "hhh", "iii"]).optional();
 
       export const schemas = {
-        sameSchemaSameName,
-        schemaNameAlreadyUsed,
-        sameSchemaDifferentName,
-        schemaNameAlreadyUsed__2,
+        sameSchemaSameNameSchema,
+        schemaNameAlreadyUsedSchema,
+        sameSchemaDifferentNameSchema,
+        schemaNameAlreadyUsedSchema__2,
       };
 
       const endpoints = makeApi([
@@ -210,7 +210,7 @@ test("export-all-named-schemas", async () => {
             {
               name: "sameSchemaSameName",
               type: "Query",
-              schema: sameSchemaSameName,
+              schema: sameSchemaSameNameSchema,
             },
           ],
           response: z.string(),
@@ -223,7 +223,7 @@ test("export-all-named-schemas", async () => {
             {
               name: "schemaNameAlreadyUsed",
               type: "Query",
-              schema: schemaNameAlreadyUsed,
+              schema: schemaNameAlreadyUsedSchema,
             },
           ],
           response: z.string(),
@@ -236,12 +236,12 @@ test("export-all-named-schemas", async () => {
             {
               name: "sameSchemaDifferentName",
               type: "Query",
-              schema: sameSchemaDifferentName,
+              schema: sameSchemaDifferentNameSchema,
             },
             {
               name: "sameSchemaSameName",
               type: "Query",
-              schema: sameSchemaSameName,
+              schema: sameSchemaSameNameSchema,
             },
           ],
           response: z.string(),
@@ -254,7 +254,7 @@ test("export-all-named-schemas", async () => {
             {
               name: "schemaNameAlreadyUsed",
               type: "Query",
-              schema: schemaNameAlreadyUsed__2,
+              schema: schemaNameAlreadyUsedSchema__2,
             },
           ],
           response: z.string(),

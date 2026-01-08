@@ -34,7 +34,7 @@ test("export-schemas-option", async () => {
 
     expect(getZodClientTemplateContext(openApiDoc, { shouldExportAllSchemas: false }).schemas).toMatchInlineSnapshot(`
       {
-          "Basic": "z.string()",
+          "BasicSchema": "z.string()",
       }
     `);
 
@@ -56,7 +56,8 @@ test("export-schemas-option", async () => {
     expect(ctx.schemas).toMatchInlineSnapshot(`
       {
           "Basic": "z.string()",
-          "UnusedSchemas": "z.object({ nested_prop: z.boolean(), another: z.string() }).partial().passthrough()",
+          "BasicSchema": "z.string()",
+          "UnusedSchemas": "z.object({ nestedProp: z.boolean(), another: z.string() }).partial().passthrough()",
       }
     `);
 
@@ -69,13 +70,15 @@ test("export-schemas-option", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
+      const BasicSchema = z.string();
       const Basic = z.string();
       const UnusedSchemas = z
-        .object({ nested_prop: z.boolean(), another: z.string() })
+        .object({ nestedProp: z.boolean(), another: z.string() })
         .partial()
         .passthrough();
 
       export const schemas = {
+        BasicSchema,
         Basic,
         UnusedSchemas,
       };

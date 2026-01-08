@@ -30,10 +30,10 @@ test("schema-type-wrong-case", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const test1 = z.object({ text1: z.number() }).partial().passthrough();
+      const test1Schema = z.object({ text1: z.number() }).partial().passthrough();
 
       export const schemas = {
-        test1,
+        test1Schema,
       };
 
       const endpoints = makeApi([

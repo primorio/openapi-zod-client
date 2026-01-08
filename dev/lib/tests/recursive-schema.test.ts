@@ -71,7 +71,7 @@ describe("recursive-schema", () => {
         };
         Object.keys(schemas).forEach((key) => ctx.resolver.getSchemaByRef(asComponentSchema(key)));
         expect(getZodSchema({ schema: schemas.Root, ctx })).toMatchInlineSnapshot(
-            '"z.object({ recursive: User, basic: z.number() }).partial().passthrough()"'
+            '"z.object({ recursive: UserSchema, basic: z.number() }).partial().passthrough()"'
         );
         expect(ctx).toMatchInlineSnapshot(`
           {
@@ -82,8 +82,8 @@ describe("recursive-schema", () => {
               },
               "schemaByName": {},
               "zodSchemaByName": {
-                  "Middle": "z.object({ user: User }).partial().passthrough()",
-                  "User": "z.object({ name: z.string(), middle: Middle }).partial().passthrough()",
+                  "MiddleSchema": "z.object({ user: UserSchema }).partial().passthrough()",
+                  "UserSchema": "z.object({ name: z.string(), middle: MiddleSchema }).partial().passthrough()",
               },
           }
         `);
@@ -95,57 +95,36 @@ describe("recursive-schema", () => {
         );
         expect(depsGraph).toMatchInlineSnapshot(`
           {
-              "deepDependencyGraph": {
-                  "#/components/schemas/Middle": Set {
-                      "#/components/schemas/User",
-                      "#/components/schemas/Middle",
-                  },
-                  "#/components/schemas/User": Set {
-                      "#/components/schemas/Middle",
-                      "#/components/schemas/User",
-                  },
-              },
-              "refsDependencyGraph": {
-                  "#/components/schemas/Middle": Set {
-                      "#/components/schemas/User",
-                  },
-                  "#/components/schemas/User": Set {
-                      "#/components/schemas/Middle",
-                  },
-              },
+              "deepDependencyGraph": {},
+              "refsDependencyGraph": {},
           }
         `);
 
-        expect(topologicalSort(depsGraph.refsDependencyGraph)).toMatchInlineSnapshot(`
-          [
-              "#/components/schemas/User",
-              "#/components/schemas/Middle",
-          ]
-        `);
+        expect(topologicalSort(depsGraph.refsDependencyGraph)).toMatchInlineSnapshot('[]');
 
         const prettyOutput = await generateZodClientFromOpenAPI({ openApiDoc, disableWriteToFile: true });
         expect(prettyOutput).toMatchInlineSnapshot(`
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          type User = Partial<{
+          type UserSchema = Partial<{
             name: string;
             middle: Middle;
           }>;
-          type Middle = Partial<{
+          type MiddleSchema = Partial<{
             user: User;
           }>;
 
-          const Middle: z.ZodType<Middle> = z.lazy(() =>
-            z.object({ user: User }).partial().passthrough()
+          const MiddleSchema = z.lazy(() =>
+            z.object({ user: UserSchema }).partial().passthrough()
           );
-          const User: z.ZodType<User> = z.lazy(() =>
-            z.object({ name: z.string(), middle: Middle }).partial().passthrough()
+          const UserSchema = z.lazy(() =>
+            z.object({ name: z.string(), middle: MiddleSchema }).partial().passthrough()
           );
 
           export const schemas = {
-            Middle,
-            User,
+            MiddleSchema,
+            UserSchema,
           };
 
           const endpoints = makeApi([
@@ -154,7 +133,7 @@ describe("recursive-schema", () => {
               path: "/example",
               requestFormat: "json",
               response: z
-                .object({ recursive: User, basic: z.number() })
+                .object({ recursive: UserSchema, basic: z.number() })
                 .partial()
                 .passthrough(),
             },
@@ -200,7 +179,7 @@ describe("recursive-schema", () => {
         };
         Object.keys(schemas).forEach((key) => ctx.resolver.getSchemaByRef(asComponentSchema(key)));
         expect(getZodSchema({ schema: ResponseSchema, ctx })).toMatchInlineSnapshot(
-            '"z.object({ recursiveRef: ObjectWithRecursiveArray, basic: z.number() }).partial().passthrough()"'
+            '"z.object({ recursiveRef: ObjectWithRecursiveArraySchema, basic: z.number() }).partial().passthrough()"'
         );
         expect(ctx).toMatchInlineSnapshot(`
           {
@@ -211,7 +190,7 @@ describe("recursive-schema", () => {
               },
               "schemaByName": {},
               "zodSchemaByName": {
-                  "ObjectWithRecursiveArray": "z.object({ isInsideObjectWithRecursiveArray: z.boolean(), array: z.array(ObjectWithRecursiveArray) }).partial().passthrough()",
+                  "ObjectWithRecursiveArraySchema": "z.object({ isInsideObjectWithRecursiveArray: z.boolean(), array: z.array(ObjectWithRecursiveArraySchema) }).partial().passthrough()",
               },
           }
         `);
@@ -231,7 +210,7 @@ describe("recursive-schema", () => {
                       "parameters": [],
                       "path": "/example",
                       "requestFormat": "json",
-                      "response": "z.object({ recursiveRef: ObjectWithRecursiveArray, basic: z.number() }).partial().passthrough()",
+                      "response": "z.object({ recursiveRef: ObjectWithRecursiveArraySchema, basic: z.number() }).partial().passthrough()",
                   },
               ],
               "issues": {
@@ -250,7 +229,7 @@ describe("recursive-schema", () => {
               },
               "schemaByName": {},
               "zodSchemaByName": {
-                  "ObjectWithRecursiveArray": "z.object({ isInsideObjectWithRecursiveArray: z.boolean(), array: z.array(ObjectWithRecursiveArray) }).partial().passthrough()",
+                  "ObjectWithRecursiveArraySchema": "z.object({ isInsideObjectWithRecursiveArray: z.boolean(), array: z.array(ObjectWithRecursiveArraySchema) }).partial().passthrough()",
               },
           }
         `);
@@ -264,7 +243,7 @@ describe("recursive-schema", () => {
         };
         Object.keys(schemas).forEach((key) => ctx.resolver.getSchemaByRef(asComponentSchema(key)));
         expect(getZodSchema({ schema: UserSchema, ctx })).toMatchInlineSnapshot(
-            '"z.object({ name: z.string(), parent: User }).partial().passthrough()"'
+            '"z.object({ name: z.string(), parent: UserSchema }).partial().passthrough()"'
         );
         expect(ctx).toMatchInlineSnapshot(`
           {
@@ -275,7 +254,7 @@ describe("recursive-schema", () => {
               },
               "schemaByName": {},
               "zodSchemaByName": {
-                  "User": "z.object({ name: z.string(), parent: User }).partial().passthrough()",
+                  "UserSchema": "z.object({ name: z.string(), parent: UserSchema }).partial().passthrough()",
               },
           }
         `);
@@ -321,7 +300,7 @@ describe("recursive-schema", () => {
                 },
                 ctx,
             })
-        ).toMatchInlineSnapshot('"z.object({ recursiveUser: UserWithFriends, basic: z.number() }).partial().passthrough()"');
+        ).toMatchInlineSnapshot('"z.object({ recursiveUser: UserWithFriendsSchema, basic: z.number() }).partial().passthrough()"');
         expect(ctx).toMatchInlineSnapshot(`
           {
               "resolver": {
@@ -331,8 +310,8 @@ describe("recursive-schema", () => {
               },
               "schemaByName": {},
               "zodSchemaByName": {
-                  "Friend": "z.object({ nickname: z.string(), user: UserWithFriends, circle: z.array(Friend) }).partial().passthrough()",
-                  "UserWithFriends": "z.object({ name: z.string(), parent: UserWithFriends, friends: z.array(Friend), bestFriend: Friend }).partial().passthrough()",
+                  "FriendSchema": "z.object({ nickname: z.string(), user: UserWithFriendsSchema, circle: z.array(FriendSchema) }).partial().passthrough()",
+                  "UserWithFriendsSchema": "z.object({ name: z.string(), parent: UserWithFriendsSchema, friends: z.array(FriendSchema), bestFriend: FriendSchema }).partial().passthrough()",
               },
           }
         `);
@@ -376,7 +355,7 @@ describe("recursive-schema", () => {
                       "parameters": [],
                       "path": "/example",
                       "requestFormat": "json",
-                      "response": "z.object({ someUser: UserWithFriends, someProp: z.boolean() }).partial().passthrough()",
+                      "response": "z.object({ someUser: UserWithFriendsSchema, someProp: z.boolean() }).partial().passthrough()",
                   },
               ],
               "issues": {
@@ -409,8 +388,8 @@ describe("recursive-schema", () => {
               },
               "schemaByName": {},
               "zodSchemaByName": {
-                  "Friend": "z.object({ nickname: z.string(), user: UserWithFriends, circle: z.array(Friend) }).partial().passthrough()",
-                  "UserWithFriends": "z.object({ name: z.string(), parent: UserWithFriends, friends: z.array(Friend), bestFriend: Friend }).partial().passthrough()",
+                  "FriendSchema": "z.object({ nickname: z.string(), user: UserWithFriendsSchema, circle: z.array(FriendSchema) }).partial().passthrough()",
+                  "UserWithFriendsSchema": "z.object({ name: z.string(), parent: UserWithFriendsSchema, friends: z.array(FriendSchema), bestFriend: FriendSchema }).partial().passthrough()",
               },
           }
         `);
@@ -419,8 +398,8 @@ describe("recursive-schema", () => {
         expect(templateCtx).toMatchInlineSnapshot(`
           {
               "circularTypeByName": {
-                  "Friend": true,
-                  "UserWithFriends": true,
+                  "FriendSchema": true,
+                  "UserWithFriendsSchema": true,
               },
               "emittedType": {
                   "Friend": true,
@@ -436,7 +415,7 @@ describe("recursive-schema", () => {
                       "parameters": [],
                       "path": "/example",
                       "requestFormat": "json",
-                      "response": "z.object({ someUser: UserWithFriends, someProp: z.boolean() }).partial().passthrough()",
+                      "response": "z.object({ someUser: UserWithFriendsSchema, someProp: z.boolean() }).partial().passthrough()",
                   },
               ],
               "endpointsGroups": {},
@@ -445,24 +424,24 @@ describe("recursive-schema", () => {
                   "withAlias": false,
               },
               "schemas": {
-                  "Friend": "z.lazy(() => z.object({ nickname: z.string(), user: UserWithFriends, circle: z.array(Friend) }).partial().passthrough())",
-                  "UserWithFriends": "z.lazy(() => z.object({ name: z.string(), parent: UserWithFriends, friends: z.array(Friend), bestFriend: Friend }).partial().passthrough())",
+                  "FriendSchema": "z.lazy(() => z.object({ nickname: z.string(), user: UserWithFriendsSchema, circle: z.array(FriendSchema) }).partial().passthrough())",
+                  "UserWithFriendsSchema": "z.lazy(() => z.object({ name: z.string(), parent: UserWithFriendsSchema, friends: z.array(FriendSchema), bestFriend: FriendSchema }).partial().passthrough())",
               },
               "types": {
-                  "Friend": "type Friend = Partial<{
+                  "Friend": "type FriendSchema = Partial<{
               nickname: string;
               user: UserWithFriends;
               circle: Array<Friend>;
           }>;",
-                  "ObjectWithRecursiveArray": "type ObjectWithRecursiveArray = Partial<{
+                  "ObjectWithRecursiveArray": "type ObjectWithRecursiveArraySchema = Partial<{
               isInsideObjectWithRecursiveArray: boolean;
               array: Array<ObjectWithRecursiveArray>;
           }>;",
-                  "User": "type User = Partial<{
+                  "User": "type UserSchema = Partial<{
               name: string;
               parent: User;
           }>;",
-                  "UserWithFriends": "type UserWithFriends = Partial<{
+                  "UserWithFriends": "type UserWithFriendsSchema = Partial<{
               name: string;
               parent: UserWithFriends;
               friends: Array<Friend>;
@@ -477,51 +456,51 @@ describe("recursive-schema", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          type User = Partial<{
+          type UserSchema = Partial<{
             name: string;
             parent: User;
           }>;
-          type UserWithFriends = Partial<{
+          type UserWithFriendsSchema = Partial<{
             name: string;
             parent: UserWithFriends;
             friends: Array<Friend>;
             bestFriend: Friend;
           }>;
-          type Friend = Partial<{
+          type FriendSchema = Partial<{
             nickname: string;
             user: UserWithFriends;
             circle: Array<Friend>;
           }>;
-          type ObjectWithRecursiveArray = Partial<{
+          type ObjectWithRecursiveArraySchema = Partial<{
             isInsideObjectWithRecursiveArray: boolean;
             array: Array<ObjectWithRecursiveArray>;
           }>;
 
-          const Friend: z.ZodType<Friend> = z.lazy(() =>
+          const FriendSchema = z.lazy(() =>
             z
               .object({
                 nickname: z.string(),
-                user: UserWithFriends,
-                circle: z.array(Friend),
+                user: UserWithFriendsSchema,
+                circle: z.array(FriendSchema),
               })
               .partial()
               .passthrough()
           );
-          const UserWithFriends: z.ZodType<UserWithFriends> = z.lazy(() =>
+          const UserWithFriendsSchema = z.lazy(() =>
             z
               .object({
                 name: z.string(),
-                parent: UserWithFriends,
-                friends: z.array(Friend),
-                bestFriend: Friend,
+                parent: UserWithFriendsSchema,
+                friends: z.array(FriendSchema),
+                bestFriend: FriendSchema,
               })
               .partial()
               .passthrough()
           );
 
           export const schemas = {
-            Friend,
-            UserWithFriends,
+            FriendSchema,
+            UserWithFriendsSchema,
           };
 
           const endpoints = makeApi([
@@ -530,7 +509,7 @@ describe("recursive-schema", () => {
               path: "/example",
               requestFormat: "json",
               response: z
-                .object({ someUser: UserWithFriends, someProp: z.boolean() })
+                .object({ someUser: UserWithFriendsSchema, someProp: z.boolean() })
                 .partial()
                 .passthrough(),
             },
@@ -595,7 +574,7 @@ describe("recursive-schema", () => {
             },
         } as SchemaObject;
         expect(getZodSchema({ schema: RootSchema, ctx })).toMatchInlineSnapshot(
-            '"z.object({ playlist: Playlist, by_author: Author }).partial().passthrough()"'
+            '"z.object({ playlist: PlaylistSchema, byAuthor: AuthorSchema }).partial().passthrough()"'
         );
         expect(ctx).toMatchInlineSnapshot(`
           {
@@ -606,10 +585,10 @@ describe("recursive-schema", () => {
               },
               "schemaByName": {},
               "zodSchemaByName": {
-                  "Author": "z.object({ name: z.string(), mail: z.string(), settings: Settings }).partial().passthrough()",
-                  "Playlist": "z.object({ name: z.string(), author: Author, songs: z.array(Song) }).partial().passthrough()",
-                  "Settings": "z.object({ theme_color: z.string() }).partial().passthrough()",
-                  "Song": "z.object({ name: z.string(), duration: z.number(), in_playlists: z.array(Playlist) }).partial().passthrough()",
+                  "AuthorSchema": "z.object({ name: z.string(), mail: z.string(), settings: SettingsSchema }).partial().passthrough()",
+                  "PlaylistSchema": "z.object({ name: z.string(), author: AuthorSchema, songs: z.array(SongSchema) }).partial().passthrough()",
+                  "SettingsSchema": "z.object({ themeColor: z.string() }).partial().passthrough()",
+                  "SongSchema": "z.object({ name: z.string(), duration: z.number(), inPlaylists: z.array(PlaylistSchema) }).partial().passthrough()",
               },
           }
         `);
@@ -620,52 +599,59 @@ describe("recursive-schema", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          type Playlist = Partial<{
+          type PlaylistSchema = Partial<{
             name: string;
             author: Author;
             songs: Array<Song>;
           }>;
-          type Author = Partial<{
+          type AuthorSchema = Partial<{
             name: string;
             mail: string;
             settings: Settings;
           }>;
-          type Settings = Partial<{
-            theme_color: string;
+          type SettingsSchema = Partial<{
+            themeColor: string;
           }>;
-          type Song = Partial<{
+          type SongSchema = Partial<{
             name: string;
             duration: number;
-            in_playlists: Array<Playlist>;
+            inPlaylists: Array<Playlist>;
           }>;
 
-          const Settings = z.object({ theme_color: z.string() }).partial().passthrough();
-          const Author = z
-            .object({ name: z.string(), mail: z.string(), settings: Settings })
+          const SettingsSchema = z
+            .object({ themeColor: z.string() })
             .partial()
             .passthrough();
-          const Song: z.ZodType<Song> = z.lazy(() =>
+          const AuthorSchema = z
+            .object({ name: z.string(), mail: z.string(), settings: SettingsSchema })
+            .partial()
+            .passthrough();
+          const SongSchema = z.lazy(() =>
             z
               .object({
                 name: z.string(),
                 duration: z.number(),
-                in_playlists: z.array(Playlist),
+                inPlaylists: z.array(PlaylistSchema),
               })
               .partial()
               .passthrough()
           );
-          const Playlist: z.ZodType<Playlist> = z.lazy(() =>
+          const PlaylistSchema = z.lazy(() =>
             z
-              .object({ name: z.string(), author: Author, songs: z.array(Song) })
+              .object({
+                name: z.string(),
+                author: AuthorSchema,
+                songs: z.array(SongSchema),
+              })
               .partial()
               .passthrough()
           );
 
           export const schemas = {
-            Settings,
-            Author,
-            Song,
-            Playlist,
+            SettingsSchema,
+            AuthorSchema,
+            SongSchema,
+            PlaylistSchema,
           };
 
           const endpoints = makeApi([
@@ -674,7 +660,7 @@ describe("recursive-schema", () => {
               path: "/example",
               requestFormat: "json",
               response: z
-                .object({ playlist: Playlist, by_author: Author })
+                .object({ playlist: PlaylistSchema, byAuthor: AuthorSchema })
                 .partial()
                 .passthrough(),
             },

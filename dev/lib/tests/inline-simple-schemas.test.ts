@@ -125,24 +125,27 @@ test("inline-simple-schemas", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const BasicString = z.string();
-      const SimpleObject = z.object({ str: z.string() }).partial().passthrough();
-      const ComplexObject = z
+      const BasicStringSchema = z.string();
+      const SimpleObjectSchema = z
+        .object({ str: z.string() })
+        .partial()
+        .passthrough();
+      const ComplexObjectSchema = z
         .object({
           str: z.string(),
-          strRef: BasicString,
+          strRef: BasicStringSchema,
           num: z.number(),
           bool: z.boolean(),
-          ref: SimpleObject,
-          refArray: z.array(SimpleObject),
+          ref: SimpleObjectSchema,
+          refArray: z.array(SimpleObjectSchema),
         })
         .partial()
         .passthrough();
 
       export const schemas = {
-        BasicString,
-        SimpleObject,
-        ComplexObject,
+        BasicStringSchema,
+        SimpleObjectSchema,
+        ComplexObjectSchema,
       };
 
       const endpoints = makeApi([
@@ -174,7 +177,7 @@ test("inline-simple-schemas", async () => {
             },
             {
               status: 405,
-              schema: z.array(SimpleObject),
+              schema: z.array(SimpleObjectSchema),
             },
             {
               status: 406,
@@ -182,7 +185,7 @@ test("inline-simple-schemas", async () => {
             },
             {
               status: 407,
-              schema: z.array(ComplexObject),
+              schema: z.array(ComplexObjectSchema),
             },
           ],
         },

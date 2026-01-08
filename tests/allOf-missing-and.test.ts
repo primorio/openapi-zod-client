@@ -40,16 +40,16 @@ test("allOf-missing-and", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const test1 = z.object({ text1: z.string() }).partial().passthrough();
-      const test2 = z.object({ text2: z.number() }).partial().passthrough();
-      const test3 = z.object({ text3: z.boolean() }).partial().passthrough();
-      const test4 = test1.and(test2).and(test3);
+      const test1Schema = z.object({ text1: z.string() }).partial().passthrough();
+      const test2Schema = z.object({ text2: z.number() }).partial().passthrough();
+      const test3Schema = z.object({ text3: z.boolean() }).partial().passthrough();
+      const test4Schema = test1Schema.and(test2Schema).and(test3Schema);
 
       export const schemas = {
-        test1,
-        test2,
-        test3,
-        test4,
+        test1Schema,
+        test2Schema,
+        test3Schema,
+        test4Schema,
       };
 
       const endpoints = makeApi([
@@ -57,7 +57,7 @@ test("allOf-missing-and", async () => {
           method: "put",
           path: "/pet",
           requestFormat: "json",
-          response: test4,
+          response: test4Schema,
         },
       ]);
 

@@ -31,13 +31,13 @@ test("allOf-missing-and", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const test2 = z
+      const test2Schema = z
         .object({ text2: z.string().min(5).max(10) })
         .partial()
         .passthrough();
 
       export const schemas = {
-        test2,
+        test2Schema,
       };
 
       const endpoints = makeApi([

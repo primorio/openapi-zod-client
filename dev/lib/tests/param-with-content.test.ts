@@ -63,10 +63,10 @@ test("param-with-content", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const test3 = z.object({ text3: z.boolean() }).partial().passthrough();
+      const test3Schema = z.object({ text3: z.boolean() }).partial().passthrough();
 
       export const schemas = {
-        test3,
+        test3Schema,
       };
 
       const endpoints = makeApi([

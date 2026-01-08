@@ -40,7 +40,7 @@ test("handle-refs-without-var-name", () => {
                   "parameters": [],
                   "path": "/something",
                   "requestFormat": "json",
-                  "response": "z.array(Basic)",
+                  "response": "z.array(BasicSchema)",
               },
           ],
           "endpointsGroups": {},
@@ -49,7 +49,7 @@ test("handle-refs-without-var-name", () => {
               "withAlias": false,
           },
           "schemas": {
-              "Basic": "z.object({}).partial().passthrough()",
+              "BasicSchema": "z.object({}).partial().passthrough()",
           },
           "types": {},
       }

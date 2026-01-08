@@ -17,8 +17,8 @@ const file = ts.createSourceFile("", "", ts.ScriptTarget.ESNext, true);
 const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
 const printTs = (node: ts.Node) => printer.printNode(ts.EmitHint.Unspecified, node, file);
 
-// Helper function to remove "Schema" suffix from schema names for type names
-const getTypeNameFromSchemaName = (schemaName: string): string => {
+// Helper to convert schema variable name to type name by removing 'Schema' suffix
+const schemaNameToTypeName = (schemaName: string): string => {
     return schemaName.endsWith("Schema") ? schemaName.slice(0, -"Schema".length) : schemaName;
 };
 
@@ -67,19 +67,19 @@ export const getZodClientTemplateContext = (
         const shouldGenerateType = options?.shouldExportAllTypes || isCircular;
         const schemaName = shouldGenerateType ? result.resolver.resolveRef(ref).normalized : undefined;
         if (shouldGenerateType && schemaName && !data.types[schemaName]) {
-            const typeName = getTypeNameFromSchemaName(schemaName);
+            const typeName = schemaNameToTypeName(schemaName);
             const node = getTypescriptFromOpenApi({
                 schema: result.resolver.getSchemaByRef(ref),
                 ctx,
-                meta: { name: schemaName },
+                meta: { name: typeName },
                 options,
             }) as ts.Node;
             data.types[typeName] = printTs(node).replace("export ", "");
-            data.emittedType[typeName] = true;
+            data.emittedType[schemaName] = typeName;
 
             for (const depRef of depsGraphs.deepDependencyGraph[ref] ?? []) {
                 const depSchemaName = result.resolver.resolveRef(depRef).normalized;
-                const depTypeName = getTypeNameFromSchemaName(depSchemaName);
+                const depTypeName = schemaNameToTypeName(depSchemaName);
                 const isDepCircular = depsGraphs.deepDependencyGraph[depRef]?.has(depRef);
 
                 if (!isDepCircular && !data.types[depTypeName]) {
@@ -87,14 +87,14 @@ export const getZodClientTemplateContext = (
                     const node = getTypescriptFromOpenApi({
                         schema: nodeSchema,
                         ctx,
-                        meta: { name: depSchemaName },
+                        meta: { name: depTypeName },
                         options,
                     }) as ts.Node;
                     data.types[depTypeName] = printTs(node).replace("export ", "");
                     // defining types for strings and using the `z.ZodType<string>` type for their schema
                     // prevents consumers of the type from adding zod validations like `.min()` to the type
                     if (options?.shouldExportAllTypes && nodeSchema.type === "object") {
-                        data.emittedType[depTypeName] = true;
+                        data.emittedType[depSchemaName] = depTypeName;
                     }
                 }
             }

@@ -74,7 +74,7 @@ test("handle-refs-with-dots-in-name", async () => {
                   "parameters": [],
                   "path": "/ref-with-dot-in-name",
                   "requestFormat": "json",
-                  "response": "Basic_Thing",
+                  "response": "Basic_ThingSchema",
               },
           ],
           "issues": {
@@ -93,9 +93,9 @@ test("handle-refs-with-dots-in-name", async () => {
           },
           "schemaByName": {},
           "zodSchemaByName": {
-              "Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjj": "z.object({ aaa: z.string(), bbb: z.string() }).partial().passthrough()",
-              "Basic": "z.string()",
-              "Basic_Thing": "z.object({ thing: Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjj }).partial().passthrough()",
+              "Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjjSchema": "z.object({ aaa: z.string(), bbb: z.string() }).partial().passthrough()",
+              "BasicSchema": "z.string()",
+              "Basic_ThingSchema": "z.object({ thing: Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjjSchema }).partial().passthrough()",
           },
       }
     `);
@@ -105,20 +105,20 @@ test("handle-refs-with-dots-in-name", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const Basic = z.string();
-      const Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjj = z
+      const BasicSchema = z.string();
+      const Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjjSchema = z
         .object({ aaa: z.string(), bbb: z.string() })
         .partial()
         .passthrough();
-      const Basic_Thing = z
-        .object({ thing: Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjj })
+      const Basic_ThingSchema = z
+        .object({ thing: Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjjSchema })
         .partial()
         .passthrough();
 
       export const schemas = {
-        Basic,
-        Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjj,
-        Basic_Thing,
+        BasicSchema,
+        Aaa_bbb_CccDdd_eee_Fff_ggg_HhhIiii_jjjSchema,
+        Basic_ThingSchema,
       };
 
       const endpoints = makeApi([
@@ -126,7 +126,7 @@ test("handle-refs-with-dots-in-name", async () => {
           method: "get",
           path: "/ref-with-dot-in-name",
           requestFormat: "json",
-          response: Basic_Thing,
+          response: Basic_ThingSchema,
         },
         {
           method: "get",

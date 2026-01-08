@@ -52,10 +52,13 @@ test("request-body-ref", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      const PostPetsRequest = z.object({ id: z.string() }).partial().passthrough();
+      const PostPetsRequestSchema = z
+        .object({ id: z.string() })
+        .partial()
+        .passthrough();
 
       export const schemas = {
-        PostPetsRequest,
+        PostPetsRequestSchema,
       };
 
       const endpoints = makeApi([
