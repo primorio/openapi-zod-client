@@ -1,6 +1,6 @@
 'use strict';
 
-var generateZodClientFromOpenAPI = require('../../dist/generateZodClientFromOpenAPI-42386d2b.cjs.prod.js');
+var generateZodClientFromOpenAPI = require('../../dist/generateZodClientFromOpenAPI-43b36b36.cjs.prod.js');
 var node_fs = require('node:fs');
 var path = require('node:path');
 var SwaggerParser = require('@apidevtools/swagger-parser');

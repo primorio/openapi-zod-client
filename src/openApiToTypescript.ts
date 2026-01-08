@@ -75,8 +75,9 @@ TsConversionArgs): ts.Node | TypeDefinitionObject | string => {
 
             let result = ctx.nodeByRef[schema.$ref];
             let schemaName = ctx.resolver.resolveRef(schema.$ref)?.normalized;
+            let typeName = schemaName ? schemaNameToTypeName(schemaName) : schemaName;
             if (ctx.visitedsRefs[schema.$ref]) {
-                return t.reference(schemaName);
+                return t.reference(typeName);
             }
 
             if (!result) {
@@ -91,9 +92,10 @@ TsConversionArgs): ts.Node | TypeDefinitionObject | string => {
 
             if (!schemaName) {
                 schemaName = ctx.resolver.resolveRef(schema.$ref)?.normalized;
+                typeName = schemaName ? schemaNameToTypeName(schemaName) : schemaName;
             }
 
-            return t.reference(schemaName);
+            return t.reference(typeName);
         }
 
         if (Array.isArray(schema.type)) {
