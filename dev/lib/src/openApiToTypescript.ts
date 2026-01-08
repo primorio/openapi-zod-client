@@ -135,21 +135,17 @@ TsConversionArgs): ts.Node | TypeDefinitionObject | string => {
             return schema.nullable ? t.union([...types, t.reference("null")]) : t.union(types);
         }
 
-        // anyOf = oneOf but with 1 or more = `T extends oneOf ? T | T[] : never`
+        // anyOf = union type (treat same as oneOf)
         if (schema.anyOf) {
             if (schema.anyOf.length === 1) {
                 return getTypescriptFromOpenApi({ schema: schema.anyOf[0]!, ctx, meta, options });
             }
 
-            const oneOf = t.union(
-                schema.anyOf.map(
-                    (prop) => getTypescriptFromOpenApi({ schema: prop, ctx, meta, options }) as TypeDefinition
-                )
+            const types = schema.anyOf.map(
+                (prop) => getTypescriptFromOpenApi({ schema: prop, ctx, meta, options }) as TypeDefinition
             );
 
-            return schema.nullable
-                ? t.union([oneOf, doWrapReadOnly(t.array(oneOf)), t.reference("null")])
-                : t.union([oneOf, doWrapReadOnly(t.array(oneOf))]);
+            return schema.nullable ? t.union([...types, t.reference("null")]) : t.union(types);
         }
 
         if (schema.allOf) {

@@ -248,14 +248,14 @@ test("getSchemaAsTsString", () => {
         getSchemaAsTsString({ nullable: true, allOf: [{ type: "string" }, { type: "number" }] }, { name: "StringAndNumber" })
     ).toMatchInlineSnapshot('"export type StringAndNumber = (string & number) | null;"');
     expect(getSchemaAsTsString({ nullable: true, anyOf: [{ type: "string" }, { type: "number" }] })).toMatchInlineSnapshot(
-        '"(string | number) | Array<string | number> | null"'
+        '"string | number | null"'
     );
     expect(
         getSchemaAsTsString(
             { anyOf: [{ type: "string" }, { type: "number" }] },
             { name: "StringAndNumberMaybeMultiple" }
         )
-    ).toMatchInlineSnapshot('"export type StringAndNumberMaybeMultiple = (string | number) | Array<string | number>;"');
+    ).toMatchInlineSnapshot('"export type StringAndNumberMaybeMultiple = string | number;"');
 
     expect(
         getSchemaAsTsString(
@@ -269,7 +269,7 @@ test("getSchemaAsTsString", () => {
         )
     ).toMatchInlineSnapshot(`
       "export type ObjectWithArrayUnion = Partial<{
-          unionOrArrayOfUnion: (string | number) | Array<string | number>;
+          unionOrArrayOfUnion: string | number;
       }>;"
     `);
 
@@ -583,7 +583,7 @@ describe("getSchemaAsTsString with context", () => {
         expect(printTs(result)).toMatchInlineSnapshot(`
           "export type Root = Partial<{
               user: User | Member;
-              users: Array<(User | Member) | Array<User | Member>>;
+              users: Array<User | Member>;
               basic: number;
           }>;"
         `);
@@ -833,7 +833,7 @@ test("getSchemaAsTsString with readonly", () => {
         getSchemaAsTsString({ nullable: true, allOf: [{ type: "string" }, { type: "number" }] }, { name: "StringAndNumber" }, options)
     ).toMatchInlineSnapshot('"export type StringAndNumber = (string & number) | null;"');
     expect(getSchemaAsTsString({ nullable: true, anyOf: [{ type: "string" }, { type: "number" }] }, undefined, options)).toMatchInlineSnapshot(
-        '"(string | number) | Readonly<Array<string | number>> | null"'
+        '"string | number | null"'
     );
     expect(
         getSchemaAsTsString(
@@ -841,7 +841,7 @@ test("getSchemaAsTsString with readonly", () => {
             { name: "StringAndNumberMaybeMultiple" },
             options
         )
-    ).toMatchInlineSnapshot('"export type StringAndNumberMaybeMultiple = (string | number) | Readonly<Array<string | number>>;"');
+    ).toMatchInlineSnapshot('"export type StringAndNumberMaybeMultiple = string | number;"');
 
     expect(
         getSchemaAsTsString(
@@ -856,7 +856,7 @@ test("getSchemaAsTsString with readonly", () => {
         )
     ).toMatchInlineSnapshot(`
       "export type ObjectWithArrayUnion = Partial<Readonly<{
-          unionOrArrayOfUnion: (string | number) | Readonly<Array<string | number>>;
+          unionOrArrayOfUnion: string | number;
       }>>;"
     `);
 
