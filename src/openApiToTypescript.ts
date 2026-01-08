@@ -9,6 +9,11 @@ import { wrapWithQuotesIfNeeded, convertPropertyName } from "./utils";
 import { inferRequiredSchema } from "./inferRequiredOnly";
 import generateJSDocArray from "./generateJSDocArray";
 
+// Helper to convert schema variable name to type name by removing 'Schema' suffix
+const schemaNameToTypeName = (schemaName: string): string => {
+    return schemaName.endsWith("Schema") ? schemaName.slice(0, -"Schema".length) : schemaName;
+};
+
 type TsConversionArgs = {
     schema: SchemaObject | ReferenceObject;
     ctx?: TsConversionContext | undefined;

@@ -1937,6 +1937,10 @@ function generateJSDocArray(schema) {
   return comments;
 }
 
+// Helper to convert schema variable name to type name by removing 'Schema' suffix
+var schemaNameToTypeName$1 = function schemaNameToTypeName(schemaName) {
+  return schemaName.endsWith("Schema") ? schemaName.slice(0, -"Schema".length) : schemaName;
+};
 var wrapReadOnly = function wrapReadOnly(options) {
   return function (theType) {
     if (options !== null && options !== void 0 && options.allReadonly) {
@@ -1967,7 +1971,7 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
       if (!(ctx !== null && ctx !== void 0 && ctx.visitedsRefs) || !(ctx !== null && ctx !== void 0 && ctx.resolver)) throw new Error("Context is required for OpenAPI $ref");
       var result = ctx.nodeByRef[schema.$ref];
       var schemaName = (_ctx$resolver$resolve = ctx.resolver.resolveRef(schema.$ref)) === null || _ctx$resolver$resolve === void 0 ? void 0 : _ctx$resolver$resolve.normalized;
-      var typeName = schemaName ? schemaNameToTypeName(schemaName) : schemaName;
+      var typeName = schemaName ? schemaNameToTypeName$1(schemaName) : schemaName;
       if (ctx.visitedsRefs[schema.$ref]) {
         return tanu.t.reference(typeName);
       }
@@ -1987,7 +1991,7 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
       if (!schemaName) {
         var _ctx$resolver$resolve2;
         schemaName = (_ctx$resolver$resolve2 = ctx.resolver.resolveRef(schema.$ref)) === null || _ctx$resolver$resolve2 === void 0 ? void 0 : _ctx$resolver$resolve2.normalized;
-        typeName = schemaName ? schemaNameToTypeName(schemaName) : schemaName;
+        typeName = schemaName ? schemaNameToTypeName$1(schemaName) : schemaName;
       }
       return tanu.t.reference(typeName);
     }
@@ -2258,7 +2262,7 @@ var printTs = function printTs(node) {
 };
 
 // Helper to convert schema variable name to type name by removing 'Schema' suffix
-var schemaNameToTypeName$1 = function schemaNameToTypeName(schemaName) {
+var schemaNameToTypeName = function schemaNameToTypeName(schemaName) {
   return schemaName.endsWith("Schema") ? schemaName.slice(0, -"Schema".length) : schemaName;
 };
 var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDoc, options) {
@@ -2311,7 +2315,7 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
     var schemaName = shouldGenerateType ? result.resolver.resolveRef(ref).normalized : undefined;
     if (shouldGenerateType && schemaName && !data.types[schemaName]) {
       var _depsGraphs$deepDepen3;
-      var typeName = schemaNameToTypeName$1(schemaName);
+      var typeName = schemaNameToTypeName(schemaName);
       var node = _getTypescriptFromOpenApi({
         schema: result.resolver.getSchemaByRef(ref),
         ctx: ctx,
@@ -2329,7 +2333,7 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
           var _depsGraphs$deepDepen4;
           var depRef = _step.value;
           var depSchemaName = result.resolver.resolveRef(depRef).normalized;
-          var depTypeName = schemaNameToTypeName$1(depSchemaName);
+          var depTypeName = schemaNameToTypeName(depSchemaName);
           var isDepCircular = (_depsGraphs$deepDepen4 = depsGraphs.deepDependencyGraph[depRef]) === null || _depsGraphs$deepDepen4 === void 0 ? void 0 : _depsGraphs$deepDepen4.has(depRef);
           if (!isDepCircular && !data.types[depTypeName]) {
             var nodeSchema = result.resolver.getSchemaByRef(depRef);

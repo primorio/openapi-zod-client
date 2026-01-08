@@ -107,18 +107,18 @@ describe("recursive-schema", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          type UserSchema = Partial<{
+          type User = Partial<{
             name: string;
             middle: Middle;
           }>;
-          type MiddleSchema = Partial<{
+          type Middle = Partial<{
             user: User;
           }>;
 
-          const MiddleSchema = z.lazy(() =>
+          const MiddleSchema: z.ZodType<Middle> = z.lazy(() =>
             z.object({ user: UserSchema }).partial().passthrough()
           );
-          const UserSchema = z.lazy(() =>
+          const UserSchema: z.ZodType<User> = z.lazy(() =>
             z.object({ name: z.string(), middle: MiddleSchema }).partial().passthrough()
           );
 
@@ -402,10 +402,10 @@ describe("recursive-schema", () => {
                   "UserWithFriendsSchema": true,
               },
               "emittedType": {
-                  "Friend": true,
-                  "ObjectWithRecursiveArray": true,
-                  "User": true,
-                  "UserWithFriends": true,
+                  "FriendSchema": "Friend",
+                  "ObjectWithRecursiveArraySchema": "ObjectWithRecursiveArray",
+                  "UserSchema": "User",
+                  "UserWithFriendsSchema": "UserWithFriends",
               },
               "endpoints": [
                   {
@@ -428,20 +428,20 @@ describe("recursive-schema", () => {
                   "UserWithFriendsSchema": "z.lazy(() => z.object({ name: z.string(), parent: UserWithFriendsSchema, friends: z.array(FriendSchema), bestFriend: FriendSchema }).partial().passthrough())",
               },
               "types": {
-                  "Friend": "type FriendSchema = Partial<{
+                  "Friend": "type Friend = Partial<{
               nickname: string;
               user: UserWithFriends;
               circle: Array<Friend>;
           }>;",
-                  "ObjectWithRecursiveArray": "type ObjectWithRecursiveArraySchema = Partial<{
+                  "ObjectWithRecursiveArray": "type ObjectWithRecursiveArray = Partial<{
               isInsideObjectWithRecursiveArray: boolean;
               array: Array<ObjectWithRecursiveArray>;
           }>;",
-                  "User": "type UserSchema = Partial<{
+                  "User": "type User = Partial<{
               name: string;
               parent: User;
           }>;",
-                  "UserWithFriends": "type UserWithFriendsSchema = Partial<{
+                  "UserWithFriends": "type UserWithFriends = Partial<{
               name: string;
               parent: UserWithFriends;
               friends: Array<Friend>;
@@ -456,27 +456,27 @@ describe("recursive-schema", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          type UserSchema = Partial<{
+          type User = Partial<{
             name: string;
             parent: User;
           }>;
-          type UserWithFriendsSchema = Partial<{
+          type UserWithFriends = Partial<{
             name: string;
             parent: UserWithFriends;
             friends: Array<Friend>;
             bestFriend: Friend;
           }>;
-          type FriendSchema = Partial<{
+          type Friend = Partial<{
             nickname: string;
             user: UserWithFriends;
             circle: Array<Friend>;
           }>;
-          type ObjectWithRecursiveArraySchema = Partial<{
+          type ObjectWithRecursiveArray = Partial<{
             isInsideObjectWithRecursiveArray: boolean;
             array: Array<ObjectWithRecursiveArray>;
           }>;
 
-          const FriendSchema = z.lazy(() =>
+          const FriendSchema: z.ZodType<Friend> = z.lazy(() =>
             z
               .object({
                 nickname: z.string(),
@@ -486,7 +486,7 @@ describe("recursive-schema", () => {
               .partial()
               .passthrough()
           );
-          const UserWithFriendsSchema = z.lazy(() =>
+          const UserWithFriendsSchema: z.ZodType<UserWithFriends> = z.lazy(() =>
             z
               .object({
                 name: z.string(),
@@ -599,20 +599,20 @@ describe("recursive-schema", () => {
           "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
           import { z } from "zod";
 
-          type PlaylistSchema = Partial<{
+          type Playlist = Partial<{
             name: string;
             author: Author;
             songs: Array<Song>;
           }>;
-          type AuthorSchema = Partial<{
+          type Author = Partial<{
             name: string;
             mail: string;
             settings: Settings;
           }>;
-          type SettingsSchema = Partial<{
+          type Settings = Partial<{
             themeColor: string;
           }>;
-          type SongSchema = Partial<{
+          type Song = Partial<{
             name: string;
             duration: number;
             inPlaylists: Array<Playlist>;
@@ -626,7 +626,7 @@ describe("recursive-schema", () => {
             .object({ name: z.string(), mail: z.string(), settings: SettingsSchema })
             .partial()
             .passthrough();
-          const SongSchema = z.lazy(() =>
+          const SongSchema: z.ZodType<Song> = z.lazy(() =>
             z
               .object({
                 name: z.string(),
@@ -636,7 +636,7 @@ describe("recursive-schema", () => {
               .partial()
               .passthrough()
           );
-          const PlaylistSchema = z.lazy(() =>
+          const PlaylistSchema: z.ZodType<Playlist> = z.lazy(() =>
             z
               .object({
                 name: z.string(),

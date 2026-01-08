@@ -99,7 +99,7 @@ test("jsdoc", async () => {
       "import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
       import { z } from "zod";
 
-      type ComplexObjectSchema = Partial<{
+      type ComplexObject = Partial<{
         /**
          * A string with example tag
          *
@@ -157,15 +157,15 @@ test("jsdoc", async () => {
          */
         refArray: Array<SimpleObject>;
       }>;
-      type SimpleObjectSchema = Partial<{
+      type SimpleObject = Partial<{
         str: string;
       }>;
 
-      const SimpleObjectSchema = z
+      const SimpleObjectSchema: z.ZodType<SimpleObject> = z
         .object({ str: z.string() })
         .partial()
         .passthrough();
-      const ComplexObjectSchema = z
+      const ComplexObjectSchema: z.ZodType<ComplexObject> = z
         .object({
           example: z.string(),
           examples: z.string(),

@@ -1,12 +1,38 @@
-import path from 'node:path';
-import { snakeToCamel, capitalize, kebabToCamel, get, getSum, sortObjKeysFromArray, sortBy, sortListFromRefArray, pick as pick$1 } from 'pastable/server';
-import { match, P } from 'ts-pattern';
-import { create } from 'handlebars';
-import prettier from 'prettier';
-import parserTypescript from 'prettier/parser-typescript';
-import { ts, t } from 'tanu';
-import { sync } from 'whence';
-import { isReferenceObject as isReferenceObject$1, isSchemaObject } from 'openapi3-ts';
+'use strict';
+
+var path = require('node:path');
+var server = require('pastable/server');
+var tsPattern = require('ts-pattern');
+var handlebars = require('handlebars');
+var prettier = require('prettier');
+var parserTypescript = require('prettier/parser-typescript');
+var tanu = require('tanu');
+var whence = require('whence');
+var openapi3Ts = require('openapi3-ts');
+
+function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
+
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n["default"] = e;
+  return Object.freeze(n);
+}
+
+var path__default = /*#__PURE__*/_interopDefault(path);
+var prettier__default = /*#__PURE__*/_interopDefault(prettier);
+var parserTypescript__default = /*#__PURE__*/_interopDefault(parserTypescript);
 
 function _regeneratorDefine(e, r, n, t) {
   var i = Object.defineProperty;
@@ -172,7 +198,7 @@ var wrapWithQuotesIfNeeded = function wrapWithQuotesIfNeeded(str) {
 var convertPropertyName = function convertPropertyName(prop) {
   // If the property contains underscores, convert from snake_case to camelCase
   if (prop.includes("_")) {
-    return snakeToCamel(prop);
+    return server.snakeToCamel(prop);
   }
   return prop;
 };
@@ -187,7 +213,7 @@ var pathParamWithBracketsRegex = /({\w+})/g;
 var wordPrecededByNonWordCharacter = /[^\w\-]+/g;
 var pathParamToVariableName = function pathParamToVariableName(name) {
   // Convert snake_case to camelCase for path parameters
-  return snakeToCamel(name.replaceAll("-", "_"));
+  return server.snakeToCamel(name.replaceAll("-", "_"));
 };
 var matcherRegex = /{(\b\w+(?:-\w+)*\b)}/g;
 var replaceHyphenatedPath = function replaceHyphenatedPath(path) {
@@ -204,9 +230,9 @@ var replaceHyphenatedPath = function replaceHyphenatedPath(path) {
 
 /** @example turns `/media-objects/{id}` into `MediaObjectsId` */
 var pathToVariableName = function pathToVariableName(path) {
-  return capitalize(kebabToCamel(path).replaceAll("/", "")) // /media-objects/{id} -> MediaObjects{id}
+  return server.capitalize(server.kebabToCamel(path).replaceAll("/", "")) // /media-objects/{id} -> MediaObjects{id}
   .replace(pathParamWithBracketsRegex, function (group) {
-    return capitalize(group.slice(1, -1));
+    return server.capitalize(group.slice(1, -1));
   }) // {id} -> Id
   .replace(wordPrecededByNonWordCharacter, "_");
 }; // "/robots.txt" -> "/robots_txt"
@@ -229,9 +255,9 @@ var escapeControlCharacters = function escapeControlCharacters(str) {
   }).replace(/\//g, "\\/");
 };
 var toBoolean = function toBoolean(value, defaultValue) {
-  return match(value)["with"](P.string.regex(/^false$/i), false, function () {
+  return tsPattern.match(value)["with"](tsPattern.P.string.regex(/^false$/i), false, function () {
     return false;
-  })["with"](P.string.regex(/^true$/i), true, function () {
+  })["with"](tsPattern.P.string.regex(/^true$/i), true, function () {
     return true;
   }).otherwise(function () {
     return defaultValue;
@@ -336,7 +362,7 @@ function _typeof(o) {
 }
 
 var getHandlebars = function getHandlebars() {
-  var instance = create();
+  var instance = handlebars.create();
   instance.registerHelper("ifeq", function (a, b, options) {
     if (a === b) {
       // @ts-expect-error
@@ -375,9 +401,9 @@ var getHandlebars = function getHandlebars() {
 
 function maybePretty(input, options) {
   try {
-    return prettier.format(input.trim(), _objectSpread2({
+    return prettier__default["default"].format(input.trim(), _objectSpread2({
       parser: "typescript",
-      plugins: [parserTypescript]
+      plugins: [parserTypescript__default["default"]]
     }, options));
   } catch (_unused) {
     return input; // assume it's invalid syntax and ignore
@@ -613,7 +639,7 @@ var makeSchemaResolver = function makeSchemaResolver(doc) {
 
     // "#/components/schemas/Something.jsonld" -> #/components/schemas
     var path = split.slice(1, -1).join("/");
-    var map = (_get = get(doc, path.replace("#/", "").replace("#", "").replaceAll("/", "."))) !== null && _get !== void 0 ? _get : {};
+    var map = (_get = server.get(doc, path.replace("#/", "").replace("#", "").replaceAll("/", "."))) !== null && _get !== void 0 ? _get : {};
 
     // "#/components/schemas/Something.jsonld" -> "Something.jsonld"
     var name = split[split.length - 1];
@@ -661,7 +687,7 @@ function _createClass(e, r, t) {
 var complexityByType = function complexityByType(schema) {
   var type = schema.type;
   if (!type) return 0;
-  return match(type)["with"]("string", function () {
+  return tsPattern.match(type)["with"]("string", function () {
     return 1;
   })["with"]("number", function () {
     return 1;
@@ -677,7 +703,7 @@ var complexityByType = function complexityByType(schema) {
 };
 var complexityByComposite = function complexityByComposite(from) {
   if (!from) return 0;
-  return match(from)["with"]("oneOf", function () {
+  return tsPattern.match(from)["with"]("oneOf", function () {
     return 2;
   })["with"]("anyOf", function () {
     return 3;
@@ -711,7 +737,7 @@ function getSchemaComplexity(_ref) {
         })
       });
     }
-    return current + complexityByComposite("oneOf") + getSum(schema.type.map(function (prop) {
+    return current + complexityByComposite("oneOf") + server.getSum(schema.type.map(function (prop) {
       return getSchemaComplexity({
         current: 0,
         schema: _objectSpread2(_objectSpread2({}, schema), {}, {
@@ -732,7 +758,7 @@ function getSchemaComplexity(_ref) {
         schema: schema.oneOf[0]
       });
     }
-    return current + complexityByComposite("oneOf") + getSum(schema.oneOf.map(function (prop) {
+    return current + complexityByComposite("oneOf") + server.getSum(schema.oneOf.map(function (prop) {
       return getSchemaComplexity({
         current: 0,
         schema: prop
@@ -748,7 +774,7 @@ function getSchemaComplexity(_ref) {
         schema: schema.anyOf[0]
       });
     }
-    return current + complexityByComposite("anyOf") + getSum(schema.anyOf.map(function (prop) {
+    return current + complexityByComposite("anyOf") + server.getSum(schema.anyOf.map(function (prop) {
       return getSchemaComplexity({
         current: 0,
         schema: prop
@@ -762,7 +788,7 @@ function getSchemaComplexity(_ref) {
         schema: schema.allOf[0]
       });
     }
-    return current + complexityByComposite("allOf") + getSum(schema.allOf.map(function (prop) {
+    return current + complexityByComposite("allOf") + server.getSum(schema.allOf.map(function (prop) {
       return getSchemaComplexity({
         current: 0,
         schema: prop
@@ -772,7 +798,7 @@ function getSchemaComplexity(_ref) {
   if (!schema.type) return current;
   if (isPrimitiveType$1(schema.type)) {
     if (schema["enum"]) {
-      return current + complexityByType(schema) + complexityByComposite("enum") + getSum(schema["enum"].map(function (prop) {
+      return current + complexityByType(schema) + complexityByComposite("enum") + server.getSum(schema["enum"].map(function (prop) {
         return getSchemaComplexity({
           current: 0,
           schema: prop
@@ -808,7 +834,7 @@ function getSchemaComplexity(_ref) {
     }
     if (schema.properties) {
       var props = Object.values(schema.properties);
-      return current + complexityByComposite("object") + getSum(props.map(function (prop) {
+      return current + complexityByComposite("object") + server.getSum(props.map(function (prop) {
         return getSchemaComplexity({
           current: 0,
           schema: prop
@@ -884,7 +910,7 @@ var CodeMeta = /*#__PURE__*/function () {
 }();
 
 var isBrokenAllOfItem = function isBrokenAllOfItem(item) {
-  if (!isReferenceObject$1(item) && !!item.required && !item.type && !item.properties && !(item !== null && item !== void 0 && item.allOf) && !(item !== null && item !== void 0 && item.anyOf) && !item.oneOf) {
+  if (!openapi3Ts.isReferenceObject(item) && !!item.required && !item.type && !item.properties && !(item !== null && item !== void 0 && item.allOf) && !(item !== null && item !== void 0 && item.anyOf) && !item.oneOf) {
     return true;
   }
   return false;
@@ -920,7 +946,7 @@ function inferRequiredSchema(schema) {
     noRequiredOnlyAllof: noRequiredOnlyAllof,
     composedRequiredSchema: composedRequiredSchema,
     patchRequiredSchemaInLoop: function patchRequiredSchemaInLoop(prop, resolver) {
-      if (isReferenceObject$1(prop)) {
+      if (openapi3Ts.isReferenceObject(prop)) {
         var refType = resolver.getSchemaByRef(prop.$ref);
         if (refType) {
           composedRequiredSchema.required.forEach(function (required) {
@@ -1033,7 +1059,7 @@ function getZodSchema(_ref) {
     /* when there are multiple allOf we are unable to use a discriminatedUnion as this library adds an
      *   'z.and' to the schema that it creates which breaks type inference */
     var hasMultipleAllOf = (_schema$oneOf = schema.oneOf) === null || _schema$oneOf === void 0 ? void 0 : _schema$oneOf.some(function (obj) {
-      return isSchemaObject(obj) && ((obj === null || obj === void 0 ? void 0 : obj.allOf) || []).length > 1;
+      return openapi3Ts.isSchemaObject(obj) && ((obj === null || obj === void 0 ? void 0 : obj.allOf) || []).length > 1;
     });
     if (schema.discriminator && !hasMultipleAllOf) {
       var propertyName = schema.discriminator.propertyName;
@@ -1167,10 +1193,10 @@ function getZodSchema(_ref) {
         return "z.literal(".concat(value === null ? "null" : value, ")");
       }).join(", "), "])"));
     }
-    return code.assign(match(schemaType)["with"]("integer", function () {
+    return code.assign(tsPattern.match(schemaType)["with"]("integer", function () {
       return "z.number()";
     })["with"]("string", function () {
-      return match(schema.format)["with"]("binary", function () {
+      return tsPattern.match(schema.format)["with"]("binary", function () {
         return "z.instanceof(File)";
       }).otherwise(function () {
         return "z.string()";
@@ -1271,7 +1297,7 @@ var getZodChain = function getZodChain(_ref6) {
     meta = _ref6.meta,
     options = _ref6.options;
   var chains = [];
-  match(schema.type)["with"]("string", function () {
+  tsPattern.match(schema.type)["with"]("string", function () {
     return chains.push(getZodChainableStringValidations(schema));
   })["with"]("number", "integer", function () {
     return chains.push(getZodChainableNumberValidations(schema));
@@ -1314,7 +1340,7 @@ var unwrapQuotesIfNeeded = function unwrapQuotesIfNeeded(value) {
 };
 var getZodChainableDefault = function getZodChainableDefault(schema) {
   if (schema["default"] !== undefined) {
-    var value = match(schema.type)["with"]("number", "integer", function () {
+    var value = tsPattern.match(schema.type)["with"]("number", "integer", function () {
       return unwrapQuotesIfNeeded(schema["default"]);
     }).otherwise(function () {
       return JSON.stringify(schema["default"]);
@@ -1344,7 +1370,7 @@ var getZodChainableStringValidations = function getZodChainableStringValidations
     validations.push("regex(".concat(formatPatternIfNeeded(schema.pattern), ")"));
   }
   if (schema.format) {
-    var chain = match(schema.format)["with"]("email", function () {
+    var chain = tsPattern.match(schema.format)["with"]("email", function () {
       return "email()";
     })["with"]("hostname", function () {
       return "url()";
@@ -1417,52 +1443,52 @@ var getZodiosEndpointDefinitionList = function getZodiosEndpointDefinitionList(d
     return asComponentSchema(name);
   }), resolver.getSchemaByRef);
   var endpoints = [];
-  var isMainResponseStatus = match(options === null || options === void 0 ? void 0 : options.isMainResponseStatus)["with"](P.string, function (option) {
+  var isMainResponseStatus = tsPattern.match(options === null || options === void 0 ? void 0 : options.isMainResponseStatus)["with"](tsPattern.P.string, function (option) {
     return function (status) {
-      return sync(option, {
+      return whence.sync(option, {
         status: status
       }, {
         functions: true
       });
     };
-  })["with"](P.nullish, function () {
+  })["with"](tsPattern.P.nullish, function () {
     return function (status) {
       return status >= 200 && status < 300;
     };
   }).otherwise(function (fn) {
     return fn;
   });
-  var isErrorStatus = match(options === null || options === void 0 ? void 0 : options.isErrorStatus)["with"](P.string, function (option) {
+  var isErrorStatus = tsPattern.match(options === null || options === void 0 ? void 0 : options.isErrorStatus)["with"](tsPattern.P.string, function (option) {
     return function (status) {
-      return sync(option, {
+      return whence.sync(option, {
         status: status
       }, {
         functions: true
       });
     };
-  })["with"](P.nullish, function () {
+  })["with"](tsPattern.P.nullish, function () {
     return function (status) {
       return !(status >= 200 && status < 300);
     };
   }).otherwise(function (fn) {
     return fn;
   });
-  var isMediaTypeAllowed = match(options === null || options === void 0 ? void 0 : options.isMediaTypeAllowed)["with"](P.string, function (option) {
+  var isMediaTypeAllowed = tsPattern.match(options === null || options === void 0 ? void 0 : options.isMediaTypeAllowed)["with"](tsPattern.P.string, function (option) {
     return function (mediaType) {
-      return sync(option, {
+      return whence.sync(option, {
         mediaType: mediaType
       }, {
         functions: true
       });
     };
-  })["with"](P.nullish, function () {
+  })["with"](tsPattern.P.nullish, function () {
     return function (mediaType) {
       return mediaType === "application/json";
     };
   }).otherwise(function (fn) {
     return fn;
   });
-  var getOperationAlias = match(options === null || options === void 0 ? void 0 : options.withAlias)["with"](P["boolean"], P.nullish, function () {
+  var getOperationAlias = tsPattern.match(options === null || options === void 0 ? void 0 : options.withAlias)["with"](tsPattern.P["boolean"], tsPattern.P.nullish, function () {
     return function (path, method, operation) {
       var _operation$operationI;
       return (_operation$operationI = operation.operationId) !== null && _operation$operationI !== void 0 ? _operation$operationI : method + pathToVariableName(path);
@@ -1591,13 +1617,13 @@ var getZodiosEndpointDefinitionList = function getZodiosEndpointDefinitionList(d
         var bodySchema = matchingMediaType && ((_requestBody$content2 = requestBody.content) === null || _requestBody$content2 === void 0 || (_requestBody$content2 = _requestBody$content2[matchingMediaType]) === null || _requestBody$content2 === void 0 ? void 0 : _requestBody$content2.schema);
         if (bodySchema) {
           var _requestBody$required;
-          endpointDefinition.requestFormat = match(matchingMediaType)["with"]("application/octet-stream", function () {
+          endpointDefinition.requestFormat = tsPattern.match(matchingMediaType)["with"]("application/octet-stream", function () {
             return "binary";
           })["with"]("application/x-www-form-urlencoded", function () {
             return "form-url";
           })["with"]("multipart/form-data", function () {
             return "form-data";
-          })["with"](P.string.includes("json"), function () {
+          })["with"](tsPattern.P.string.includes("json"), function () {
             return "json";
           }).otherwise(function () {
             return "text";
@@ -1666,12 +1692,12 @@ var getZodiosEndpointDefinitionList = function getZodiosEndpointDefinitionList(d
               options: options
             });
             endpointDefinition.parameters.push({
-              name: match(paramItem["in"])["with"]("path", function () {
+              name: tsPattern.match(paramItem["in"])["with"]("path", function () {
                 return pathParamToVariableName(paramItem.name);
               }).otherwise(function () {
                 return convertPropertyName(paramItem.name);
               }),
-              type: match(paramItem["in"])["with"]("header", function () {
+              type: tsPattern.match(paramItem["in"])["with"]("header", function () {
                 return "Header";
               })["with"]("query", function () {
                 return "Query";
@@ -1911,10 +1937,14 @@ function generateJSDocArray(schema) {
   return comments;
 }
 
+// Helper to convert schema variable name to type name by removing 'Schema' suffix
+var schemaNameToTypeName$1 = function schemaNameToTypeName(schemaName) {
+  return schemaName.endsWith("Schema") ? schemaName.slice(0, -"Schema".length) : schemaName;
+};
 var wrapReadOnly = function wrapReadOnly(options) {
   return function (theType) {
     if (options !== null && options !== void 0 && options.allReadonly) {
-      return t.readonly(theType);
+      return tanu.t.readonly(theType);
     }
     return theType;
   };
@@ -1941,9 +1971,9 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
       if (!(ctx !== null && ctx !== void 0 && ctx.visitedsRefs) || !(ctx !== null && ctx !== void 0 && ctx.resolver)) throw new Error("Context is required for OpenAPI $ref");
       var result = ctx.nodeByRef[schema.$ref];
       var schemaName = (_ctx$resolver$resolve = ctx.resolver.resolveRef(schema.$ref)) === null || _ctx$resolver$resolve === void 0 ? void 0 : _ctx$resolver$resolve.normalized;
-      var typeName = schemaName ? schemaNameToTypeName(schemaName) : schemaName;
+      var typeName = schemaName ? schemaNameToTypeName$1(schemaName) : schemaName;
       if (ctx.visitedsRefs[schema.$ref]) {
-        return t.reference(typeName);
+        return tanu.t.reference(typeName);
       }
       if (!result) {
         var actualSchema = ctx.resolver.getSchemaByRef(schema.$ref);
@@ -1961,9 +1991,9 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
       if (!schemaName) {
         var _ctx$resolver$resolve2;
         schemaName = (_ctx$resolver$resolve2 = ctx.resolver.resolveRef(schema.$ref)) === null || _ctx$resolver$resolve2 === void 0 ? void 0 : _ctx$resolver$resolve2.normalized;
-        typeName = schemaName ? schemaNameToTypeName(schemaName) : schemaName;
+        typeName = schemaName ? schemaNameToTypeName$1(schemaName) : schemaName;
       }
-      return t.reference(typeName);
+      return tanu.t.reference(typeName);
     }
     if (Array.isArray(schema.type)) {
       if (schema.type.length === 1) {
@@ -1986,10 +2016,10 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
           options: options
         });
       });
-      return schema.nullable ? t.union([].concat(_toConsumableArray(types), [t.reference("null")])) : t.union(types);
+      return schema.nullable ? tanu.t.union([].concat(_toConsumableArray(types), [tanu.t.reference("null")])) : tanu.t.union(types);
     }
     if (schema.type === "null") {
-      return t.reference("null");
+      return tanu.t.reference("null");
     }
     if (schema.oneOf) {
       if (schema.oneOf.length === 1) {
@@ -2008,7 +2038,7 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
           options: options
         });
       });
-      return schema.nullable ? t.union([].concat(_toConsumableArray(_types), [t.reference("null")])) : t.union(_types);
+      return schema.nullable ? tanu.t.union([].concat(_toConsumableArray(_types), [tanu.t.reference("null")])) : tanu.t.union(_types);
     }
 
     // anyOf = union type (treat same as oneOf)
@@ -2029,7 +2059,7 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
           options: options
         });
       });
-      return schema.nullable ? t.union([].concat(_toConsumableArray(_types2), [t.reference("null")])) : t.union(_types2);
+      return schema.nullable ? tanu.t.union([].concat(_toConsumableArray(_types2), [tanu.t.reference("null")])) : tanu.t.union(_types2);
     }
     if (schema.allOf) {
       if (schema.allOf.length === 1) {
@@ -2062,7 +2092,7 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
           options: options
         }));
       }
-      return schema.nullable ? t.union([t.intersection(_types3), t.reference("null")]) : t.intersection(_types3);
+      return schema.nullable ? tanu.t.union([tanu.t.intersection(_types3), tanu.t.reference("null")]) : tanu.t.intersection(_types3);
     }
     var schemaType = schema.type ? schema.type.toLowerCase() : undefined;
     if (schemaType && isPrimitiveType(schemaType)) {
@@ -2070,17 +2100,17 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
         if (schemaType !== "string" && schema["enum"].some(function (e) {
           return typeof e === "string";
         })) {
-          return schema.nullable ? t.union([t.never(), t.reference("null")]) : t.never();
+          return schema.nullable ? tanu.t.union([tanu.t.never(), tanu.t.reference("null")]) : tanu.t.never();
         }
         var hasNull = schema["enum"].includes(null);
         var withoutNull = schema["enum"].filter(function (f) {
           return f !== null;
         });
-        return schema.nullable || hasNull ? t.union([].concat(_toConsumableArray(withoutNull), [t.reference("null")])) : t.union(withoutNull);
+        return schema.nullable || hasNull ? tanu.t.union([].concat(_toConsumableArray(withoutNull), [tanu.t.reference("null")])) : tanu.t.union(withoutNull);
       }
-      if (schemaType === "string") return schema.nullable ? t.union([t.string(), t.reference("null")]) : t.string();
-      if (schemaType === "boolean") return schema.nullable ? t.union([t["boolean"](), t.reference("null")]) : t["boolean"]();
-      if (schemaType === "number" || schemaType === "integer") return schema.nullable ? t.union([t.number(), t.reference("null")]) : t.number();
+      if (schemaType === "string") return schema.nullable ? tanu.t.union([tanu.t.string(), tanu.t.reference("null")]) : tanu.t.string();
+      if (schemaType === "boolean") return schema.nullable ? tanu.t.union([tanu.t["boolean"](), tanu.t.reference("null")]) : tanu.t["boolean"]();
+      if (schemaType === "number" || schemaType === "integer") return schema.nullable ? tanu.t.union([tanu.t.number(), tanu.t.reference("null")]) : tanu.t.number();
     }
     if (schemaType === "array") {
       if (schema.items) {
@@ -2092,11 +2122,11 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
         });
         if (typeof arrayOfType === "string") {
           if (!ctx) throw new Error("Context is required for circular $ref (recursive schemas)");
-          arrayOfType = t.reference(arrayOfType);
+          arrayOfType = tanu.t.reference(arrayOfType);
         }
-        return schema.nullable ? t.union([doWrapReadOnly(t.array(arrayOfType)), t.reference("null")]) : doWrapReadOnly(t.array(arrayOfType));
+        return schema.nullable ? tanu.t.union([doWrapReadOnly(tanu.t.array(arrayOfType)), tanu.t.reference("null")]) : doWrapReadOnly(tanu.t.array(arrayOfType));
       }
-      return schema.nullable ? t.union([doWrapReadOnly(t.array(t.any())), t.reference("null")]) : doWrapReadOnly(t.array(t.any()));
+      return schema.nullable ? tanu.t.union([doWrapReadOnly(tanu.t.array(tanu.t.any())), tanu.t.reference("null")]) : doWrapReadOnly(tanu.t.array(tanu.t.any()));
     }
     if (schemaType === "object" || schema.properties || schema.additionalProperties) {
       var _schema$required;
@@ -2109,7 +2139,7 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
       if (schema.additionalProperties) {
         var additionalPropertiesType;
         if (typeof schema.additionalProperties === "boolean" && schema.additionalProperties || _typeof(schema.additionalProperties) === "object" && Object.keys(schema.additionalProperties).length === 0) {
-          additionalPropertiesType = t.any();
+          additionalPropertiesType = tanu.t.any();
         } else if (_typeof(schema.additionalProperties) === "object") {
           additionalPropertiesType = _getTypescriptFromOpenApi({
             schema: schema.additionalProperties,
@@ -2118,7 +2148,7 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
             options: options
           });
         }
-        additionalProperties = ts.factory.createTypeLiteralNode([ts.factory.createIndexSignature(undefined, [ts.factory.createParameterDeclaration(undefined, undefined, ts.factory.createIdentifier("key"), undefined, ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword))], additionalPropertiesType)]);
+        additionalProperties = tanu.ts.factory.createTypeLiteralNode([tanu.ts.factory.createIndexSignature(undefined, [tanu.ts.factory.createParameterDeclaration(undefined, undefined, tanu.ts.factory.createIdentifier("key"), undefined, tanu.ts.factory.createKeywordTypeNode(tanu.ts.SyntaxKind.StringKeyword))], additionalPropertiesType)]);
       }
       var props = Object.fromEntries(Object.entries(schema.properties).map(function (_ref2) {
         var _schema$required2;
@@ -2135,24 +2165,24 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
         if (typeof propType === "string") {
           if (!ctx) throw new Error("Context is required for circular $ref (recursive schemas)");
           // TODO Partial ?
-          propType = t.reference(propType);
+          propType = tanu.t.reference(propType);
         }
         var isRequired = Boolean(isPartial ? true : (_schema$required2 = schema.required) === null || _schema$required2 === void 0 ? void 0 : _schema$required2.includes(prop));
-        return ["".concat(wrapWithQuotesIfNeeded(convertedProp)), isRequired ? propType : t.optional(propType)];
+        return ["".concat(wrapWithQuotesIfNeeded(convertedProp)), isRequired ? propType : tanu.t.optional(propType)];
       }));
-      var objectType = additionalProperties ? t.intersection([props, additionalProperties]) : props;
+      var objectType = additionalProperties ? tanu.t.intersection([props, additionalProperties]) : props;
       if (isInline) {
-        return isPartial ? t.reference("Partial", [doWrapReadOnly(objectType)]) : doWrapReadOnly(objectType);
+        return isPartial ? tanu.t.reference("Partial", [doWrapReadOnly(objectType)]) : doWrapReadOnly(objectType);
       }
       if (!(inheritedMeta !== null && inheritedMeta !== void 0 && inheritedMeta.name)) {
         throw new Error("Name is required to convert an object schema to a type reference");
       }
       if (!isPartial) {
-        return t.type(inheritedMeta.name, doWrapReadOnly(objectType));
+        return tanu.t.type(inheritedMeta.name, doWrapReadOnly(objectType));
       }
-      return t.type(inheritedMeta.name, t.reference("Partial", [doWrapReadOnly(objectType)]));
+      return tanu.t.type(inheritedMeta.name, tanu.t.reference("Partial", [doWrapReadOnly(objectType)]));
     }
-    if (!schemaType) return t.unknown();
+    if (!schemaType) return tanu.t.unknown();
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     throw new Error("Unsupported schema type: ".concat(schemaType));
   };
@@ -2161,8 +2191,8 @@ var _getTypescriptFromOpenApi = function getTypescriptFromOpenApi(_ref) {
   // Add JSDoc comments
   if (options !== null && options !== void 0 && options.withDocs && !isReferenceObject(schema)) {
     var jsDocComments = generateJSDocArray(schema);
-    if (jsDocComments.length > 0 && _typeof(tsResult) === "object" && tsResult.kind !== ts.SyntaxKind.TypeAliasDeclaration) {
-      tsResult = t.comment(tsResult, jsDocComments);
+    if (jsDocComments.length > 0 && _typeof(tsResult) === "object" && tsResult.kind !== tanu.ts.SyntaxKind.TypeAliasDeclaration) {
+      tsResult = tanu.t.comment(tsResult, jsDocComments);
     }
   }
   return canBeWrapped ? wrapTypeIfInline({
@@ -2183,7 +2213,7 @@ var wrapTypeIfInline = function wrapTypeIfInline(_ref4) {
     if (!name) {
       throw new Error("Name is required to convert a schema to a type reference");
     }
-    return t.type(name, typeDef);
+    return tanu.t.type(name, typeDef);
   }
   return typeDef;
 };
@@ -2223,16 +2253,16 @@ function topologicalSort(graph) {
   return sorted;
 }
 
-var file = ts.createSourceFile("", "", ts.ScriptTarget.ESNext, true);
-var printer = ts.createPrinter({
-  newLine: ts.NewLineKind.LineFeed
+var file = tanu.ts.createSourceFile("", "", tanu.ts.ScriptTarget.ESNext, true);
+var printer = tanu.ts.createPrinter({
+  newLine: tanu.ts.NewLineKind.LineFeed
 });
 var printTs = function printTs(node) {
-  return printer.printNode(ts.EmitHint.Unspecified, node, file);
+  return printer.printNode(tanu.ts.EmitHint.Unspecified, node, file);
 };
 
 // Helper to convert schema variable name to type name by removing 'Schema' suffix
-var schemaNameToTypeName$1 = function schemaNameToTypeName(schemaName) {
+var schemaNameToTypeName = function schemaNameToTypeName(schemaName) {
   return schemaName.endsWith("Schema") ? schemaName.slice(0, -"Schema".length) : schemaName;
 };
 var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDoc, options) {
@@ -2285,7 +2315,7 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
     var schemaName = shouldGenerateType ? result.resolver.resolveRef(ref).normalized : undefined;
     if (shouldGenerateType && schemaName && !data.types[schemaName]) {
       var _depsGraphs$deepDepen3;
-      var typeName = schemaNameToTypeName$1(schemaName);
+      var typeName = schemaNameToTypeName(schemaName);
       var node = _getTypescriptFromOpenApi({
         schema: result.resolver.getSchemaByRef(ref),
         ctx: ctx,
@@ -2303,7 +2333,7 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
           var _depsGraphs$deepDepen4;
           var depRef = _step.value;
           var depSchemaName = result.resolver.resolveRef(depRef).normalized;
-          var depTypeName = schemaNameToTypeName$1(depSchemaName);
+          var depTypeName = schemaNameToTypeName(depSchemaName);
           var isDepCircular = (_depsGraphs$deepDepen4 = depsGraphs.deepDependencyGraph[depRef]) === null || _depsGraphs$deepDepen4 === void 0 ? void 0 : _depsGraphs$deepDepen4.has(depRef);
           if (!isDepCircular && !data.types[depTypeName]) {
             var nodeSchema = result.resolver.getSchemaByRef(depRef);
@@ -2335,7 +2365,7 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
   var schemaOrderedByDependencies = topologicalSort(depsGraphs.deepDependencyGraph).map(function (ref) {
     return result.resolver.resolveRef(ref).ref;
   });
-  data.schemas = sortObjKeysFromArray(data.schemas, schemaOrderedByDependencies);
+  data.schemas = server.sortObjKeysFromArray(data.schemas, schemaOrderedByDependencies);
   var groupStrategy = (_options$groupStrateg = options === null || options === void 0 ? void 0 : options.groupStrategy) !== null && _options$groupStrateg !== void 0 ? _options$groupStrateg : "none";
   var dependenciesByGroupName = new Map();
   result.endpoints.forEach(function (endpoint) {
@@ -2350,7 +2380,7 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
         return;
       }
       var operation = pathItemObject[endpoint.method];
-      var baseName = match(groupStrategy)["with"]("tag", "tag-file", function () {
+      var baseName = tsPattern.match(groupStrategy)["with"]("tag", "tag-file", function () {
         var _operation$tags$, _operation$tags;
         return (_operation$tags$ = (_operation$tags = operation.tags) === null || _operation$tags === void 0 ? void 0 : _operation$tags[0]) !== null && _operation$tags$ !== void 0 ? _operation$tags$ : "Default";
       })["with"]("method", "method-file", function () {
@@ -2404,7 +2434,7 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
       }
     }
   });
-  data.endpoints = sortBy(data.endpoints, "path");
+  data.endpoints = server.sortBy(data.endpoints, "path");
   if (groupStrategy.includes("file")) {
     var dependenciesCount = new Map();
     dependenciesByGroupName.forEach(function (deps) {
@@ -2435,10 +2465,10 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
           }
         }
       });
-      group.schemas = sortObjKeysFromArray(groupSchemas, getPureSchemaNames(schemaOrderedByDependencies));
+      group.schemas = server.sortObjKeysFromArray(groupSchemas, getPureSchemaNames(schemaOrderedByDependencies));
       group.types = groupTypes;
     });
-    data.commonSchemaNames = new Set(sortListFromRefArray(Array.from(commonSchemaNames), getPureSchemaNames(schemaOrderedByDependencies)));
+    data.commonSchemaNames = new Set(server.sortListFromRefArray(Array.from(commonSchemaNames), getPureSchemaNames(schemaOrderedByDependencies)));
   }
   return data;
 };
@@ -2486,14 +2516,14 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
           data = getZodClientTemplateContext(openApiDoc, options);
           groupStrategy = (_options$groupStrateg = options === null || options === void 0 ? void 0 : options.groupStrategy) !== null && _options$groupStrateg !== void 0 ? _options$groupStrateg : "none";
           if (!templatePath) {
-            templatePath = match(groupStrategy)["with"]("none", "tag-file", "method-file", function () {
-              return path.join(__dirname, "../src/templates/default.hbs");
+            templatePath = tsPattern.match(groupStrategy)["with"]("none", "tag-file", "method-file", function () {
+              return path__default["default"].join(__dirname, "../src/templates/default.hbs");
             })["with"]("tag", "method", function () {
-              return path.join(__dirname, "../src/templates/grouped.hbs");
+              return path__default["default"].join(__dirname, "../src/templates/grouped.hbs");
             }).exhaustive();
           }
           _context.n = 1;
-          return import('@liuli-util/fs-extra');
+          return Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require('@liuli-util/fs-extra')); });
         case 1:
           fs = _context.v;
           _context.n = 2;
@@ -2516,10 +2546,10 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
           return fs.ensureDir(distPath);
         case 3:
           groupNames = Object.fromEntries(Object.keys(data.endpointsGroups).map(function (groupName) {
-            return ["".concat(capitalize(groupName), "Api"), groupName];
+            return ["".concat(server.capitalize(groupName), "Api"), groupName];
           }));
           _context.n = 4;
-          return fs.readFile(path.join(__dirname, "../src/templates/grouped-index.hbs"), "utf8");
+          return fs.readFile(path__default["default"].join(__dirname, "../src/templates/grouped-index.hbs"), "utf8");
         case 4:
           indexSource = _context.v;
           indexTemplate = hbs.compile(indexSource);
@@ -2532,10 +2562,10 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
             break;
           }
           _context.n = 5;
-          return fs.writeFile(path.join(distPath, "index.ts"), indexOutput);
+          return fs.writeFile(path__default["default"].join(distPath, "index.ts"), indexOutput);
         case 5:
           _context.n = 6;
-          return fs.readFile(path.join(__dirname, "../src/templates/grouped-common.hbs"), "utf8");
+          return fs.readFile(path__default["default"].join(__dirname, "../src/templates/grouped-common.hbs"), "utf8");
         case 6:
           commonSource = _context.v;
           commonTemplate = hbs.compile(commonSource);
@@ -2545,8 +2575,8 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
             break;
           }
           commonOutput = maybePretty(commonTemplate({
-            schemas: pick$1(data.schemas, commonSchemaNames),
-            types: pick$1(data.types, commonSchemaNames)
+            schemas: server.pick(data.schemas, commonSchemaNames),
+            types: server.pick(data.types, commonSchemaNames)
           }), prettierConfig);
           outputByGroupName["__common"] = commonOutput;
           if (!willWriteToFile) {
@@ -2554,7 +2584,7 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
             break;
           }
           _context.n = 7;
-          return fs.writeFile(path.join(distPath, "common.ts"), commonOutput);
+          return fs.writeFile(path__default["default"].join(distPath, "common.ts"), commonOutput);
         case 7:
           _t = _regeneratorKeys(data.endpointsGroups);
         case 8:
@@ -2566,7 +2596,7 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
           groupOutput = template(_objectSpread2(_objectSpread2(_objectSpread2({}, data), data.endpointsGroups[groupName]), {}, {
             options: _objectSpread2(_objectSpread2({}, options), {}, {
               groupStrategy: "none",
-              apiClientName: "".concat(capitalize(groupName), "Api")
+              apiClientName: "".concat(server.capitalize(groupName), "Api")
             })
           }));
           prettyGroupOutput = maybePretty(groupOutput, prettierConfig);
@@ -2575,9 +2605,9 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
             _context.n = 9;
             break;
           }
-          console.log("Writing to", path.join(distPath, "".concat(groupName, ".ts")));
+          console.log("Writing to", path__default["default"].join(distPath, "".concat(groupName, ".ts")));
           _context.n = 9;
-          return fs.writeFile(path.join(distPath, "".concat(groupName, ".ts")), prettyGroupOutput);
+          return fs.writeFile(path__default["default"].join(distPath, "".concat(groupName, ".ts")), prettyGroupOutput);
         case 9:
           _context.n = 8;
           break;
@@ -2606,4 +2636,13 @@ var generateZodClientFromOpenAPI = /*#__PURE__*/function () {
   };
 }();
 
-export { _asyncToGenerator as _, _regenerator as a, getHandlebars as b, getOpenApiDependencyGraph as c, getZodiosEndpointDefinitionList as d, getZodSchema as e, getZodClientTemplateContext as f, generateZodClientFromOpenAPI as g, maybePretty as m, toBoolean as t };
+exports._asyncToGenerator = _asyncToGenerator;
+exports._regenerator = _regenerator;
+exports.generateZodClientFromOpenAPI = generateZodClientFromOpenAPI;
+exports.getHandlebars = getHandlebars;
+exports.getOpenApiDependencyGraph = getOpenApiDependencyGraph;
+exports.getZodClientTemplateContext = getZodClientTemplateContext;
+exports.getZodSchema = getZodSchema;
+exports.getZodiosEndpointDefinitionList = getZodiosEndpointDefinitionList;
+exports.maybePretty = maybePretty;
+exports.toBoolean = toBoolean;
