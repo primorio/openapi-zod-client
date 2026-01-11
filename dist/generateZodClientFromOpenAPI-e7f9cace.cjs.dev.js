@@ -2289,66 +2289,90 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
   for (var name in result.zodSchemaByName) {
     data.schemas[normalizeString(name)] = wrapWithLazyIfNeeded(name);
   }
-  for (var ref in depsGraphs.deepDependencyGraph) {
-    var _depsGraphs$deepDepen2;
-    var isCircular = ref && ((_depsGraphs$deepDepen2 = depsGraphs.deepDependencyGraph[ref]) === null || _depsGraphs$deepDepen2 === void 0 ? void 0 : _depsGraphs$deepDepen2.has(ref));
-    var ctx = {
-      nodeByRef: {},
-      resolver: result.resolver,
-      visitedsRefs: {}
-    };
 
-    // Specifically check isCircular if shouldExportAllTypes is false. Either should cause shouldGenerateType to be true.
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    var shouldGenerateType = (options === null || options === void 0 ? void 0 : options.shouldExportAllTypes) || isCircular;
-    var schemaName = shouldGenerateType ? result.resolver.resolveRef(ref).normalized : undefined;
-    if (shouldGenerateType && schemaName && !data.types[schemaName]) {
-      var _depsGraphs$deepDepen3;
-      var node = _getTypescriptFromOpenApi({
-        schema: result.resolver.getSchemaByRef(ref),
-        ctx: ctx,
-        meta: {
-          name: schemaName
-        },
-        options: options
-      });
-      data.types[schemaName] = printTs(node).replace("export ", "");
-      data.emittedType[schemaName] = true;
-      var _iterator = _createForOfIteratorHelper((_depsGraphs$deepDepen3 = depsGraphs.deepDependencyGraph[ref]) !== null && _depsGraphs$deepDepen3 !== void 0 ? _depsGraphs$deepDepen3 : []),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var _depsGraphs$deepDepen4;
-          var depRef = _step.value;
-          var depSchemaName = result.resolver.resolveRef(depRef).normalized;
-          var isDepCircular = (_depsGraphs$deepDepen4 = depsGraphs.deepDependencyGraph[depRef]) === null || _depsGraphs$deepDepen4 === void 0 ? void 0 : _depsGraphs$deepDepen4.has(depRef);
-          if (!isDepCircular && !data.types[depSchemaName]) {
-            var nodeSchema = result.resolver.getSchemaByRef(depRef);
-            var _node = _getTypescriptFromOpenApi({
-              schema: nodeSchema,
-              ctx: ctx,
-              meta: {
-                name: depSchemaName
-              },
-              options: options
-            });
-            data.types[depSchemaName] = printTs(_node).replace("export ", "");
-            // defining types for strings and using the `z.ZodType<string>` type for their schema
-            // prevents consumers of the type from adding zod validations like `.min()` to the type
-            if (options !== null && options !== void 0 && options.shouldExportAllTypes && nodeSchema.type === "object") {
-              data.emittedType[depSchemaName] = true;
-            }
-          }
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-    }
+  // Collect all refs to process for type generation
+  var refsToProcess = new Set();
+
+  // Add all refs from dependency graph (includes circular schemas)
+  for (var ref in depsGraphs.deepDependencyGraph) {
+    refsToProcess.add(ref);
   }
 
-  // TODO
+  // If shouldExportAllTypes is enabled, also add schemas without dependencies
+  if (options !== null && options !== void 0 && options.shouldExportAllTypes) {
+    Object.keys(docSchemas).forEach(function (name) {
+      refsToProcess.add(asComponentSchema(name));
+    });
+  }
+  var _iterator = _createForOfIteratorHelper(refsToProcess),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var _depsGraphs$deepDepen3;
+      var _ref5 = _step.value;
+      var isCircular = _ref5 && ((_depsGraphs$deepDepen3 = depsGraphs.deepDependencyGraph[_ref5]) === null || _depsGraphs$deepDepen3 === void 0 ? void 0 : _depsGraphs$deepDepen3.has(_ref5));
+      var ctx = {
+        nodeByRef: {},
+        resolver: result.resolver,
+        visitedsRefs: {}
+      };
+
+      // Specifically check isCircular if shouldExportAllTypes is false. Either should cause shouldGenerateType to be true.
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      var shouldGenerateType = (options === null || options === void 0 ? void 0 : options.shouldExportAllTypes) || isCircular;
+      var schemaName = shouldGenerateType ? result.resolver.resolveRef(_ref5).normalized : undefined;
+      if (shouldGenerateType && schemaName && !data.types[schemaName]) {
+        var _depsGraphs$deepDepen4;
+        var node = _getTypescriptFromOpenApi({
+          schema: result.resolver.getSchemaByRef(_ref5),
+          ctx: ctx,
+          meta: {
+            name: schemaName
+          },
+          options: options
+        });
+        data.types[schemaName] = printTs(node).replace("export ", "");
+        data.emittedType[schemaName] = true;
+        var _iterator2 = _createForOfIteratorHelper((_depsGraphs$deepDepen4 = depsGraphs.deepDependencyGraph[_ref5]) !== null && _depsGraphs$deepDepen4 !== void 0 ? _depsGraphs$deepDepen4 : []),
+          _step2;
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            var _depsGraphs$deepDepen5;
+            var depRef = _step2.value;
+            var depSchemaName = result.resolver.resolveRef(depRef).normalized;
+            var isDepCircular = (_depsGraphs$deepDepen5 = depsGraphs.deepDependencyGraph[depRef]) === null || _depsGraphs$deepDepen5 === void 0 ? void 0 : _depsGraphs$deepDepen5.has(depRef);
+            if (!isDepCircular && !data.types[depSchemaName]) {
+              var nodeSchema = result.resolver.getSchemaByRef(depRef);
+              var _node = _getTypescriptFromOpenApi({
+                schema: nodeSchema,
+                ctx: ctx,
+                meta: {
+                  name: depSchemaName
+                },
+                options: options
+              });
+              data.types[depSchemaName] = printTs(_node).replace("export ", "");
+              // defining types for strings and using the `z.ZodType<string>` type for their schema
+              // prevents consumers of the type from adding zod validations like `.min()` to the type
+              if (options !== null && options !== void 0 && options.shouldExportAllTypes && nodeSchema.type === "object") {
+                data.emittedType[depSchemaName] = true;
+              }
+            }
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
+        }
+      }
+    }
+
+    // TODO
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
   var schemaOrderedByDependencies = topologicalSort(depsGraphs.deepDependencyGraph).map(function (ref) {
     return result.resolver.resolveRef(ref).ref;
   });
@@ -2406,12 +2430,12 @@ var getZodClientTemplateContext = function getZodClientTemplateContext(openApiDo
       // reduce types/schemas for each group using prev computed deep dependencies
       if (groupStrategy.includes("file")) {
         _toConsumableArray(dependencies).forEach(function (schemaName) {
-          var _depsGraphs$deepDepen5, _result$resolver$reso2;
+          var _depsGraphs$deepDepen2, _result$resolver$reso2;
           if (data.types[schemaName]) {
             group.types[schemaName] = data.types[schemaName];
           }
           group.schemas[schemaName] = data.schemas[schemaName];
-          (_depsGraphs$deepDepen5 = depsGraphs.deepDependencyGraph[(_result$resolver$reso2 = result.resolver.resolveSchemaName(schemaName)) === null || _result$resolver$reso2 === void 0 ? void 0 : _result$resolver$reso2.ref]) === null || _depsGraphs$deepDepen5 === void 0 || _depsGraphs$deepDepen5.forEach(function (transitiveRef) {
+          (_depsGraphs$deepDepen2 = depsGraphs.deepDependencyGraph[(_result$resolver$reso2 = result.resolver.resolveSchemaName(schemaName)) === null || _result$resolver$reso2 === void 0 ? void 0 : _result$resolver$reso2.ref]) === null || _depsGraphs$deepDepen2 === void 0 || _depsGraphs$deepDepen2.forEach(function (transitiveRef) {
             var transitiveSchemaName = result.resolver.resolveRef(transitiveRef).normalized;
             addDependencyIfNeeded(transitiveSchemaName);
             group.types[transitiveSchemaName] = data.types[transitiveSchemaName];

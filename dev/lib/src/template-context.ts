@@ -53,7 +53,22 @@ export const getZodClientTemplateContext = (
         data.schemas[normalizeString(name)] = wrapWithLazyIfNeeded(name);
     }
 
+    // Collect all refs to process for type generation
+    const refsToProcess = new Set<string>();
+
+    // Add all refs from dependency graph (includes circular schemas)
     for (const ref in depsGraphs.deepDependencyGraph) {
+        refsToProcess.add(ref);
+    }
+
+    // If shouldExportAllTypes is enabled, also add schemas without dependencies
+    if (options?.shouldExportAllTypes) {
+        Object.keys(docSchemas).forEach((name) => {
+            refsToProcess.add(asComponentSchema(name));
+        });
+    }
+
+    for (const ref of refsToProcess) {
         const isCircular = ref && depsGraphs.deepDependencyGraph[ref]?.has(ref);
         const ctx: TsConversionContext = { nodeByRef: {}, resolver: result.resolver, visitedsRefs: {} };
 
