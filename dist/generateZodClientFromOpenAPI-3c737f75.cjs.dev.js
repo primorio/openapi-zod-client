@@ -196,10 +196,6 @@ var wrapWithQuotesIfNeeded = function wrapWithQuotesIfNeeded(str) {
  * @example "alreadyCamel" -> "alreadyCamel"
  */
 var convertPropertyName = function convertPropertyName(prop) {
-  // If the property contains underscores, convert from snake_case to camelCase
-  if (prop.includes("_")) {
-    return server.snakeToCamel(prop);
-  }
   return prop;
 };
 var prefixStringStartingWithNumberIfNeeded = function prefixStringStartingWithNumberIfNeeded(str) {
@@ -212,8 +208,7 @@ var prefixStringStartingWithNumberIfNeeded = function prefixStringStartingWithNu
 var pathParamWithBracketsRegex = /({\w+})/g;
 var wordPrecededByNonWordCharacter = /[^\w\-]+/g;
 var pathParamToVariableName = function pathParamToVariableName(name) {
-  // Convert snake_case to camelCase for path parameters
-  return server.snakeToCamel(name.replaceAll("-", "_"));
+  return name;
 };
 var matcherRegex = /{(\b\w+(?:-\w+)*\b)}/g;
 var replaceHyphenatedPath = function replaceHyphenatedPath(path) {

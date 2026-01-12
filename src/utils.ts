@@ -30,6 +30,7 @@ export const wrapWithQuotesIfNeeded = (str: string) => {
  * @example "alreadyCamel" -> "alreadyCamel"
  */
 export const convertPropertyName = (prop: string): string => {
+    return prop;
     // If the property contains underscores, convert from snake_case to camelCase
     if (prop.includes("_")) {
         return snakeToCamel(prop);
@@ -50,6 +51,7 @@ const pathParamWithBracketsRegex = /({\w+})/g;
 const wordPrecededByNonWordCharacter = /[^\w\-]+/g;
 
 export const pathParamToVariableName = (name: string) => {
+    return name;
     // Convert snake_case to camelCase for path parameters
     return snakeToCamel(name.replaceAll("-", "_"));
 };
